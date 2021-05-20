@@ -1,0 +1,292 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    color: white;
+    background: #312E38;
+    height: '100%';
+    width: 100%;
+}
+
+body, input, button, textarea {
+    font: 600 18px 'Roboto Slab', Nunito, sans-serif;
+}
+
+.root {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    height: 100vh;
+    background: #312E38;
+  
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 15%;
+    padding-top: 10%;
+}
+  
+.root .header {
+  width: 100%;
+  height: 12vh;
+  background: #28262E;
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.root .header-content {
+  width: 100%;
+  height: 12vh;
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.root .header-content .seta {
+  font-size: 60px;
+  color: #ff9000;
+  margin-left: 20px;
+}
+
+.nome_cardapio {
+  font-size: 22px;
+  display: block;
+  text-align: center;
+}
+
+.tipo_cardapio {
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  color:#ff9000;
+}
+
+.sua_localizacao {
+  font-size: 18px;
+}
+
+.box_localizacao {
+  border-bottom: 1px solid gray;
+  padding: 10px 0px;
+}
+
+.box_localizacao select {
+  width: 320px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+}
+
+.box_localizacao textarea {
+  width: 320px;
+  margin-top: 10px;
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 5px;
+  display: block;
+  text-decoration: none;
+}
+
+.root .header-content .cardapio {
+  font-size: 40px;
+  color:#ff9000;
+  margin-right: 20px;
+}
+
+.root .header h1 {
+  font-size: 30px;
+}
+
+.filtros {
+  background: #3E3B47;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.lista {
+  height: 60vh;
+}
+
+.lista_pedidos {
+  height: 80vh;
+}
+
+.lista_pedidos .item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+.listaItensPedido {
+  height: 80vh;
+  margin-top: 70px;
+  width: 350px;
+}
+
+.listaItensPedido .data {
+  color:#4ef7b1;
+}
+
+.listaItensPedido .item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+.listaItensPedido .detalhe {
+  color: #ccc;
+  font-size: 15px;
+  float: left;
+  overflow: hidden;
+}
+
+.listaItensPedido .esquerda {
+  float: left;
+}
+
+.listaItensPedido .valor {
+  float: right;
+  color: #4ef7b1;
+}
+.listaItensPedido .direita {
+  float: right;
+}
+
+.total {
+  text-align: center;
+  padding: 20px;
+}
+
+.listaItensPedido .atendido {
+  color: #ccc;
+  font-size: 14px;
+  text-align: right;
+}
+
+.toque {
+  color: #f7475e;
+  font-size: 24px;
+}
+
+.products {
+  border-bottom: solid 1px #666360;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.products-image .product-img {
+  max-width: 100%;
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+}
+
+.fecha-pedido {
+  margin-top: 10px;
+  padding: 10px;
+  background: #039658;
+  border-radius: 5px;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+}
+
+.obs {
+  margin: 30px;
+}
+
+.adicionar-item {
+  margin: 20px;
+  padding: 10px;
+  background: #e73f3f;
+  border-radius: 5px;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  width: 300px;
+}
+
+.nota {
+  width: 300px;
+  margin: 10px 20px;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.mesa {
+  width: 300px;
+  margin: 0px 20px;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.total-carrinho {
+  font-size: 20px;
+  text-align: right;
+  margin: 20px 0px 10px 0px;
+}
+
+.numero-mesa {
+  font-size: 20px;
+  text-align: left;
+  margin: 20px 0px 10px 0px;
+  float: left;
+}
+
+.cancela-pedido {
+  margin-top: 20px;
+  padding: 10px;
+  text-align: center;
+  display: block;
+  background: #f7475e;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.trocar-mesa {
+  margin-top: 10px;
+  padding: 10px;
+  text-align: center;
+  display: block;
+  background: #1255ad;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.box {
+  margin: 60px;
+}
+
+.product-img-description {
+  margin-top: 30px;
+  max-width: 100%;
+  width: auto;
+};
+
+.container-product-info {
+  display: flex;   
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex: 1;
+  padding: 20;
+}
+

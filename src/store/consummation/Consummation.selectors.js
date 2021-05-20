@@ -1,0 +1,1 @@
+export default selectAllConsummations = state => state.consummations
