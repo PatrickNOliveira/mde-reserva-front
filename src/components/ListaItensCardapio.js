@@ -25,7 +25,7 @@ export default function ListaItensCardapio({pesquisa, items, onItemClick}) {
                 <div>
                     <div style={{float:'left', width: '70%'}}>
                         <p style={{fontSize:14, color:'#a2a276'}}>Nº {item.codigo}</p>
-                        <p style={{color:'#3fe799', fontSize:16}}>{item.descricao}</p>
+                        <p style={{color:'#3fe799', fontSize:16, maxWidth: 190}}>{item.descricao}</p>
                     </div>
                     <div style={{float:'right'}}>
                         <p style={{fontSize:18}}>{getPreco(item.preco)}</p>
