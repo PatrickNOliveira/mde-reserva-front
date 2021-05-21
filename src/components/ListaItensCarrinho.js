@@ -221,7 +221,7 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
                         <p style={{color:'#3fe799', fontSize:16}}>{item.descricao}</p>
                         <p style={{fontSize:14, width: 200}}>{item.nota}</p>
                         <p style={{fontSize:18}}>
-                            <span style={{color:'#8c8c8c'}}>{item.quantidade} x {getPreco(item.preco)}</span> = {getPreco(item.preco, item.quantidade)}
+                            <span style={{color:'#8c8c8c'}}>{getPreco(item.preco, item.quantidade)}</span>
                         </p>
                         {
                             item.atendido ? '' : <p className="toque" style={{fontSize:14}}>Toque para excluir</p>

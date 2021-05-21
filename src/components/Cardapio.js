@@ -25,7 +25,7 @@ export default function Cardapio() {
     
     const [ buscaCardapio, setBuscaCardapio ] = useState(cardapio.id === 0);
 
-    const [items, setItems]       = useState();
+    //const [items, setItems]       = useState();
     const [produtos, setProdutos] = useState([]);
     const [servicos, setServicos] = useState([]);
     
@@ -41,6 +41,12 @@ export default function Cardapio() {
 
             if (!mounted) return;
 
+            console.log('produtos:', response.data);
+
+            setProdutos(response.data);
+
+            /*
+
             setProdutos(response.data.filter((p) => {
                 return p.tipo !== 'servico';
             }));
@@ -48,6 +54,7 @@ export default function Cardapio() {
             setServicos(response.data.filter((p) => {
                 return p.tipo === 'servico';
             }));
+            */
 
         });
 
@@ -55,17 +62,21 @@ export default function Cardapio() {
             mounted = false;
         }
 
-    }, [items, cardapio]);
+    }, [cardapio]);
+    
+    //[items, cardapio]);
     
     const onProdutosClick = () => {
-        setItems(produtos);
+        //setItems(produtos);
         setMostraCarrinho(false);
     }
 
+    /*
     const onServicosClick = () => {
         setItems(servicos);
         setMostraCarrinho(false);
     }
+    */
 
     const onCarrinhoClick = () => {
         setMostraCarrinho(true);
@@ -80,9 +91,12 @@ export default function Cardapio() {
     }
 
     const onCardapioClick = (cardapio) => {
+        
+        console.log(cardapio);
+
+        setBuscaCardapio(false);
         setCardapioAtual(cardapio);
         setCardapio(cardapio);
-        setBuscaCardapio(false);
     }
 
     const onBuscaCarpadioClick = () => {
@@ -140,7 +154,7 @@ export default function Cardapio() {
                             </SearchBox>
 
                             <ListaItensCardapio pesquisa={pesquisa} 
-                                items={items ?? produtos ?? servicos} 
+                                items={produtos} 
                                 onItemClick={onItemClick} 
                             />
                             
@@ -153,6 +167,11 @@ export default function Cardapio() {
     }
     
 /*
+                            <ListaItensCardapio pesquisa={pesquisa} 
+                                items={items ?? produtos ?? servicos} 
+                                onItemClick={onItemClick} 
+                            />
+
                             <SearchBox>
                                 <form>
                                     <input 
