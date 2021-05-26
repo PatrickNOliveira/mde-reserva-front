@@ -200,6 +200,7 @@ export default function Menu() {
   const [login] = useState(getLogin());
   const [conta] = useState(getConta());
 
+  console.log()
   useEffect(() => {
     if (login == null) history.push({ pathname: `/entrar/${id}` });
   },[]);

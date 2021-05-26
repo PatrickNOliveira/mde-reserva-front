@@ -62,5 +62,5 @@ export function setSuiteAtual(suite) {
 
 export function getHost() {
     //return 'http://localhost:8000';
-    return 'http://mde.openshift.com.br:8080';
+    return 'http://api.mde.com.br:8080';
 }
