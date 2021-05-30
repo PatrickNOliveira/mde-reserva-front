@@ -34,6 +34,8 @@ export default function Cardapio() {
     useEffect(() => {
         
         if (login == null) history.push({ pathname: `/entrar/${id}` });
+        
+        if (cardapio.id === 0) return;
 
         let mounted = true;
         

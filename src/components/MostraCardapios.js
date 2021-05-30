@@ -45,7 +45,7 @@ export default function MostraCardapios({id, onCardapioClick}) {
     return (
         <Container>
             {
-                cardapios.map(cardapio =>
+               cardapios.map(cardapio =>
                     <CardContainer key={cardapio.id} id={cardapio.id}>
                         <a href="#" 
                             onClick={() => onCardapioClick(cardapio)} 
@@ -77,7 +77,7 @@ const CardContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center; 
-    margin-top: 16px;
+    margin-top: 20px;
 
     :hover {
         background: ${shade(0.2, '#232129')}
@@ -92,4 +92,5 @@ const CardContainer = styled.div`
       color: #fff; 
       font-size: 26px;
     }
+    
 `;

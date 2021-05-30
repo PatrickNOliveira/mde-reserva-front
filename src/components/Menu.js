@@ -30,7 +30,8 @@ const MenuWINLETOM = () => {
 
   const onSairClick = () => {
     localStorage.setItem('login', null);
-    history.push({ pathname: `/home/${id}` });
+    history.push({ pathname: `/${id}` });
+    //history.push({ pathname: `/home/${id}` });
   }
   
   // https://api-sistema-mde.herokuapp.com
