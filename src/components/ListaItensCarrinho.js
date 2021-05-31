@@ -198,7 +198,9 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
                     style={{color: 'white'}}>
                     Cancelar Pedido
                 </a>
-
+                
+                <br />
+                
             </div>
         )
     }
