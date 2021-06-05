@@ -92,7 +92,7 @@ const MenuWINRESTA = () => {
 
   const onSairClick = () => {
     localStorage.setItem('login', null);
-    history.push({ pathname: `/home/${id}` });
+    history.push({ pathname: `/${id}` });
   }
 
   return (
@@ -147,7 +147,7 @@ const MenuWINLETOH = () => {
 
   const onSairClick = () => {
     localStorage.setItem('login', null);
-    history.push({ pathname: `/home/${id}` });
+    history.push({ pathname: `/${id}` });
   }
   
   // https://api-sistema-mde.herokuapp.com

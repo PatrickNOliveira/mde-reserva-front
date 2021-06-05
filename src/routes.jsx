@@ -27,10 +27,6 @@ function Routes() {
 					<QrCodeAuth />
 				</Route>
 
-				<Route exact path="/:id">
-					<QrCodeAuth />
-				</Route>
-
 				<Route path="/home/:id">
 					<Home />
 				</Route>
@@ -57,6 +53,10 @@ function Routes() {
 				
 				<Route path="/informacoes/:id">
 					<Informacoes />
+				</Route>
+
+				<Route exact path="/:id">
+					<QrCodeAuth />
 				</Route>
 
 			</Switch>

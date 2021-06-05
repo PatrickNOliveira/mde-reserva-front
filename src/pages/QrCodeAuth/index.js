@@ -19,6 +19,7 @@ function QrCodeAuth() {
 	setColab(location.pathname.indexOf('/login') !== -1);
 
 	const [result, setResult] = useState("Aponte a câmera do seu celular para o QR CODE");
+
 	const [login] = useState(getLogin());
 
 	const handleScan = code => {
@@ -37,6 +38,8 @@ function QrCodeAuth() {
 	}
 
 	useEffect(() => {
+
+		console.log('QrCodeAuth.login:', login);
 
 		if (login == null || login.uuid !== id) {
 

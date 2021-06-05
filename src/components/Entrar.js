@@ -127,6 +127,9 @@ export default function Entrar() {
   const history = useHistory();
   const [login] = useState(null); //getLogin());
   const [colab] = useState(getColab());
+  const [conta] = useState(getConta());
+  
+  console.log('Conta:', conta);
 
   useEffect(() => {
     setCardapioAtual(null);
@@ -134,10 +137,6 @@ export default function Entrar() {
     //if (login == null) history.push({ pathname: `/entrar/${id}` });
     //else history.push({ pathname: `/menu/${id}` });
   },[]);
-
-  const [conta] = useState(getConta());
-
-  console.log(conta);
 
   return (
     (conta.sistema == 'WINRESTA' || colab) ? ( <EntrarWINRESTA /> ) : (<EntrarWINLETOM />)
