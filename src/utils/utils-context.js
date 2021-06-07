@@ -63,6 +63,7 @@ export function setSuiteAtual(suite) {
 export function contaEncerrada(login) {
     const data = login.checkout.substr(0, 10);
     const hora = login.checkout.substr(11);
+    
     const parts = data.split('/');
     const _data = parts[2] + '-' + parts[1] + '-' + parts[0] + ' ' + hora;
     return ( (new Date()) >= (new Date(_data)))
