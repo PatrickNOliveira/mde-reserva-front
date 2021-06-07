@@ -61,8 +61,6 @@ export function setSuiteAtual(suite) {
 }
 
 export function contaEncerrada(login) {
-    login.checkout = '07/06/2021 19:55:00';
-    console.log('contaEncerrada.login.checkout', login.checkout);
     const data = login.checkout.substr(0, 10);
     const hora = login.checkout.substr(11);
     const parts = data.split('/');
