@@ -5,18 +5,27 @@ import getPreco from '../utils/getPreco'
 import api from '../services/api';
 import Counter from './Counter';
 
-import { getLogin, getConta,
+import { getLogin, getConta, setLogin,
          getMesaAtual, setMesaAtual, 
-         getSuiteAtual, setSuiteAtual
+         getSuiteAtual, setSuiteAtual, contaEncerrada
 } from '../utils/utils-context';
 
 export default function AdicionaItem() {
 
+    const isCheckout = () => {
+        if (contaEncerrada(login)) {
+            setLogin(null);
+            history.push({ pathname: `/${id}` });
+            return true;
+        }
+    }
+
     useEffect(() => {
-        if (login == null) history.push({ pathname: `/entrar/${id}` });
+        //if (login == null) history.push({ pathname: `/entrar/${id}` });
+        if (login == null) history.push({ pathname: `/${id}` });
+        if (isCheckout()) return;
     },[]);
 
-    
     const { id }  = useParams();
     const [login] = useState(getLogin());
     const [conta] = useState(getConta());
@@ -37,6 +46,8 @@ export default function AdicionaItem() {
     }
 
     const onAdicionaItem = () => {
+        
+        if (isCheckout()) return;
 
         api.post('/api/order', { 
             uuid: id,
@@ -53,6 +64,7 @@ export default function AdicionaItem() {
             tipo:produto.tipo,
             quantidade: quant, 
             nota: nota,
+            hospede: login.NrHospede
         }).then(response => {
             setMesaAtual(mesa);
             setSuiteAtual(suite);

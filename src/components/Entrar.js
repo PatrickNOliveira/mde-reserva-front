@@ -11,7 +11,8 @@ import {
   setMesaAtual, 
   setCardapioAtual,
   setSuiteAtual,
-  getColab } from '../utils/utils-context';
+  getColab,
+  contaEncerrada } from '../utils/utils-context';
 
 const EntrarWINLETOM = () => {
 
@@ -43,10 +44,18 @@ const EntrarWINLETOM = () => {
                   suite: suite, 
                   cpf: cpf,
                 }).then(response => {
+
                   console.log('Login:', response.data);
+
+                  if (contaEncerrada(response.data)){
+                    history.push({ pathname: `/${id}` });
+                    return;
+                  }
+                    
                   setLogin(response.data);
                   setSuiteAtual(response.data.suite);
                   history.push({ pathname: `/menu/${id}` });
+
                 }).catch((error) => {
                     if (error.response) console.log(error.response.status);
                 });

@@ -11,7 +11,12 @@ import MostraCardapios from './MostraCardapios';
 
 //import '../styles/product.css';
 
-import { getLogin, getCardapioAtual, setCardapioAtual } from '../utils/utils-context';
+import { 
+    setLogin,
+    getLogin, 
+    getCardapioAtual, 
+    setCardapioAtual,
+    contaEncerrada } from '../utils/utils-context';
 
 export default function Cardapio() {
 
@@ -33,10 +38,17 @@ export default function Cardapio() {
     
     useEffect(() => {
         
-        if (login == null) history.push({ pathname: `/entrar/${id}` });
+        if (login == null) history.push({ pathname: `/${id}` });
+        //if (login == null) history.push({ pathname: `/entrar/${id}` });
         
         if (cardapio.id === 0) return;
 
+        if (contaEncerrada(login)) {
+            setLogin(null);
+            history.push({ pathname: `/${id}` });
+            return;
+        }
+    
         let mounted = true;
         
         api.get(`/api/order/products/${login.uuid}/${cardapio.id}`).then(response => {

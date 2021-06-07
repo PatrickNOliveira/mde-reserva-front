@@ -4,15 +4,18 @@ import getPreco from '../utils/getPreco'
 import alerta from '../utils/alertas';
 import api from '../services/api';
 import styled from 'styled-components';
+import { useHistory } from "react-router-dom";
 
 import { 
-    getLogin, getMesaAtual, 
-    setMesaAtual, getConta,
+    getLogin, getMesaAtual, setLogin,
+    setMesaAtual, getConta, contaEncerrada,
     getCardapioAtual, getSuiteAtual } from '../utils/utils-context';
 
 import LocalEntrega from './LocalEntrega';
 
 export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
+    
+    const history = useHistory();
     const [carrinho, setCarrinho] = useState({ items:[], total: 0});
     const [mensagem, setMensagem ] = useState('Aguarde...');
     const [login] = useState(getLogin());
@@ -32,8 +35,18 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
 
     const [observacao, setObservacao] = useState('');
 
+    const isCheckout = () => {
+        if (contaEncerrada(login)) {
+            setLogin(null);
+            history.push({ pathname: `/${login.uuid}` });
+            return true;
+        }
+    }
+
     useEffect(() => {
-        
+
+        if (isCheckout()) return;
+
         let mounted = true;
 
         if (!suite_id && !mesa && !suite) {
@@ -70,6 +83,8 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
 
     const onItemClick = (item) => {
         
+        if (isCheckout()) return;
+
         let url = '';
         
         if (suite_id || suite)
@@ -94,6 +109,9 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
     }
 
     const onEnviarPedidoClick = () => {
+        
+        if (isCheckout()) return;
+
         alerta({ 
             title: 'Atenção!',
             message: 'Enviar esse pedido?',
@@ -138,6 +156,8 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
 */
 
     const onCancelarPedidoClick = () => {
+
+        if (isCheckout()) return;
 
         let url = '';
 

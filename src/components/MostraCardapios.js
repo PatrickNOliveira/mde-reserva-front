@@ -2,20 +2,35 @@ import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import styled from 'styled-components';
 import { shade } from 'polished';
-import { getLogin } from '../utils/utils-context';
+import { useHistory } from "react-router-dom";
+import { 
+    setLogin,
+    getLogin,
+    contaEncerrada
+} from '../utils/utils-context';
 
 export default function MostraCardapios({id, onCardapioClick}) {
 
+    const history = useHistory();
     const [ cardapios, setCardapios ] = useState([]);
     const [ login ] = useState(getLogin());
-
+    
     useEffect(() => {
     
         let mounted = true;
-        
+
         api.get(`/api/cardapios/${id}`).then(response => {
+
             if (!mounted) return;
+
+            if (contaEncerrada(login)) {
+                setLogin(null);
+                history.push({ pathname: `/${id}` });
+                return;
+            }
+    
             console.log('Cardapios:', response.data);
+
             setCardapios(
                 response.data.filter((c) => {
                     //if (!login.login) return true; 

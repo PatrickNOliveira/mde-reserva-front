@@ -60,6 +60,16 @@ export function setSuiteAtual(suite) {
     localStorage.setItem('suite', suite === null ? '' : suite);
 }
 
+export function contaEncerrada(login) {
+    login.checkout = '07/06/2021 19:55:00';
+    console.log('contaEncerrada.login.checkout', login.checkout);
+    const data = login.checkout.substr(0, 10);
+    const hora = login.checkout.substr(11);
+    const parts = data.split('/');
+    const _data = parts[2] + '-' + parts[1] + '-' + parts[0] + ' ' + hora;
+    return ( (new Date()) >= (new Date(_data)))
+}
+
 export function getHost() {
     //return 'http://localhost:8000';
     return 'http://api.mde.com.br:8080';
