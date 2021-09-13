@@ -39,6 +39,7 @@ export default function AdicionaItem() {
     const [ nota, setNota ] = useState('');
     const [ mesa, setMesa ] = useState(getMesaAtual());
     const [ suite, setSuite ] = useState(getSuiteAtual());
+    const [ adicionado, setAdicionado ] = useState(false);
 
     const atualizaQuantidade = (value) => {
         var q = quant + value;
@@ -48,6 +49,13 @@ export default function AdicionaItem() {
     const onAdicionaItem = () => {
         
         if (isCheckout()) return;
+
+        if (adicionado) {
+            console.log("ADICIONADO!");
+            return;
+        }
+        
+        setAdicionado(true);
 
         api.post('/api/order', { 
             uuid: id,

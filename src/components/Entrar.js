@@ -37,6 +37,7 @@ const EntrarWINLETOM = () => {
               value={cpf} 
               onChange={(event) => {setCPF(event.target.value)}}            
               placeholder="Documento (somente dígitos)"/>
+
             <button onClick={(event) => {
                 event.preventDefault();
                 api.post('/api/entrar', { 
@@ -60,6 +61,7 @@ const EntrarWINLETOM = () => {
                     if (error.response) console.log(error.response.status);
                 });
             }}>Entrar</button>
+
         </form>
         </Content>
     </Container>

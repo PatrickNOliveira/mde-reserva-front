@@ -3,7 +3,7 @@ import { getHost } from '../utils/utils-context';
 
 const api = axios.create({
     //baseURL: 'http://localhost:8000',
-    baseURL: getHost(), //'https://api-sistema-mde.herokuapp.com/', 
+    baseURL: getHost(),
     withCredentials: false,
     headers: { 
       'Access-Control-Allow-Origin' : '*',

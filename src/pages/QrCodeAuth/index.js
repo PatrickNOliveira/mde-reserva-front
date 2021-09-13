@@ -39,7 +39,7 @@ function QrCodeAuth() {
 
 	useEffect(() => {
 
-		console.log('QrCodeAuth.login:', login);
+		console.log('QrCodeAuth.login:', login, id);
 
 		if (login == null || login.uuid !== id) {
 
