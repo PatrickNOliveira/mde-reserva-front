@@ -41,7 +41,8 @@ export default function Informacoes() {
                 <strong>{login.checkin}</strong>
                 <p>Check-out</p>
                 <strong>{login.checkout}</strong>   
-                <p>Build: 1.0.2</p>
+                <p>Versão</p>
+                <strong>1.0.3</strong>   
             </InfoUsers>
         </div>
     )
