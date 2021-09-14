@@ -55,7 +55,7 @@ const EntrarWINLETOM = () => {
                     
                   setLogin(response.data);
                   setSuiteAtual(response.data.suite);
-                  history.push({ pathname: `/menu/${id}` });
+                  history.push({ pathname: `/menu/${id}/${Date.now()}` });
 
                 }).catch((error) => {
                     if (error.response) console.log(error.response.status);

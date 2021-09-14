@@ -9,8 +9,8 @@ export default function Home() {
   const [login] = useState(getLogin());
 
   useEffect(() => {
-      if (login == null) history.push({ pathname: `/entrar/${id}` });
-      else history.push({ pathname: `/menu/${id}` });
+      if (login == null) history.push({ pathname: `/entrar/${id}/${Date.now()}` });
+      else history.push({ pathname: `/menu/${id}/${Date.now()}` });
     },[]);
 
   return '';
