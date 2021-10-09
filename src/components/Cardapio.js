@@ -29,13 +29,16 @@ export default function Cardapio() {
     const [ cardapio, setCardapio ] = useState(getCardapioAtual());
     
     const [ buscaCardapio, setBuscaCardapio ] = useState(cardapio.id === 0);
-
+    const [ buscaGrupo, setBuscaGrupo ] = useState(false);
+    
     //const [items, setItems]       = useState();
     const [produtos, setProdutos] = useState([]);
     const [servicos, setServicos] = useState([]);
-    
+    const [grupos, setGrupos] = useState([]);
+    const [grupo, setGrupo] = useState();
+
     const [ mostraCarrinho, setMostraCarrinho ] = useState(false);
-    
+
     useEffect(() => {
         
         if (login == null) history.push({ pathname: `/${id}` });
@@ -53,11 +56,25 @@ export default function Cardapio() {
         
         api.get(`/api/order/products/${login.uuid}/${cardapio.id}`).then(response => {
 
+            const getGrupos = (items) => {
+                const grupos = [];
+                for (var i in items) {
+                    if (grupos.includes(items[i].tipo)) continue;
+                    grupos.push(items[i].tipo);
+                }
+                return grupos;
+            }
+
             if (!mounted) return;
 
             console.log('produtos:', response.data);
 
             setProdutos(response.data);
+            
+            const _grupos = getGrupos(response.data);
+
+            setGrupos(_grupos);
+            setGrupo(_grupos[0]);
 
             /*
 
@@ -121,12 +138,57 @@ export default function Cardapio() {
         <Link to='#' style={{color:'white', padding: '10px', textDecoration: 'none'}} onClick={onServicosClick}>Serviços</Link>
     */
 
+    const onGrupoClick = () => {
+        console.log(grupos);
+        setBuscaGrupo(true);
+        console.log(buscaGrupo);
+    }
+
+    const onGrupoSelecionadoClick = (g) => {
+        setGrupo(g);
+        setBuscaGrupo(false);
+    }
+
+    const MostraGrupos = () => {
+        return (
+            <div className="lista-grupos">
+                <div className="grupos">
+                    {
+                        grupos.map(g => 
+                            <div>
+                                <a className="botao-seleciona-grupo" 
+                                    key={g}
+                                    href="#" 
+                                    onClick={ () => onGrupoSelecionadoClick(g) } 
+                                    style={{color:'white'}}>{g}
+                                </a> 
+                            </div>                        
+                        )
+                    }
+                </div>
+            </div>            
+        )
+    }
+
     const MostraCardapio = () => {
 
         const [pesquisa, setPesquisa] = useState('');
 
         return (
+
             <div className="body">
+                {
+                    grupo ? 
+                    <div className="grupos">
+                        <a  className="botao-grupo" 
+                            href="#" 
+                            onClick={onGrupoClick} 
+                            style={{color:'white'}}>{grupo}
+                        </a>   
+                    </div>
+                    : ''
+                }
+
                 <div className="filtros">
                     {
                         login.login ? ( // Garçom
@@ -170,6 +232,7 @@ export default function Cardapio() {
                             <ListaItensCardapio pesquisa={pesquisa} 
                                 items={produtos} 
                                 onItemClick={onItemClick} 
+                                grupo={grupo}
                             />
                             
                         </div>
@@ -180,24 +243,6 @@ export default function Cardapio() {
         )
     }
     
-/*
-                            <ListaItensCardapio pesquisa={pesquisa} 
-                                items={items ?? produtos ?? servicos} 
-                                onItemClick={onItemClick} 
-                            />
-
-                            <SearchBox>
-                                <form>
-                                    <input 
-                                        defaultValue={pesquisa}
-                                        onChange={(event) => {
-                                            setPesquisa(event.target.value)
-                                        }}
-                                        placeholder="Digite aqui sua pesquisa" />
-                                </form>
-                            </SearchBox>
-*/
-
     return (
         <div className="root">
             <div className="header">
@@ -211,10 +256,8 @@ export default function Cardapio() {
                 </div>
             </div>
             {
-                buscaCardapio ? 
-                    <MostraCardapios id={id} onCardapioClick={onCardapioClick} />
-                    : <MostraCardapio />
-                    
+                buscaCardapio ? <MostraCardapios id={id} onCardapioClick={onCardapioClick} />
+                : buscaGrupo ? <MostraGrupos /> : <MostraCardapio />
             }
         </div>
         

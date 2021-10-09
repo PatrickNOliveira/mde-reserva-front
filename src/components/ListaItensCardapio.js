@@ -2,18 +2,27 @@
 import getPreco from '../utils/getPreco';
 import styled from 'styled-components';
 
-export default function ListaItensCardapio({pesquisa, items, onItemClick}) {
+export default function ListaItensCardapio({pesquisa, items, onItemClick, grupo}) {
     
-    const rendeSemItens = () => (        
+    const renderSemItens = () => (        
         <SemItensStyle>Sem itens!</SemItensStyle>        
         )
 
-    if (!items || items.lenght === 0) return rendeSemItens();
+    if (!items || items.length === 0) return renderSemItens();
 
     const busca = items.filter((i) => {
-        function contain(a, b) { return a.toUpperCase().includes(b.toUpperCase())}
-        if (pesquisa.trim().lenght === 0) return true;
-        return contain(i.descricao, pesquisa) || contain(i.codigo, pesquisa);
+        function naPesquisa(i) {
+            function contain(a, b) { return a.toUpperCase().includes(b.toUpperCase())}
+            if (pesquisa.trim().lenght === 0) return true;
+            return contain(i.descricao, pesquisa) || contain(i.codigo, pesquisa);
+        }
+
+        function noGrupo(i) {
+            return i.tipo == grupo;
+        }
+
+        return naPesquisa(i) && noGrupo(i);
+
     });
 
     return busca.map(item => 
@@ -37,10 +46,14 @@ export default function ListaItensCardapio({pesquisa, items, onItemClick}) {
             </div>
         </div>
     );
+
 }
 
 const SemItensStyle = styled.p`
-    font-size: 100px;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    font-size: 25px;
 `;
 
 /*
