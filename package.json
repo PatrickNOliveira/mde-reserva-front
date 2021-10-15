@@ -2,7 +2,7 @@
   "name": "hotel",
   "version": "0.1.0",
   "private": true,
-  "homepage" : " https://web.mde.openshift.com.br:8081" ,
+  "homepage" : " https://web.mde.com.br:8081" ,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
