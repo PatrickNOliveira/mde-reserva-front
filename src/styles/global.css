@@ -199,16 +199,6 @@ body, input, button, textarea {
   border-radius: 10px;
 }
 
-.fecha-pedido {
-  margin-top: 10px;
-  padding: 10px;
-  background: #039658;
-  border-radius: 5px;
-  display: block;
-  text-decoration: none;
-  text-align: center;
-}
-
 .obs {
   margin: 30px;
 }
@@ -298,13 +288,24 @@ body, input, button, textarea {
 }
 
 .cancela-pedido {
-  margin-top: 20px;
   padding: 10px;
-  text-align: center;
-  display: block;
   background: #f7475e;
   border-radius: 5px;
+  display: block;
   text-decoration: none;
+  text-align: center;
+  width: 300px;
+}
+
+.fecha-pedido {
+  margin: 20px;
+  padding: 10px;
+  background: #039658;
+  border-radius: 5px;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  width: 300px;
 }
 
 .trocar-mesa {
