@@ -1,5 +1,5 @@
 export default function LocalEntrega({cardapio, locais, onLocalizacao, onObservacao}) {
-    if (locais.lenght === 0) return '';
+    if (locais.length < 2) return '';
     if (cardapio.localizacao === '0') return '';
 
     return (

@@ -241,7 +241,7 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
                     <div style={{paddingBottom: '10px'}}>        
                         <p style={{fontSize:14, color:'#a2a276'}}>Nº {item.codigo}</p>
                         <p style={{color:'#3fe799', fontSize:16}}>{item.descricao}</p>
-                        <p style={{fontSize:14, width: 200}}>{item.nota}</p>
+                        <p style={{fontSize:14, width: 300}}>{item.nota}</p>
                         <p style={{fontSize:18}}>
                             <span style={{color:'#8c8c8c'}}>{getPreco(item.preco, item.quantidade)}</span>
                         </p>
