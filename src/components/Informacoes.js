@@ -43,7 +43,7 @@ export default function Informacoes() {
                 <p>Check-out</p>
                 <strong>{login.checkout}</strong>   
                 <p>Build</p>
-                <strong>1.0.6</strong>   
+                <strong>1.0.11</strong>   
             </InfoUsers>
 
         </div>
