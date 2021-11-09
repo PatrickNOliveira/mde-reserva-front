@@ -19,8 +19,9 @@ export default function Informacoes() {
     }
 
     return(
+        
         <div className="root">
-            
+
             <div className="header">
                 <div  className="header-content">
                     <a href="#" onClick={onMenuClick} className="requests">
@@ -30,7 +31,7 @@ export default function Informacoes() {
                 <h1>Informações</h1>
             </div> 
 
-            <InfoUsers className="user">
+            <InfoUsers>
                 <p>Reserva</p>
                 <strong>{login.reserva}</strong>
                 <p>Hóspede Master</p>
@@ -41,19 +42,21 @@ export default function Informacoes() {
                 <strong>{login.checkin}</strong>
                 <p>Check-out</p>
                 <strong>{login.checkout}</strong>   
-                <p>Versão</p>
-                <strong>1.0.5</strong>   
+                <p>Build</p>
+                <strong>1.0.6</strong>   
             </InfoUsers>
+
         </div>
     )
 }
 
 const InfoUsers = styled.div`
     margin:50px;
+    padding-top: 60px;
     width: 75%;
 
     p {
-        margin-top: 30px;
+        margin-top: 10px;
         margin-bottom: 5px;
     }
     

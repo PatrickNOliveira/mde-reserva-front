@@ -31,6 +31,15 @@ export function setCardapioAtual(cardapio) {
     localStorage.setItem('Cardapio', JSON.stringify(cardapio));
 }
 
+export function gravaCardapios(cardapios) {
+    console.log('gravando cardapios:', cardapios)
+    localStorage.setItem('CARDAPIOS', JSON.stringify(cardapios));
+}
+
+export function recuperaCardapios() {
+    return JSON.parse(localStorage.getItem('CARDAPIOS'));
+}
+
 export function getCardapioAtual() {
     const cardapioAtual = {id: 0}
     try {
@@ -70,6 +79,6 @@ export function contaEncerrada(login) {
 }
 
 export function getHost() {
-    //return 'http://localhost:8000';
-    return 'https://api.mde.com.br';
+    return 'http://localhost:8000';
+    //return 'https://api.mde.com.br';
 }

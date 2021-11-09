@@ -122,9 +122,7 @@ export default function Cardapio() {
     }
 
     const onCardapioClick = (cardapio) => {
-        
         console.log(cardapio);
-
         setBuscaCardapio(false);
         setCardapioAtual(cardapio);
         setCardapio(cardapio);
@@ -154,10 +152,10 @@ export default function Cardapio() {
             <div className="lista-grupos">
                 <div className="grupos">
                     {
-                        grupos.map(g => 
+                        grupos.map((g, i) => 
                             <div>
                                 <a className="botao-seleciona-grupo" 
-                                    key={g}
+                                    key={i}
                                     href="#" 
                                     onClick={ () => onGrupoSelecionadoClick(g) } 
                                     style={{color:'white'}}>{g}
@@ -183,7 +181,7 @@ export default function Cardapio() {
                         <a  className="botao-grupo" 
                             href="#" 
                             onClick={onGrupoClick} 
-                            style={{color:'white'}}>{grupo}
+                            >{grupo}
                         </a>   
                     </div>
                     : ''

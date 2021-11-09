@@ -8,7 +8,8 @@ import styled from 'styled-components';
 
 import { getLogin, getConta, setLogin, getHost, 
          getMesaAtual, setMesaAtual, 
-         getSuiteAtual, setSuiteAtual, contaEncerrada
+         getSuiteAtual, setSuiteAtual, contaEncerrada,
+         getCardapioAtual
 } from '../utils/utils-context';
 
 export default function AdicionaItem() {
@@ -39,7 +40,7 @@ export default function AdicionaItem() {
     const [ mesa, setMesa ] = useState(getMesaAtual());
     const [ suite, setSuite ] = useState(getSuiteAtual());
     const [ adicionado, setAdicionado ] = useState(false);
-    const [ detalheItem, setDetalheItem ] = useState(true);
+    const [ detalheItem, setDetalheItem ] = useState(produto.nota || produto.imagem);
     
     const host = getHost();
 
@@ -52,27 +53,19 @@ export default function AdicionaItem() {
         const onContinuarClick = () => {
             setDetalheItem(false);
         }
-    
+
+        // <img src={`${host}/api/foto/${item.id}`}  alt="foto" />
+
         return (
             <Container>
                 <ImgContainer>
-                    <img src={`${host}/api/foto/${item.id}`}  alt="foto" />
+                    <img src={produto.imagem}  alt="foto" />
                 </ImgContainer>
                 <div className="container-product-detail">
                     <h2 style={{ fontSize: 20, textAlign: 'center' }}>
                         {produto.descricao}
                     </h2>
-                    <h2 style={{fontSize: 15, marginTop: 20}}> 
-                    dfasd asdfa sdfa sdf asdf asf asdf asd fasfd a sdfa sdfa sdf asdf as dfas
-                     dfa sdf asdf as dfa df asdf adsfas fdf  asdf asf asdf as dfas f asdf asdf asdf
-                      as dfas df asdf as dfa sdf asdasd fasd fas dfa dfas dfas dfa sdf af as fda dfa sdf
-                       asf as dfa dsf asdf a sf af sd fa sdf asdf a dfasdf ad fas fas dfas fas dfa dfa sdfa sfd
-                       asf as fda sfasfdas df asdf as fa sfd asdf as dfas fa sfdasd adfas fas df asdf as 
-                       dfa sdf as dfa sf as fas df asf as dfa sdf as fa sdfasdfa sdf a sdf asdf as dfa
-                        sdf asd fa sdf asdf a sfda dsf 
-                        dfasd asdfa sdfa sdf asdf asf asdf asd fasfd a sdfa sdfa sdf asdf as dfas
-                        dfasd asdfa sdfa sdf asdf asf asdf asd fasfd a sdfa sdfa sdf asdf as dfas
-                        sdf asd fa sdf asdf a sfda dsf 
+                    <h2 style={{fontSize: 15, marginTop: 20}}> {produto.nota}
                     </h2>
                 </div>
                 <a  className="continuar-item" 
@@ -102,7 +95,9 @@ export default function AdicionaItem() {
             if (adicionado) return;
             
             setAdicionado(true);
-    
+            
+            const cardapio = getCardapioAtual();
+
             api.post('/api/order', { 
                 uuid: id,
                 mesa: mesa ?? null,
@@ -118,7 +113,8 @@ export default function AdicionaItem() {
                 tipo:produto.tipo,
                 quantidade: quant, 
                 nota: nota,
-                hospede: login.NrHospede
+                hospede: login.NrHospede,
+                cardapio: cardapio.id
             }).then(response => {
                 setMesaAtual(mesa);
                 setSuiteAtual(suite);

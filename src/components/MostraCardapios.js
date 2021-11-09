@@ -59,6 +59,7 @@ export default function MostraCardapios({id, onCardapioClick}) {
 
     return (
         <Container>
+            <br />
             {
                cardapios.map(cardapio =>
                     <CardContainer key={cardapio.id} id={cardapio.id}>

@@ -19,8 +19,8 @@ const EntrarWINLETOM = () => {
   const host = getHost();
   const { id } = useParams();
   const history = useHistory();
-  const [suite, setSuite] = useState('');
-  const [cpf, setCPF] = useState('');
+  const [suite, setSuite] = useState(''); //useState('9101'); // provisorio
+  const [cpf, setCPF] = useState(''); // // useState('10317046802'); // provisorio
   const [conta] = useState(getConta());
 
   return(
