@@ -2,6 +2,7 @@ import axios from 'axios';
 import { getHost } from '../utils/utils-context';
 
 const host = getHost();
+
 console.log('api.getHost:', host);
 
 const api = axios.create({
