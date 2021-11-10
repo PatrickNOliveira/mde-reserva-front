@@ -80,5 +80,5 @@ export function contaEncerrada(login) {
 
 export function getHost() {
     return 'https://api.mde.com.br';
-   // return 'http://localhost:8000';
+   // // return 'http://localhost:8000';
 }
