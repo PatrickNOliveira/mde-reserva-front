@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import QrReader from 'react-qr-reader';
 import { useHistory, useParams, useLocation } from "react-router-dom";
-import { setConta, setLogin, getLogin, setColab } from '../../utils/utils-context';
+import { setConta, setLogin, getLogin, setColab, getHost } from '../../utils/utils-context';
 
 import api from "../../services/api";
 
@@ -43,6 +43,8 @@ function QrCodeAuth() {
 
 		if (login == null || login.uuid !== id) {
 
+			console.log('getHost:', getHost());
+			
 			api.get(`/api/order/info/${id}`).then(response => {
 				console.log('Conta:', response.data);
 				setConta(response.data);
