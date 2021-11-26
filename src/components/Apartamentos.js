@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { 
     getLogin,
     getConta,
-    setApartamento,
+    setApartamentoAtual,
 } from '../utils/utils-context';
 
 export default function Apartamentos() {
@@ -15,7 +15,7 @@ export default function Apartamentos() {
     const { id }  = useParams();
     const [login] = useState(getLogin());
     const history = useHistory();
-    const [ apartamentos, setApartamentosAtual ] = useState([]);
+    const [ apartamentos, setApartamentos] = useState([]);
 
     useEffect(() => {
         if (login == null) history.push({ pathname: `/${id}` });
