@@ -40,11 +40,12 @@ const EntrarWINLETOM = () => {
 
             <button onClick={(event) => {
                 event.preventDefault();
-                api.post('/api/entrar', { 
-                  id: id,
-                  suite: suite, 
-                  cpf: cpf,
-                }).then(response => {
+                
+                const data = (suite == 0) 
+                  ? { id: id, login: null, senha: cpf }
+                  : { id: id, suite: suite, cpf: cpf };
+
+                api.post('/api/entrar', data).then(response => {
 
                   console.log('Login:', response.data);
 
@@ -55,6 +56,7 @@ const EntrarWINLETOM = () => {
                     
                   setLogin(response.data);
                   setSuiteAtual(response.data.suite);
+
                   history.push({ pathname: `/menu/${id}/${Date.now()}` });
 
                 }).catch((error) => {
@@ -149,6 +151,8 @@ export default function Entrar() {
     //else history.push({ pathname: `/menu/${id}` });
   },[]);
 
+  return <EntrarWINLETOM />;
+  
   return (
     (conta.sistema == 'WINRESTA' || colab) ? ( <EntrarWINRESTA /> ) : (<EntrarWINLETOM />)
   )

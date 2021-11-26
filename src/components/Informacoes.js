@@ -9,6 +9,7 @@ export default function Informacoes() {
     const { id }  = useParams();
     const history = useHistory();
     const [login] = useState(getLogin());
+    const build   = '1.0.19';
 
     useEffect(() => {
         if (login == null) history.push({ pathname: `/entrar/${id}` });
@@ -18,19 +19,22 @@ export default function Informacoes() {
         history.push({ pathname: `/menu/${id}` });
     }
 
-    return(
-        
-        <div className="root">
+    const funcionario = login.login + ' ' + login.funcionario_id;
 
-            <div className="header">
-                <div  className="header-content">
-                    <a href="#" onClick={onMenuClick} className="requests">
-                        <BsArrowLeftShort className="seta" type="button" /> 
-                    </a>
-                </div>
-                <h1>Informações</h1>
-            </div> 
+    const InfoFuncionario = () => {
+        return (
+            <InfoUsers>
+                <p>Funcionário</p>
+                <strong>{funcionario}</strong>
+                <p>Build</p>
+                <strong>{build}</strong>   
+            </InfoUsers>
 
+        )
+    }
+
+    const InfoHospede = () => {
+        return (
             <InfoUsers>
                 <p>Reserva</p>
                 <strong>{login.reserva}</strong>
@@ -43,8 +47,29 @@ export default function Informacoes() {
                 <p>Check-out</p>
                 <strong>{login.checkout}</strong>   
                 <p>Build</p>
-                <strong>1.0.18</strong>   
+                <strong>{build}</strong>   
             </InfoUsers>
+        )
+    }
+
+    return(
+        
+        <div className="rooms">
+
+            <div className="header">
+                <div  className="header-content">
+                    <a href="#" onClick={onMenuClick} className="requests">
+                        <BsArrowLeftShort className="seta" type="button" /> 
+                    </a>
+                </div>
+                <div>
+                    <span className="nome_cardapio">Informações</span>
+                </div>                
+            </div> 
+
+            {
+                login.login ? <InfoFuncionario /> : <InfoHospede />
+            }
 
         </div>
     )
@@ -52,7 +77,6 @@ export default function Informacoes() {
 
 const InfoUsers = styled.div`
     margin:50px;
-    padding-top: 60px;
     width: 75%;
 
     p {

@@ -9,7 +9,8 @@ import { useHistory } from "react-router-dom";
 import { 
     getLogin, getMesaAtual, setLogin,
     setMesaAtual, getConta, contaEncerrada,
-    getCardapioAtual, getSuiteAtual } from '../utils/utils-context';
+    getCardapioAtual, getSuiteAtual, setApartamentoAtual 
+} from '../utils/utils-context';
 
 import LocalEntrega from './LocalEntrega';
 
@@ -19,12 +20,11 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
     const [carrinho, setCarrinho] = useState({ items:[], total: 0});
     const [mensagem, setMensagem ] = useState('Aguarde...');
     const [login] = useState(getLogin());
-
     const [mesa] = useState(
         getLogin().suite_id ? null : getMesaAtual()
     );
     
-    const [ suite ] = useState(getSuiteAtual());
+    const [ suite, setSuite ] = useState(getSuiteAtual());
 
     const [locais] = useState(getConta()['locais_entrega']);
     const [cardapio] = useState(getCardapioAtual());
@@ -56,10 +56,11 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
         
         let url = '';
 
-        if (suite_id || suite)
+        if (suite_id || suite) {
             url = `/api/order/cart/${login.uuid}/${suite_id || suite}`;
-        else 
+        } else {
             url = `/api/order/cart/waiter/${mesa}`;
+        } 
 
         //let url = '/api/order/cart/' + (suite_id ? '' : ('waiter/' + login.uuid + '/')) + (suite_id ?? mesa);
 
@@ -124,6 +125,7 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
                     uuid: login.uuid
                 }).then(
                     response => {
+                        setApartamentoAtual(null);
                         setCarrinho(response.data);
                         setMesaAtual(null);
                         onCarrinhoVazio();
@@ -175,6 +177,7 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
                 api.delete(`${url}/todos`).then(
                     response => { 
                         setCarrinho(response.data);
+                        setApartamentoAtual(null);
                         setMesaAtual(null);
                         onCarrinhoVazio();
                     }
@@ -204,9 +207,8 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
             <div className="container-product-info">
 
                 <div style={{overflow: 'hidden'}}>
-                    <NumeroMesa mesa={mesa} />
-                    <NumeroSuite suite={suite} />
                     <div className="total-carrinho">Total: {getPreco(total)}</div>
+                    <NumeroSuite suite={suite} />
                 </div>
 
                 <a className="fecha-pedido" href="#" onClick={onEnviarPedidoClick} 

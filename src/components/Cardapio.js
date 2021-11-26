@@ -13,7 +13,8 @@ import MostraCardapios from './MostraCardapios';
 
 import { 
     setLogin,
-    getLogin, 
+    getLogin,
+    getGrupoAtual, 
     getCardapioAtual, 
     setCardapioAtual,
     contaEncerrada } from '../utils/utils-context';
@@ -40,12 +41,13 @@ export default function Cardapio() {
     const [ mostraCarrinho, setMostraCarrinho ] = useState(false);
 
     useEffect(() => {
-        
+
+        setBuscaGrupo(true);
+
         if (login == null) history.push({ pathname: `/${id}` });
-        //if (login == null) history.push({ pathname: `/entrar/${id}` });
         
         if (cardapio.id === 0) return;
-
+        
         if (contaEncerrada(login)) {
             setLogin(null);
             history.push({ pathname: `/${id}` });
@@ -67,26 +69,13 @@ export default function Cardapio() {
 
             if (!mounted) return;
 
-            console.log('produtos:', response.data);
-
             setProdutos(response.data);
             
             const _grupos = getGrupos(response.data);
 
             setGrupos(_grupos);
-            setGrupo(_grupos[0]);
-
-            /*
-
-            setProdutos(response.data.filter((p) => {
-                return p.tipo !== 'servico';
-            }));
-
-            setServicos(response.data.filter((p) => {
-                return p.tipo === 'servico';
-            }));
-            */
-
+            setGrupo(getGrupoAtual());
+            
         });
 
         return function cleanup() {
@@ -137,9 +126,7 @@ export default function Cardapio() {
     */
 
     const onGrupoClick = () => {
-        console.log(grupos);
         setBuscaGrupo(true);
-        console.log(buscaGrupo);
     }
 
     const onGrupoSelecionadoClick = (g) => {
@@ -149,22 +136,20 @@ export default function Cardapio() {
 
     const MostraGrupos = () => {
         return (
-            <div className="lista-grupos">
-                <div className="grupos">
-                    {
-                        grupos.map((g, i) => 
-                            <div>
-                                <a className="botao-seleciona-grupo" 
-                                    key={i}
-                                    href="#" 
-                                    onClick={ () => onGrupoSelecionadoClick(g) } 
-                                    style={{color:'white'}}>{g}
-                                </a> 
-                            </div>                        
-                        )
-                    }
-                </div>
-            </div>            
+            <Grupo>
+                {
+                    grupos.map((g, i) => 
+                        <div>
+                            <a className="botao-seleciona-grupo" 
+                                key={i}
+                                href="#" 
+                                onClick={ () => onGrupoSelecionadoClick(g) } 
+                                style={{color:'white'}}>{g}
+                            </a> 
+                        </div>                        
+                    )
+                }
+            </Grupo>
         )
     }
 
@@ -177,7 +162,7 @@ export default function Cardapio() {
             <div className="body">
                 {
                     grupo ? 
-                    <div className="grupos">
+                    <div>
                         <a  className="botao-grupo" 
                             href="#" 
                             onClick={onGrupoClick} 
@@ -262,6 +247,14 @@ export default function Cardapio() {
     );
 
 }
+
+const Grupo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80vh;
+  margin-top: 60px;
+  `;
 
 const SearchBox = styled.div`
     input {

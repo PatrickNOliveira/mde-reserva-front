@@ -31,6 +31,16 @@ export function setCardapioAtual(cardapio) {
     localStorage.setItem('Cardapio', JSON.stringify(cardapio));
 }
 
+export function setApartamentoAtual(ap) {
+    ap = ap ? ap : {id: 0}
+    localStorage.setItem('Apartamento', JSON.stringify(ap));
+}
+
+export function getApartamentoAtual() {
+    const ap = localStorage.getItem('Apartamento');
+    return ap == null ? {id: 0} : JSON.parse(ap);
+}
+
 export function gravaCardapios(cardapios) {
     console.log('gravando cardapios:', cardapios)
     localStorage.setItem('CARDAPIOS', JSON.stringify(cardapios));
@@ -61,7 +71,9 @@ export function setMesaAtual(mesa) {
 }
 
 export function getSuiteAtual() {
-    const suite = localStorage.getItem('suite');
+    const suite = getApartamentoAtual().id > 0 ? 
+        getApartamentoAtual().id 
+        : localStorage.getItem('suite');
     return  suite === null ? '' : suite;
 }
 
@@ -69,8 +81,17 @@ export function setSuiteAtual(suite) {
     localStorage.setItem('suite', suite === null ? '' : suite);
 }
 
+export function getGrupoAtual() {
+    return localStorage.getItem('grupo');
+}
+
+export function setGrupoAtual(grupo) {
+    localStorage.setItem('grupo', grupo);
+}
+
 export function contaEncerrada(login) {
     console.log('contaEncerrada.login.checkout:', login.checkout);
+    if (!login.checkout) return false;
     const data = login.checkout.substr(0, 10);
     const hora = login.checkout.substr(11);
     const parts = data.split('/');
@@ -79,5 +100,6 @@ export function contaEncerrada(login) {
 }
 
 export function getHost() {
+    //return 'http://localhost:8000';
    return 'https://api.mde.com.br:8080';
 }

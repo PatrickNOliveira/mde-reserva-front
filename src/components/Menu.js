@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import styled from 'styled-components';
 import { shade } from 'polished';
+
 import { getLogin, getConta, getHost } from '../utils/utils-context';
 
 const MenuWINLETOM = () => {
@@ -28,6 +29,10 @@ const MenuWINLETOM = () => {
     history.push({ pathname: `/informacoes/${id}` });
   }
 
+  const onApartamentosClick = () => {
+    history.push({ pathname: `/apartamentos/${id}` });
+  }
+
   const onSairClick = () => {
     localStorage.setItem('login', null);
     history.push({ pathname: `/${id}` });
@@ -43,13 +48,9 @@ const MenuWINLETOM = () => {
           <img src={`${host}/api/logo/${conta.codigo}`}  alt="logo" />
         </ImgContainer>
 
-        {
-          (login.login) ? '' : (
-            <CardContainer>
+        <CardContainer>
               <a href="#" onClick={onInformacoesClick} className="requests">Informações</a>
-            </CardContainer>
-          )
-        }
+        </CardContainer>
 
         <CardContainer>
           <a href="#" onClick={onCardapioClick} className="requests">Cardápio</a>
@@ -203,7 +204,10 @@ export default function Menu() {
 
   useEffect(() => {
     if (login == null) history.push({ pathname: `/entrar/${id}/${Date.now()}` });
+    console.log(login);
   },[]);
+
+  return <MenuWINLETOM />;
 
   return (
     conta.sistema === 'WINLETOM' ? ( <MenuWINLETOM /> ) : (

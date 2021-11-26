@@ -33,11 +33,11 @@ export default function MostraCardapios({id, onCardapioClick}) {
 
             setCardapios(
                 response.data.filter((c) => {
-                    //if (!login.login) return true; 
-                    if (login.cardapios === 0) return true; // funcionários e hóspedes
+                    if (login.cardapios == "0") return true; // funcionários e hóspedes
                     return login.cardapios.indexOf(c.id) !== -1;
                 })
             );
+
         });
 
         return function cleanup() {
@@ -58,32 +58,30 @@ export default function MostraCardapios({id, onCardapioClick}) {
     */
 
     return (
-        <Container>
-            <br />
-            {
-               cardapios.map(cardapio =>
-                    <CardContainer key={cardapio.id} id={cardapio.id}>
-                        <a href="#" 
-                            onClick={() => onCardapioClick(cardapio)} 
-                            className="requests">{cardapio.descricao}
-                        </a>
-                    </CardContainer>
-                )
-            }
-        </Container>
+            <Container>
+                {
+                cardapios.map(cardapio =>
+                        <CardContainer key={cardapio.id} id={cardapio.id}>
+                            <a href="#" 
+                                onClick={() => onCardapioClick(cardapio)} 
+                                className="requests">{cardapio.descricao}
+                            </a>
+                        </CardContainer>
+                    )
+                }
+            </Container>
     )
     
 }
 
 const Container = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
   height: 80vh;
   width: 350px;
-`;
+  margin-top: 20px;
+  `;
 
 const CardContainer = styled.div`
     background: #232129;

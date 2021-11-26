@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useHistory, useParams } from 'react-router-dom';
 import { BsArrowLeftShort } from "react-icons/bs";
+import { FaBed } from "react-icons/fa";
 import getPreco from '../utils/getPreco'
 import api from '../services/api';
 import Counter from './Counter';
@@ -9,7 +10,7 @@ import styled from 'styled-components';
 import { getLogin, getConta, setLogin, getHost, 
          getMesaAtual, setMesaAtual, 
          getSuiteAtual, setSuiteAtual, contaEncerrada,
-         getCardapioAtual
+         getCardapioAtual, setApartamentoAtual, getApartamentoAtual
 } from '../utils/utils-context';
 
 export default function AdicionaItem() {
@@ -26,6 +27,15 @@ export default function AdicionaItem() {
         //if (login == null) history.push({ pathname: `/entrar/${id}` });
         if (login == null) history.push({ pathname: `/${id}` });
         if (isCheckout()) return;
+        if (!login.login) return;
+        api.get(`/api/rooms/${login.uuid}`).then(response => {
+            setApartamentos(
+                response.data.sort((a,b) => {
+                    return (a.id < b.id) ? -1 : 1;
+                })
+            );
+        });
+
     },[]);
 
     const { id }  = useParams();
@@ -40,12 +50,50 @@ export default function AdicionaItem() {
     const [ mesa, setMesa ] = useState(getMesaAtual());
     const [ suite, setSuite ] = useState(getSuiteAtual());
     const [ adicionado, setAdicionado ] = useState(false);
-    const [ detalheItem, setDetalheItem ] = useState(produto.nota || produto.imagem);
+
+    const [ apartamento , setApartamento ] = useState(getApartamentoAtual().id);
+
+    const [ detalheItem, setDetalheItem ] = useState(
+        (produto.nota || produto.imagem) && !login.login
+    );
     
+    const [ apartamentos, setApartamentos ] = useState([]);
+    const [ buscaApartamentos, setBuscaApartamentos ] = useState(
+        login.login ? getApartamentoAtual().id == 0 : false
+    );
+
     const host = getHost();
 
     const onVoltarClick = () => {
         history.push({ pathname: `/cardapio/${id}` });     
+    }
+
+    const onBuscaApartamentoClick = () => {
+        setBuscaApartamentos(true);
+    }
+
+    const onApartamentoClick = (ap) => {
+        setApartamentoAtual(ap);
+        setApartamento(ap.id);
+        setBuscaApartamentos(false);
+    }
+
+    const MostraApartamentos = () => {
+
+        return (
+            <Apartamento>
+                {
+                    apartamentos.map((ap, i) => 
+                            <a className="botao-apartamento" 
+                                key={i}
+                                href="#" 
+                                onClick={ () => onApartamentoClick(ap) } 
+                                style={{color:'black'}}>{ap.id}
+                            </a> 
+                    )
+                }
+            </Apartamento>
+        );
     }
 
     const DetalheItem = () => {
@@ -97,14 +145,15 @@ export default function AdicionaItem() {
             setAdicionado(true);
             
             const cardapio = getCardapioAtual();
+            const apartamento = getApartamentoAtual();
 
             api.post('/api/order', { 
                 uuid: id,
                 mesa: mesa ?? null,
                 funcionario: login.login,
                 funcionario_id: login.funcionario_id ?? '0',
-                suite_id: login.suite_id ?? '',
-                suite: login.suite ?? mesa, 
+                suite_id: login.suite_id ?? 0,
+                suite: login.suite ?? apartamento.id, //, mesa, 
                 codigo: produto.codigo,
                 descricao: produto.descricao,
                 foto: produto.foto,
@@ -113,7 +162,7 @@ export default function AdicionaItem() {
                 tipo:produto.tipo,
                 quantidade: quant, 
                 nota: nota,
-                hospede: login.NrHospede,
+                hospede: login.NrHospede ?? apartamento.NrHospede,
                 cardapio: cardapio.id
             }).then(response => {
                 setMesaAtual(mesa);
@@ -185,18 +234,31 @@ export default function AdicionaItem() {
 
     }
 
+    const descricao = apartamento == 0 ? 'Selecione apartamento' : 'Apartamento ' + apartamento;
+
     return (
-        <div className="root">
+        <div className="rooms">
             <div className="header">
                 <div  className="header-content">
-                    <Link to="#" onClick={onVoltarClick}>
-                        <BsArrowLeftShort type="button" className="seta" />
-                    </Link>               
+                    <BsArrowLeftShort onClick={onVoltarClick} className="seta" type="button"  /> 
+                    {
+                        login.login ?
+                            <FaBed onClick={onBuscaApartamentoClick} className="cama" type="button"  /> 
+                            : ''
+                    }
                 </div>
-                <h1 style={{ fontSize: 22  }}>Adicionar Item</h1>
+                <div>
+                    <span className="nome_cardapio">Adicionar Item</span>
+                    {
+                        login.login ? 
+                            <span className="tipo_cardapio">{descricao}</span>
+                        : ''
+                    }
+                </div>                    
             </div>
             {
-                detalheItem ? <DetalheItem /> : <AdicionaItem />
+                buscaApartamentos ? <MostraApartamentos /> :
+                (detalheItem ? <DetalheItem /> : <AdicionaItem />)
             }
         </div>
     );
@@ -213,6 +275,11 @@ const Container = styled.div`
 const ImgContainer = styled.div`
 `;
 
+const Apartamento = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin-top: 40px;
+  `;
 
 /*
                     {
