@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import { 
     getLogin, getMesaAtual, setLogin,
     setMesaAtual, getConta, contaEncerrada,
-    getCardapioAtual, getSuiteAtual, setApartamentoAtual 
+    getCardapioAtual, getSuiteAtual, setApartamentoAtual, getApartamentoAtual 
 } from '../utils/utils-context';
 
 import LocalEntrega from './LocalEntrega';
@@ -54,13 +54,19 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
             return;
         }
         
-        let url = '';
+       // let url = '';
+        
+        const apartamento = getApartamentoAtual();
 
-        if (suite_id || suite) {
-            url = `/api/order/cart/${login.uuid}/${suite_id || suite}`;
-        } else {
-            url = `/api/order/cart/waiter/${mesa}`;
-        } 
+        const ap = login.suite ?? apartamento.id;
+
+        const url = `/api/order/cart/${login.uuid}/${ap}`;
+
+        //if (suite_id || suite) {
+        //    url = `/api/order/cart/${login.uuid}/${suite_id || suite}`;
+        //} else {
+        //    url = `/api/order/cart/waiter/${mesa}`;
+        //} 
 
         //let url = '/api/order/cart/' + (suite_id ? '' : ('waiter/' + login.uuid + '/')) + (suite_id ?? mesa);
 
@@ -86,12 +92,16 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
         
         if (isCheckout()) return;
 
-        let url = '';
-        
-        if (suite_id || suite)
-            url = `/api/order/cart/${login.uuid}/${suite_id || suite}/${item.id}`;
-        else 
-            url = `/api/order/cart/waiter/${mesa}/${item.id}`;
+        //let url = '';
+
+        const apartamento = getApartamentoAtual();
+        const ap = login.suite ?? apartamento.id;
+        const url = `/api/order/cart/${login.uuid}/${ap}/${item.id}`;
+
+        //if (suite_id || suite)
+        //    url = `/api/order/cart/${login.uuid}/${suite_id || suite}/${item.id}`;
+        //else 
+        //    url = `/api/order/cart/waiter/${mesa}/${item.id}`;
 
         //let url = '/api/order/cart/' + (suite_id ? '' : ('waiter/' + login.uuid + '/')) + (suite_id ?? mesa);
 
@@ -113,12 +123,15 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
         
         if (isCheckout()) return;
 
+        const apartamento = getApartamentoAtual();
+        const ap = login.suite ?? apartamento.id;
+
         alerta({ 
             title: 'Atenção!',
             message: 'Enviar esse pedido?',
             onYes: () => { 
                 api.post('/api/order/cart', {
-                    suite_id: suite ?? suite_id,
+                    suite_id: ap, //suite ?? suite_id,
                     mesa: mesa,
                     localizacao: localizacao,
                     observacao: observacao,
@@ -161,12 +174,15 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
 
         if (isCheckout()) return;
 
-        let url = '';
+        const apartamento = getApartamentoAtual();
+        const ap = login.suite ?? apartamento.id;
+        const url = `/api/order/cart/${login.uuid}/${ap}`;
 
-        if (suite_id || suite)
-            url = `/api/order/cart/${login.uuid}/${suite_id || suite}`;
-        else 
-            url = `/api/order/cart/waiter/${mesa}`;
+        //let url = '';
+        //if (suite_id || suite)
+        //    url = `/api/order/cart/${login.uuid}/${suite_id || suite}`;
+        //else 
+        //    url = `/api/order/cart/waiter/${mesa}`;
 
         //let url = '/api/order/cart/' + (mesa ? ('waiter/' + login.uuid + '/') : '') + (mesa ?? suite_id);
 
@@ -197,9 +213,13 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
         }
 
         const NumeroSuite = ({suite}) => {
-            if (!suite) return '';
+            
+            const apartamento = getApartamentoAtual();
+            const ap = login.suite ?? apartamento.id;
+
+            //if (!suite) return '';
             return (
-                <div className="numero-mesa">Suite: {suite}</div>
+                <div className="numero-mesa">Suite: {ap}</div>
             );
         }
 

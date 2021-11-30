@@ -18,7 +18,7 @@ const MenuWINLETOM = () => {
   const host = getHost();
 
   const onCardapioClick = () => {
-    history.push({ pathname: `/cardapio/${id}` });
+    history.push({ pathname: `/cardapio/${id}`, busca: true });
   }
 
   const onPedidosClick = () => {

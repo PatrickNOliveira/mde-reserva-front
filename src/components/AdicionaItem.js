@@ -65,7 +65,7 @@ export default function AdicionaItem() {
     const host = getHost();
 
     const onVoltarClick = () => {
-        history.push({ pathname: `/cardapio/${id}` });     
+        history.push({ pathname: `/cardapio/${id}`, busca: false });     
     }
 
     const onBuscaApartamentoClick = () => {

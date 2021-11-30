@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BsArrowLeftShort, BsMap } from "react-icons/bs";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import styled from 'styled-components';
 
 import api from '../services/api';
@@ -17,7 +17,8 @@ import {
     getGrupoAtual, 
     getCardapioAtual, 
     setCardapioAtual,
-    contaEncerrada } from '../utils/utils-context';
+    contaEncerrada, 
+    setGrupoAtual} from '../utils/utils-context';
 
 export default function Cardapio() {
 
@@ -26,23 +27,25 @@ export default function Cardapio() {
     const history = useHistory();
     
     const [login] = useState(getLogin());
+    
+    const { busca } = useLocation();
 
     const [ cardapio, setCardapio ] = useState(getCardapioAtual());
     
     const [ buscaCardapio, setBuscaCardapio ] = useState(cardapio.id === 0);
-    const [ buscaGrupo, setBuscaGrupo ] = useState(false);
+    const [ buscaGrupo, setBuscaGrupo ] = useState(busca);
     
     //const [items, setItems]       = useState();
     const [produtos, setProdutos] = useState([]);
     const [servicos, setServicos] = useState([]);
     const [grupos, setGrupos] = useState([]);
-    const [grupo, setGrupo] = useState();
+    const [grupo, setGrupo] = useState(getGrupoAtual());
 
     const [ mostraCarrinho, setMostraCarrinho ] = useState(false);
 
     useEffect(() => {
 
-        setBuscaGrupo(true);
+        //setBuscaGrupo(true);
 
         if (login == null) history.push({ pathname: `/${id}` });
         
@@ -111,10 +114,10 @@ export default function Cardapio() {
     }
 
     const onCardapioClick = (cardapio) => {
-        console.log(cardapio);
         setBuscaCardapio(false);
         setCardapioAtual(cardapio);
         setCardapio(cardapio);
+        setBuscaGrupo(true);
     }
 
     const onBuscaCarpadioClick = () => {
@@ -131,6 +134,7 @@ export default function Cardapio() {
 
     const onGrupoSelecionadoClick = (g) => {
         setGrupo(g);
+        setGrupoAtual(g);
         setBuscaGrupo(false);
     }
 
