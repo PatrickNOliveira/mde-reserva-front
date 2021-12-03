@@ -9,7 +9,7 @@ export default function Informacoes() {
     const { id }  = useParams();
     const history = useHistory();
     const [login] = useState(getLogin());
-    const build   = '1.0.23';
+    const build   = '1.0.24';
 
     useEffect(() => {
         if (login == null) history.push({ pathname: `/entrar/${id}` });

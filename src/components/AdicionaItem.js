@@ -53,9 +53,9 @@ export default function AdicionaItem() {
 
     const [ apartamento , setApartamento ] = useState(getApartamentoAtual().id);
 
-    const [ detalheItem, setDetalheItem ] = useState(true);
-        //(produto.nota || produto.imagem) && !login.login
-    //);
+    const [ detalheItem, setDetalheItem ] = useState(
+        (produto.nota || produto.imagem) && !login.login
+    );
     
     const [ apartamentos, setApartamentos ] = useState([]);
     const [ buscaApartamentos, setBuscaApartamentos ] = useState(
@@ -108,7 +108,7 @@ export default function AdicionaItem() {
         return (
             <Container>
                 <ImgContainer>
-                    <img src={`${host}/api/foto/330`}  alt="foto" />
+                    <img src={produto.imagem} alt="foto" />
                 </ImgContainer>
                 <div className="container-product-detail">
                     <h2 style={{ fontSize: 20, textAlign: 'center' }}>
