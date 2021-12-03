@@ -3,23 +3,81 @@ import { BsArrowLeftShort } from "react-icons/bs";
 import { Link, useParams, useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import { getLogin } from '../utils/utils-context';
+import { shade } from 'polished';
+import getPreco from '../utils/getPreco';
 
 export default function Informacoes() {
     
     const { id }  = useParams();
     const history = useHistory();
     const [login] = useState(getLogin());
-    const build   = '1.0.24';
+    const [opcao, setOpcao] = useState('MENU');
+    const [titulo, setTitulo ] = useState('Informações');
+
+    const build   = '1.0.25';
 
     useEffect(() => {
         if (login == null) history.push({ pathname: `/entrar/${id}` });
+        console.log(login);
     },[]);
 
-    const onMenuClick = () => {
-        history.push({ pathname: `/menu/${id}` });
+    const MenuPrincipal = () => {
+        return (
+            <Container>
+
+              <CardContainer>
+                    <a href="#" onClick={onPerfilClick} className="requests">Perfil</a>
+              </CardContainer>
+
+              {
+                  !login.login ? (
+                    <CardContainer>
+                        <a href="#" onClick={onContaClick} className="requests">Conta</a>
+                    </CardContainer>
+                  ) : ""
+              }
+      
+            </Container>
+        );
     }
 
-    const funcionario = login.login + ' ' + login.funcionario_id;
+    const onPerfilClick = () => {
+        setOpcao('PERFIL'); setTitulo('Perfil de uso')
+    }
+
+    const onContaClick = () => {
+        setOpcao('CONTA'); setTitulo('Resumo da conta')
+    }
+
+    const onVoltarClick = () => {
+        if (opcao == "MENU") {
+            history.push({ pathname: `/menu/${id}` });
+            return;
+        }
+        setOpcao("MENU"); setTitulo("Informações");
+    }
+
+    const InfoPerfil = () => {
+        if (login.login) return <InfoFuncionario />
+        else return <InfoHospede />
+    }
+
+    const InfoConta = () => {
+        return (
+            <InfoUsers>
+            <p>Diárias (+)</p>
+            <strong>{getPreco(login.diarias)}</strong>
+            <p>Extras (+)</p>
+            <strong>{getPreco(login.extras)}</strong>   
+            <p>Taxas (+)</p>
+            <strong>{getPreco(login.taxas)}</strong>   
+            <p style={{color: '#d0fa5b'}}>Antecipado (-)</p>
+            <strong>{getPreco(login.antecipado)}</strong>   
+            <p style={{color: '#ff9000'}}>Saldo (=)</p>
+            <strong>{getPreco(login.saldo)}</strong>   
+        </InfoUsers>
+        )
+}
 
     const InfoFuncionario = () => {
         return (
@@ -29,7 +87,6 @@ export default function Informacoes() {
                 <p>Build</p>
                 <strong>{build}</strong>   
             </InfoUsers>
-
         )
     }
 
@@ -52,28 +109,71 @@ export default function Informacoes() {
         )
     }
 
+    const funcionario = login.login + ' ' + login.funcionario_id;
+
     return(
         
         <div className="rooms">
 
             <div className="header">
                 <div  className="header-content">
-                    <a href="#" onClick={onMenuClick} className="requests">
+                    <a href="#" onClick={onVoltarClick} className="requests">
                         <BsArrowLeftShort className="seta" type="button" /> 
                     </a>
                 </div>
                 <div>
-                    <span className="nome_cardapio">Informações</span>
+                    <span className="nome_cardapio">{titulo}</span>
                 </div>                
             </div> 
 
             {
-                login.login ? <InfoFuncionario /> : <InfoHospede />
+                opcao === "MENU" ? <MenuPrincipal /> :
+                ( opcao == "PERFIL" ? <InfoPerfil /> : <InfoConta /> )
             }
+            
 
         </div>
     )
 }
+
+//{
+//    login.login ? <InfoFuncionario /> : <InfoHospede />
+//}
+
+const Container = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin: 120px;
+  align-items: center;
+  justify-content: start;
+  height: 80vh;
+`;
+
+const CardContainer = styled.div`
+    background: #232129;
+    border-radius: 5px;
+    width: 80%;
+    padding: 18px 98px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    margin-top: 46px;
+    margin-bottom: 40px;
+
+    :hover {
+        background: ${shade(0.2, '#232129')}
+      } 
+
+    a{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #fff; 
+      font-size: 26px;
+    }
+`;
 
 const InfoUsers = styled.div`
     margin:50px;
