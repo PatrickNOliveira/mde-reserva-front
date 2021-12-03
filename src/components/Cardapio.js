@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BsArrowLeftShort, BsMap } from "react-icons/bs";
+import { BsHouseDoor, BsChevronDown } from "react-icons/bs";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import styled from 'styled-components';
 
@@ -42,6 +42,9 @@ export default function Cardapio() {
     const [grupo, setGrupo] = useState(getGrupoAtual());
 
     const [ mostraCarrinho, setMostraCarrinho ] = useState(false);
+
+    const [ cssProduto, setCSSProduto ] = useState(mostraCarrinho ? 'btnProdutos': 'btnProdutosClicked');
+    const [ cssCarrinho, setCSSCarrinho ] = useState(mostraCarrinho ? 'btnCarrinhoClicked' : 'btnCarrinho');
 
     useEffect(() => {
 
@@ -88,10 +91,21 @@ export default function Cardapio() {
     }, [cardapio]);
     
     //[items, cardapio]);
-    
+
+    const setProdutoClicked = () => {
+        setCSSProduto('btnProdutosClicked');
+        setCSSCarrinho('btnCarrinho');
+    }
+
+    const setCarrinhoClicked = () => {
+        setCSSCarrinho('btnCarrinhoClicked');
+        setCSSProduto('btnProdutos');
+    }
+
     const onProdutosClick = () => {
         //setItems(produtos);
         setMostraCarrinho(false);
+        setProdutoClicked();
     }
 
     /*
@@ -103,6 +117,7 @@ export default function Cardapio() {
 
     const onCarrinhoClick = () => {
         setMostraCarrinho(true);
+        setCarrinhoClicked();
     }
   
     const onItemClick = (item) =>{
@@ -157,6 +172,15 @@ export default function Cardapio() {
         )
     }
 
+    const BtnGrupo = () => {
+        return (
+            <a className="botao-grupo" href="#" onClick={onGrupoClick}>
+                <span>{grupo}</span>
+                <BsChevronDown style={{ float: 'right', display: 'flex' }} />                  
+            </a>   
+        )
+    }
+
     const MostraCardapio = () => {
 
         const [pesquisa, setPesquisa] = useState('');
@@ -165,29 +189,22 @@ export default function Cardapio() {
 
             <div className="body">
                 {
-                    grupo ? 
-                    <div>
-                        <a  className="botao-grupo" 
-                            href="#" 
-                            onClick={onGrupoClick} 
-                            >{grupo}
-                        </a>   
-                    </div>
+                    grupo ? <BtnGrupo />
                     : ''
                 }
 
                 <div className="filtros">
                     {
                         login.login ? ( // Garçom
-                            <div>
-                                <Link to='#' style={{color:'white', padding: '10px', paddingRight: '90px', textDecoration: 'none'}} onClick={onProdutosClick}>Produtos</Link>
-                                <Link to='#' style={{color:'white', padding: '10px', textDecoration: 'none'}} onClick={onCarrinhoClick}>Carrinho</Link>
+                            <div className="pnlOptions">
+                                <Link to='#' className={cssProduto} onClick={onProdutosClick}>Produtos</Link>
+                                <Link to='#' className={cssCarrinho} onClick={onCarrinhoClick}>Carrinho</Link>
                             </div>
 
                         ) : ( // Hospede
-                            <div>
-                                <Link to='#' style={{color:'white', padding: '10px', paddingRight: '90px', textDecoration: 'none'}} onClick={onProdutosClick}>Produtos</Link>
-                                <Link to='#' style={{color:'white', padding: '10px', textDecoration: 'none'}} onClick={onCarrinhoClick}>Carrinho</Link>
+                            <div className="pnlOptions">
+                                <Link to='#' className={cssProduto} onClick={onProdutosClick}>Produtos</Link>
+                                <Link to='#' className={cssCarrinho} onClick={onCarrinhoClick}>Carrinho</Link>
                             </div>
                         )
                     }
@@ -229,28 +246,42 @@ export default function Cardapio() {
             </div>  
         )
     }
-    
-    return (
-        <div className="root">
-            <div className="header">
-                <div  className="header-content">
-                    <BsArrowLeftShort onClick={onMenuClick} className="seta" type="button"  /> 
-                    <BsMap onClick={onBuscaCarpadioClick} className="cardapio" type="button"  /> 
-                </div>
-                <div>
-                    <span className="nome_cardapio">Cardápio</span>
-                    <span className="tipo_cardapio">{cardapio.descricao}</span>
-                </div>
+
+    const MenuCardapio = () => {
+        return (
+            <div className="btnCardapio" onClick={onBuscaCarpadioClick}>
+                <span className="nome_cardapio">Cardápio</span>
+                <span className="tipo_cardapio">{cardapio.descricao}</span>
             </div>
+        )
+    }
+
+// <BsHouseDoor onClick={onMenuClick} className="seta" type="button"  /> 
+// <BsMap onClick={onBuscaCarpadioClick} className="cardapio" type="button"  /> 
+    return (
+
+        <div className="root">
+
+            <div className="header">
+
+                <div className="header-content">
+                    <BsHouseDoor className="seta" onClick={onMenuClick} type="button"  />                    
+                    <MenuCardapio />
+                    <BsHouseDoor className="hidden"  />                    
+                 </div>
+
+            </div>
+
             {
                 buscaCardapio ? <MostraCardapios id={id} onCardapioClick={onCardapioClick} />
                 : buscaGrupo ? <MostraGrupos /> : <MostraCardapio />
             }
+
         </div>
-        
-    );
+    )
 
 }
+
 
 const Grupo = styled.div`
   display: flex;

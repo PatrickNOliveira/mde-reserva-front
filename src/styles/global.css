@@ -54,12 +54,24 @@ body, input, button, textarea {
   justify-content: space-between;
 }
 
+.btnCardapio {
+  background-color: #3f3a49;
+  padding: 4px 20px;
+  border-radius: 8px;
+}
+
 .root .header-content .seta {
   font-size: 60px;
   color: #ff9000;
   margin-left: 20px;
 }
 
+.hidden {
+  font-size: 60px;
+  color: #28262E;
+  margin-left: 20px;
+
+}
 .rooms {
   padding: 0;
   margin: 0;
@@ -350,6 +362,42 @@ body, input, button, textarea {
   justify-content: center;
 }
 
+.btnProdutos {
+  color:white;
+  padding: 15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.btnProdutosClicked {
+  color:white;
+  padding: 15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  background-color: #4e6e11;
+}
+
+.btnCarrinho {
+  color:white;
+  padding: 15px 30px;
+  margin: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.btnCarrinhoClicked {
+  color:white;
+  padding: 15px 30px;
+  margin: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  background-color: #4e6e11;
+}
+
+.pnlOptions {
+  text-align: center;
+}
+
 .cancela-pedido {
   padding: 10px;
   background: #f7475e;
@@ -361,7 +409,7 @@ body, input, button, textarea {
 }
 
 .fecha-pedido {
-  margin: 20px;
+  margin-bottom: 20px;
   padding: 10px;
   background: #039658;
   border-radius: 5px;
