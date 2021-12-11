@@ -5,21 +5,54 @@ import styled from 'styled-components';
 import { getLogin } from '../utils/utils-context';
 import { shade } from 'polished';
 import getPreco from '../utils/getPreco';
+import api from '../services/api';
 
 export default function Informacoes() {
+
+    const build   = '1.0.26';
     
     const { id }  = useParams();
     const history = useHistory();
-    const [login] = useState(getLogin());
+    const [login, setLogin] = useState(getLogin());
     const [opcao, setOpcao] = useState('MENU');
     const [titulo, setTitulo ] = useState('Informações');
+    const [timer, setTimer] = useState(true);
 
-    const build   = '1.0.25';
+    var TIMER;
 
     useEffect(() => {
         if (login == null) history.push({ pathname: `/entrar/${id}` });
-        console.log(login);
+        
+        let mounted = true;
+        
+        TIMER = setInterval(function(){
+            if (!mounted) return;
+            onTimer();
+        }, 5000);
+
+        return function cleanup() {
+            
+            mounted = false;
+
+            setTimeout(() => {
+                clearInterval(TIMER);
+                TIMER = null;
+            }, 1000);
+
+        }
+
     },[]);
+
+    const onTimer = () => {
+        const data = { id: login.uuid, suite: login.suite, cpf: login.cpf };
+        console.log('data:', data);
+        api.post('/api/entrar', data).then(response => {
+            console.log('/api/entrar:', response.data);
+            setTimer(!timer);
+        }).catch((error) => {
+            if (error.response) console.log(error.response.status);
+        });
+    }
 
     const MenuPrincipal = () => {
         return (
@@ -128,7 +161,9 @@ export default function Informacoes() {
 
             {
                 opcao === "MENU" ? <MenuPrincipal /> :
-                ( opcao == "PERFIL" ? <InfoPerfil /> : <InfoConta /> )
+                (opcao == "PERFIL" ? 
+                    <InfoPerfil /> : 
+                    <InfoConta  timer={timer} /> )
             }
             
 

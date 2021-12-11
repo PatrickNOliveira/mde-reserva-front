@@ -40,6 +40,10 @@ function Routes() {
 					<Entrar />
 				</Route>
 
+				<Route path="/entrar/:id/:rnd">
+					<Entrar />
+				</Route>
+
 				<Route path="/cardapio/:id">
 					<Cardapio />
 				</Route>
@@ -61,6 +65,10 @@ function Routes() {
 				</Route>
 
 				<Route exact path="/:id">
+					<QrCodeAuth />
+				</Route>
+
+				<Route exact path="/:id/:rnd">
 					<QrCodeAuth />
 				</Route>
 
