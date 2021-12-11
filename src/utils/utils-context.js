@@ -77,6 +77,14 @@ export function getSuiteAtual() {
     return  suite === null ? '' : suite;
 }
 
+export function setId(id) {
+    localStorage.setItem('id', id);
+}
+
+export function getId() {
+    return localStorage.getItem('id');
+}
+
 export function setSuiteAtual(suite) {
     localStorage.setItem('suite', suite === null ? '' : suite);
 }
@@ -100,6 +108,6 @@ export function contaEncerrada(login) {
 }
 
 export function getHost() {
-   //return 'http://localhost:8000';
-   return 'https://api.mde.com.br:8080';
+   return 'http://localhost:8000';
+   //return 'https://api.mde.com.br:8080';
 }

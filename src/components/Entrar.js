@@ -148,8 +148,7 @@ export default function Entrar() {
   useEffect(() => {
     setCardapioAtual(null);
     setSuiteAtual(null);
-    //if (login == null) history.push({ pathname: `/entrar/${id}` });
-    //else history.push({ pathname: `/menu/${id}` });
+    document.title = conta.hotel;
   },[]);
 
   return <EntrarWINLETOM />;

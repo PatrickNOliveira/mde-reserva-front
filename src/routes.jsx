@@ -72,6 +72,10 @@ function Routes() {
 					<QrCodeAuth />
 				</Route>
 
+				<Route path="/">
+					<QrCodeAuth />
+				</Route>
+
 			</Switch>
 		</BrowserRouter>
 	);
