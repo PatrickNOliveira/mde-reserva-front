@@ -9,7 +9,7 @@ import api from '../services/api';
 
 export default function Informacoes() {
 
-    const build   = '1.0.36';
+    const build   = '1.0.37';
     
     const { id }  = useParams();
     const history = useHistory();
