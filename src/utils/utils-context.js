@@ -108,5 +108,5 @@ export function contaEncerrada(login) {
 }
 
 export function getHost() {
-   return 'https://localhost/api';
+   return 'https://localhost';
 }
