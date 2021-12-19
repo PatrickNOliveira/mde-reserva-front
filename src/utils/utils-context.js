@@ -108,5 +108,5 @@ export function contaEncerrada(login) {
 }
 
 export function getHost() {
-   return 'https://web.mde.com.br:8080';
+   return 'https://api.mde.com.br:8080';
 }
