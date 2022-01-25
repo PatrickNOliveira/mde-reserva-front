@@ -14,6 +14,14 @@ import {
   getColab,
   contaEncerrada } from '../utils/utils-context';
 
+  const Offline = () => {
+    return(
+      <div>
+
+      </div>
+    );
+
+  }
 const EntrarWINLETOM = () => {
 
   const host = getHost();
@@ -29,17 +37,28 @@ const EntrarWINLETOM = () => {
         <img src={`${host}/api/logo/${conta.codigo}`}  alt="logo" />
         <form>
             <h1>Entrar</h1>
+            {
+              conta.ativo === 'N' ? <p style={{ color: 'orange' }}>Serviço temporariamente for do ar!</p> : ''
+            }
             <input 
               value={suite} 
+              disabled={conta.ativo === 'N'}
               onChange={(event) => {setSuite(event.target.value)}}            
               placeholder="Suíte nº"/>
             <input 
               value={cpf} 
+              disabled={conta.ativo === 'N'}
               onChange={(event) => {setCPF(event.target.value)}}            
               placeholder="Documento (somente dígitos)"/>
 
             <button onClick={(event) => {
+
                 event.preventDefault();
+              
+                if (conta.ativo === 'N') {
+                  history.push({ pathname: `/${id}/${Date.now()}` });
+                  return;
+                }
                 
                 const data = (suite == 0) 
                   ? { id: id, login: null, senha: cpf }
@@ -47,13 +66,16 @@ const EntrarWINLETOM = () => {
 
                 api.post('/api/entrar', data).then(response => {
 
+                  // Provisório 
+                  //response.data.perfil = 'camareira';
+                  
                   console.log('Login:', response.data);
 
                   if (contaEncerrada(response.data)){
                     history.push({ pathname: `/${id}` });
                     return;
                   }
-                    
+                  
                   setLogin(response.data);
                   setSuiteAtual(response.data.suite);
 
@@ -63,7 +85,11 @@ const EntrarWINLETOM = () => {
                     if (error.response) console.log(error.response.status);
                 });
                 
-            }}>Entrar</button>
+            }}>
+              {
+                conta.ativo === 'S' ? 'Entrar' : 'Voltar' 
+              }
+              </button>
 
         </form>
         </Content>

@@ -20,6 +20,7 @@ export default function Apartamentos() {
     useEffect(() => {
         if (login == null) history.push({ pathname: `/${id}` });
         api.get(`/api/rooms/${login.uuid}`).then(response => {
+            console.log('apartamentos:', response.data);
             setApartamentos(response.data);
         });
 

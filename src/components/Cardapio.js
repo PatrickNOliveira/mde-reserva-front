@@ -33,6 +33,7 @@ export default function Cardapio() {
     const [ cardapio, setCardapio ] = useState(getCardapioAtual());
     
     const [ buscaCardapio, setBuscaCardapio ] = useState(cardapio.id === 0);
+
     const [ buscaGrupo, setBuscaGrupo ] = useState(busca);
     
     //const [items, setItems]       = useState();
@@ -153,6 +154,10 @@ export default function Cardapio() {
         setBuscaGrupo(false);
     }
 
+    const onFinalizaPedido = () => {
+        setBuscaCardapio(true);
+    }
+
     const MostraGrupos = () => {
         return (
             <Grupo>
@@ -216,8 +221,9 @@ export default function Cardapio() {
 
                         <ListaItensCarrinho 
                             suite_id={login.suite_id} 
-                            onCarrinhoVazio={onProdutosClick}/>
-
+                            onCarrinhoVazio={onProdutosClick}
+                            onFinalizaPedido={onFinalizaPedido}
+                        />
                     ) : (
 
                         <div>

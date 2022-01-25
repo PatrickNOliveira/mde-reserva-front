@@ -26,11 +26,6 @@ export function setConta(conta) {
     localStorage.setItem('conta', JSON.stringify(conta));
 }
 
-export function setCardapioAtual(cardapio) {
-    cardapio = cardapio ? cardapio : {id: 0}
-    localStorage.setItem('Cardapio', JSON.stringify(cardapio));
-}
-
 export function setApartamentoAtual(ap) {
     ap = ap ? ap : {id: 0}
     localStorage.setItem('Apartamento', JSON.stringify(ap));
@@ -48,6 +43,11 @@ export function gravaCardapios(cardapios) {
 
 export function recuperaCardapios() {
     return JSON.parse(localStorage.getItem('CARDAPIOS'));
+}
+
+export function setCardapioAtual(cardapio) {
+    cardapio = cardapio ? cardapio : {id: 0}
+    localStorage.setItem('Cardapio', JSON.stringify(cardapio));
 }
 
 export function getCardapioAtual() {
@@ -100,6 +100,8 @@ export function setGrupoAtual(grupo) {
 export function contaEncerrada(login) {
     console.log('contaEncerrada.login.checkout:', login.checkout);
     if (!login.checkout) return false;
+    const conta = getConta();
+    if (conta.ativo === 'N') return true;
     const data = login.checkout.substr(0, 10);
     const hora = login.checkout.substr(11);
     const parts = data.split('/');
@@ -108,5 +110,6 @@ export function contaEncerrada(login) {
 }
 
 export function getHost() {
-   return 'https://api.mde.com.br:8080';
+   return 'http://localhost:8000';
+   //return 'https://api.mde.com.br:8080';
 }

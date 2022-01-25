@@ -14,7 +14,7 @@ import {
 
 import LocalEntrega from './LocalEntrega';
 
-export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
+export default function ListaItensCarrinho({suite_id, onCarrinhoVazio, onFinalizaPedido}) {
     
     const history = useHistory();
     const [carrinho, setCarrinho] = useState({ items:[], total: 0});
@@ -32,6 +32,10 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
     const [localizacao, setLocalizacao] = useState(
         getConta()['locais_entrega'] ? getConta()['locais_entrega'][0] : ''
     );
+    
+    const [conta] = useState(getConta());
+
+    const [mensagemLocalizacao, setMensagemLocalizacao] = useState(conta.obsLocal);
 
     const [observacao, setObservacao] = useState('');
 
@@ -119,9 +123,20 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
 
     }
 
+    const isValid = () => {
+        if (localizacao.obrigatorio.toUpperCase() == 'S' && observacao.trim() === '') {
+            alerta({ 
+                title: 'Atenção!',
+                message: 'Informe detalhes de sua localização!'
+            });
+            return false;
+        }
+        return true;
+    }
+
     const onEnviarPedidoClick = () => {
         
-        if (isCheckout()) return;
+        if (isCheckout() || !isValid()) return;
 
         const apartamento = getApartamentoAtual();
         const ap = login.suite ?? apartamento.id;
@@ -142,18 +157,26 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
                         setCarrinho(response.data);
                         setMesaAtual(null);
                         onCarrinhoVazio();
+                        onFinalizaPedido();
                     }
                 );
             }
         });        
+
     }
 
     const onLocalizacao = (local) => {
-        setLocalizacao(
-            locais.filter((item) => {
-                return local === item.codigo;
-            })[0]            
-        );
+
+        const localizacaoAtual = locais.filter((item) => {
+            return local === item.codigo;
+        })[0];
+
+        setLocalizacao(localizacaoAtual);
+        
+        const texto = localizacaoAtual.texto ? localizacaoAtual.texto : conta.obsLocal ? conta.obsLocal : '';
+
+        setMensagemLocalizacao(texto);
+
     }
 
     const onObservacao = (obs) => {
@@ -196,6 +219,7 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
                         setApartamentoAtual(null);
                         setMesaAtual(null);
                         onCarrinhoVazio();
+                        onFinalizaPedido();
                     }
                 )
             }
@@ -297,6 +321,7 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio}) {
                         <LocalEntrega 
                             cardapio={cardapio}
                             locais={locais}
+                            obsMensagemLocal={mensagemLocalizacao}
                             onLocalizacao={onLocalizacao} 
                             onObservacao={onObservacao} />
 

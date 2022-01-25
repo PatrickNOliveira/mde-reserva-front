@@ -1,8 +1,11 @@
-export default function LocalEntrega({cardapio, locais, onLocalizacao, onObservacao}) {
+import React, { useState } from 'react';
+
+export default function LocalEntrega({cardapio, locais, obsMensagemLocal, onLocalizacao, onObservacao}) {
     //if (locais.length < 2) return '';
     if (cardapio.localizacao === '0') return '';
 
     return (
+
         <div className="box_localizacao">
             <span>Sua Localização</span>
             <select onChange={(event) => {onLocalizacao(event.target.value)}}> 
@@ -17,7 +20,7 @@ export default function LocalEntrega({cardapio, locais, onLocalizacao, onObserva
             </select>
             <textarea 
                 type="text" 
-                placeholder="Facilite sua localização. Por exemplo: uso camisa da seleção."
+                placeholder={obsMensagemLocal}
                 onChange={(event) => {onObservacao(event.target.value)}} />
         </div>
     )

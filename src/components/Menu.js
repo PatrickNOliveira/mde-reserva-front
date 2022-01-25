@@ -29,6 +29,10 @@ const MenuWINLETOM = () => {
     history.push({ pathname: `/informacoes/${id}` });
   }
 
+  const onServicoClick = () => {
+    history.push({ pathname: `/servicos/${id}` });
+  }
+
   const onApartamentosClick = () => {
     history.push({ pathname: `/apartamentos/${id}` });
   }
@@ -55,6 +59,14 @@ const MenuWINLETOM = () => {
         <CardContainer>
           <a href="#" onClick={onCardapioClick} className="requests">Cardápio</a>
         </CardContainer>
+
+        {
+          login.perfil == 'camareira' ? (
+            <CardContainer>
+              <a href="#" onClick={onServicoClick} className="requests">Serviço</a>
+            </CardContainer>
+            ) : ''
+        }
 
         <CardContainer>
           <a href="#" onClick={onSairClick}>Sair</a>

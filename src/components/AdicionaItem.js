@@ -29,8 +29,11 @@ export default function AdicionaItem() {
         if (isCheckout()) return;
         if (!login.login) return;
         api.get(`/api/rooms/${login.uuid}`).then(response => {
+            const data = response.data.filter(i => {
+                   return i.SitAtual == 'O';
+            });
             setApartamentos(
-                response.data.sort((a,b) => {
+                data.sort((a,b) => {
                     return (a.id < b.id) ? -1 : 1;
                 })
             );
@@ -211,6 +214,7 @@ export default function AdicionaItem() {
                     }
 
                     {
+                        /*
                         login.perfil === 'camareira' ? (
                             <div>
                                 <input 
@@ -221,6 +225,7 @@ export default function AdicionaItem() {
                                     placeholder="Suite" />
                             </div>
                         ) : ('')
+                        */
                     }
 
                     <a  className="adicionar-item" 

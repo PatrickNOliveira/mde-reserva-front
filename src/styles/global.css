@@ -323,6 +323,105 @@ body, input, button, textarea {
   margin: 10px;
 }
 
+.botao-apartamento-livre {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #91aa4c;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: white;
+}
+
+.botao-apartamento-ocupado {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #c05d5d;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: white;
+}
+
+.botao-apartamento-pagamento {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #6ec2fa;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: white;
+}
+
+.botao-apartamento-limpeza {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #2d2af8;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: white;
+}
+
+.botao-apartamento-bloqueado {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #8a8989;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: white;
+}
+
+.botao-apartamento-manutencao {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #8a8989;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: white;
+}
+
+.botao-apartamento-vistoria {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #ff9000;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: white;
+}
+
+.botao-apartamento-supervisao {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #ebf879;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: black;
+}
+
+.botao-apartamento-interditado {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #000000;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: white;
+}
+
 .botao-seleciona-grupo {
   margin-bottom: 10px;
   padding: 10px;
