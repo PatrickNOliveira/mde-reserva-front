@@ -33,7 +33,7 @@ export default function MostraCardapios({id, onCardapioClick}) {
 
             setCardapios(
                 response.data.filter((c) => {
-                    if (login.cardapios == "0") return true; // funcionários e hóspedes
+                    if (login.cardapios === "0") return true; // funcionários e hóspedes
                     return login.cardapios.indexOf(c.id) !== -1;
                 })
             );
