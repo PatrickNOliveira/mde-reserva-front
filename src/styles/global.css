@@ -337,7 +337,7 @@ body, input, button, textarea {
 .botao-apartamento-ocupado {
   margin-bottom: 10px;
   padding: 20px;
-  background: #c05d5d;
+  background: #ff0000;
   border-radius: 5px;
   text-decoration: none;
   text-align: center;
@@ -415,6 +415,28 @@ body, input, button, textarea {
   margin-bottom: 10px;
   padding: 20px;
   background: #000000;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: white;
+}
+
+.botao-apartamento-limpeza-simples {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #F79A93;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px;
+  color: white;
+}
+
+.botao-apartamento-limpeza-completa {
+  margin-bottom: 10px;
+  padding: 20px;
+  background: #FF6346;
   border-radius: 5px;
   text-decoration: none;
   text-align: center;

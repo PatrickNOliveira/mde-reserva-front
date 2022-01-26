@@ -28,14 +28,11 @@ export default function Servicos() {
 
         let mounted = true;
 
-/*
         TIMER = setInterval(function(){
             if (!mounted) return;
             onTimer();
-        }, 5000);
-*/
+        }, 10000);
 
-/*
         return function cleanup() {
             
             mounted = false;
@@ -46,11 +43,11 @@ export default function Servicos() {
             }, 1000);
 
         }
-*/
 
     },[]);
 
     const onTimer = () => {
+        console.log("ATUALIZANDO!");
         api.get(`/api/rooms/${login.uuid}`).then(response => {
             setApartamentos(response.data);
         });
@@ -96,6 +93,8 @@ export default function Servicos() {
             'V': [ { 'id': 'Z', 'descricao': 'Limpeza'}, ], 
             'S': [ { 'id': 'L', 'descricao': 'Livre'  }, ],
             'I': [ { 'id': 'L', 'descricao': 'Livre'  }, ],
+            'D': [ { 'id': 'O', 'descricao': 'Ocupado'  }, ],
+            'C': [ { 'id': 'O', 'descricao': 'Ocupado'  }, ],
         };
 
         const opcoes = status[apartamento.SitAtual];
@@ -125,6 +124,7 @@ export default function Servicos() {
 
         function getCorSituacao(ap) {
 
+            /*
             if (ap.id === '101') ap.SitAtual = 'L';
             if (ap.id === '103') ap.SitAtual = 'O';
             if (ap.id === '104') ap.SitAtual = 'P';
@@ -134,6 +134,9 @@ export default function Servicos() {
             if (ap.id === '108') ap.SitAtual = 'V';
             if (ap.id === '109') ap.SitAtual = 'S';
             if (ap.id === '110') ap.SitAtual = 'I';
+            if (ap.id === '111') ap.SitAtual = 'D';
+            if (ap.id === '112') ap.SitAtual = 'C';
+            */
 
             switch (ap.SitAtual) {
                 case 'L':
@@ -154,8 +157,12 @@ export default function Servicos() {
                     return "botao-apartamento-supervisao";
                 case 'I':
                     return "botao-apartamento-interditado";
+                case 'D':
+                    return "botao-apartamento-limpeza-simples";
+                case 'C':
+                    return "botao-apartamento-limpeza-completa";
                 default:
-                    return "botao-apartamento-livre";
+                    return "botao-apartamento-ocupado";
             }
         }
 
