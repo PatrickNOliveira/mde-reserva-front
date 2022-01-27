@@ -112,6 +112,6 @@ export function contaEncerrada(login) {
 export function getHost() {
    //return 'http://localhost:8000';
    //return 'https://api.mde.com.br:8080';
-   console.log('>>>>>>>>> process.env.API_HOST:', process.env.API_HOST);
-   return process.env.API_HOST; //'http://api2.mde.com.br:8081';
+   //console.log('>>>>>>>>> process.env.API_HOST:', process.env);
+   return 'http://api2.mde.com.br:9091';
 }
