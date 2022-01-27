@@ -9,7 +9,7 @@ import api from '../services/api';
 
 export default function Informacoes() {
 
-    const build   = '1.0.48';
+    const build   = '1.0.49';
     
     const { id }  = useParams();
     const history = useHistory();
@@ -45,9 +45,9 @@ export default function Informacoes() {
 
     const onTimer = () => {
         const data = { id: login.uuid, suite: login.suite, cpf: login.cpf };
-        console.log('data:', data);
         api.post('/api/entrar', data).then(response => {
             console.log('/api/entrar:', response.data);
+            setLogin(response.data);
             setTimer(!timer);
         }).catch((error) => {
             if (error.response) console.log(error.response.status);
@@ -160,10 +160,12 @@ export default function Informacoes() {
             </div> 
 
             {
-                opcao === "MENU" ? <MenuPrincipal /> :
-                (opcao == "PERFIL" ? 
-                    <InfoPerfil /> : 
-                    <InfoConta  timer={timer} /> )
+                opcao === "MENU" ? 
+                    <MenuPrincipal /> :
+                    ( opcao == "PERFIL" ? 
+                        <InfoPerfil /> : 
+                        <InfoConta timer={timer} />
+                    )
             }
             
 

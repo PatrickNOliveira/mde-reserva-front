@@ -124,7 +124,13 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio, onFinaliz
     }
 
     const isValid = () => {
-        if (localizacao.obrigatorio.toUpperCase() == 'S' && observacao.trim() === '') {
+
+        function localizacaoObrigatoria(localizacao) {
+            if (!localizacao.obrigatorio) return false;
+            return localizacao.obrigatorio.toUpperCase() == 'S';
+        }
+
+        if (localizacaoObrigatoria(localizacao) && observacao.trim() === '') {
             alerta({ 
                 title: 'Atenção!',
                 message: 'Informe detalhes de sua localização!'

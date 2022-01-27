@@ -108,16 +108,45 @@ export default function AdicionaItem() {
         // <img src={`${host}/api/foto/${item.id}`}  alt="foto" />
 //                    <img src={produto.imagem}  alt="foto" />
 
+// {produto.nota}
         return (
             <Container>
                 <ImgContainer>
                     <img src={produto.imagem} alt="foto" />
                 </ImgContainer>
                 <div className="container-product-detail">
-                    <h2 style={{ fontSize: 20, textAlign: 'center' }}>
+                    <h2 style={{ fontSize: 20, marginTop: 30, textAlign: 'center' }}>
                         {produto.descricao}
                     </h2>
-                    <h2 style={{fontSize: 15, marginTop: 20}}> {produto.nota}
+                    <h2 style={{fontSize: 15, marginTop: 20, marginBottom: 20}}> 
+                    asd fadfadfk ajdfajs fasdf adf asidfasnfasd fa sdf as dfa sdf as dfa sdf asd fa sdfa dfasdfasdfasdfa
+                    sdfasdfa asdfa sdfasdfasdfas fa sf das f adf  asf asdf
+                    sdfaasdfasd fas f asdf a sfd asd fa sf asdfasfasdfasfafdasdfasfd af as f asdf as dfa sfdasf
+                    asfas f adf a sdf a sdf af a sf asdfasdfd
+                    asd fadfadfk ajdfajs fasdf adf asidfasnfasd fa sdf as dfa sdf as dfa sdf asd fa sdfa dfasdfasdfasdfa
+                    sdfasdfa asdfa sdfasdfasdfas fa sf das f adf  asf asdf
+                    sdfaasdfasd fas f asdf a sfd asd fa sf asdfasfasdfasfafdasdfasfd af as f asdf as dfa sfdasf
+                    asfas f adf a sdf a sdf af a sf asdfasdfd
+                    asd fadfadfk ajdfajs fasdf adf asidfasnfasd fa sdf as dfa sdf as dfa sdf asd fa sdfa dfasdfasdfasdfa
+                    sdfasdfa asdfa sdfasdfasdfas fa sf das f adf  asf asdf
+                    sdfaasdfasd fas f asdf a sfd asd fa sf asdfasfasdfasfafdasdfasfd af as f asdf as dfa sfdasf
+                    asfas f adf a sdf a sdf af a sf asdfasdfd
+                    asd fadfadfk ajdfajs fasdf adf asidfasnfasd fa sdf as dfa sdf as dfa sdf asd fa sdfa dfasdfasdfasdfa
+                    sdfasdfa asdfa sdfasdfasdfas fa sf das f adf  asf asdf
+                    sdfaasdfasd fas f asdf a sfd asd fa sf asdfasfasdfasfafdasdfasfd af as f asdf as dfa sfdasf
+                    asfas f adf a sdf a sdf af a sf asdfasdfd
+                    asd fadfadfk ajdfajs fasdf adf asidfasnfasd fa sdf as dfa sdf as dfa sdf asd fa sdfa dfasdfasdfasdfa
+                    sdfasdfa asdfa sdfasdfasdfas fa sf das f adf  asf asdf
+                    sdfaasdfasd fas f asdf a sfd asd fa sf asdfasfasdfasfafdasdfasfd af as f asdf as dfa sfdasf
+                    asfas f adf a sdf a sdf af a sf asdfasdfd
+                    asd fadfadfk ajdfajs fasdf adf asidfasnfasd fa sdf as dfa sdf as dfa sdf asd fa sdfa dfasdfasdfasdfa
+                    sdfasdfa asdfa sdfasdfasdfas fa sf das f adf  asf asdf
+                    sdfaasdfasd fas f asdf a sfd asd fa sf asdfasfasdfasfafdasdfasfd af as f asdf as dfa sfdasf
+                    asfas f adf a sdf a sdf af a sf asdfasdfd
+                    asd fadfadfk ajdfajs fasdf adf asidfasnfasd fa sdf as dfa sdf as dfa sdf asd fa sdfa dfasdfasdfasdfa
+                    sdfasdfa asdfa sdfasdfasdfas fa sf das f adf  asf asdf
+                    sdfaasdfasd fas f asdf a sfd asd fa sf asdfasfasdfasfafdasdfasfd af as f asdf as dfa sfdasf
+                    asfas f adf a sdf a sdf af a sf asdfasdfd
                     </h2>
                 </div>
                 <a  className="continuar-item" 
