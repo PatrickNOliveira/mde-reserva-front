@@ -58,12 +58,12 @@ function QrCodeAuth() {
 				console.log('Conta:', response.data);
 				setConta(response.data);
 				setLogin(null);
-				history.push({ pathname: `/home/${id}/${Date.now()}` });
+				//history.push({ pathname: `/home/${id}/${Date.now()}` });
 			});		
 	
 		} else {
 
-			history.push({ pathname: `/menu/${id}/${Date.now()}` });
+			//history.push({ pathname: `/menu/${id}/${Date.now()}` });
 
 		}
 
