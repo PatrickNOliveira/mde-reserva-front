@@ -73,6 +73,10 @@ function Routes() {
 					<QrCodeAuth />
 				</Route>
 
+				<Route exact path="/:id/:rnd">
+					<QrCodeAuth />
+				</Route>
+
 				<Route path="/">
 					<QrCodeAuth />
 				</Route>
