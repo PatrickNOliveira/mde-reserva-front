@@ -29,7 +29,11 @@ function Routes() {
 					<QrCodeAuth />
 				</Route>
 
-				<Route path="/home/:id">
+				<Route exact path="/home/:id">
+					<Home />
+				</Route>
+
+				<Route exact path="/home/:id/:rnd">
 					<Home />
 				</Route>
 
@@ -37,11 +41,11 @@ function Routes() {
 					<Menu />
 				</Route>
 
-				<Route path="/entrar/:id">
+				<Route exact path="/entrar/:id">
 					<Entrar />
 				</Route>
 
-				<Route path="/entrar/:id/:rnd">
+				<Route exact path="/entrar/:id/:rnd">
 					<Entrar />
 				</Route>
 
