@@ -4,6 +4,7 @@ import { BsArrowLeftShort } from "react-icons/bs";
 import api from '../services/api';
 import styled from 'styled-components';
 import { shade } from 'polished';
+import alerta from '../utils/alertas';
 
 import { 
     getLogin,
@@ -66,35 +67,53 @@ export default function Servicos() {
         setApartamento(ap);
     }
 
-    const onMudaStatusClick = (status) => {
+    const onMudaStatusClick = (opcao) => {
+        
+        function mudaStatus(opcao) {
+            api.post(`/api/suite/status/${login.uuid}/${apartamento.id}/${opcao.id}`).then(response => {
+                setApartamento(null);
+                console.log(response.data);
+                onTimer();
+            });
+        }
+
         console.log(apartamento);
-        console.log(status);
-        api.post(`/api/suite/status/${login.uuid}/${apartamento.id}/${status}`).then(response => {
-            setApartamento(null);
-            console.log(response.data);
-            onTimer();
+
+        if (!opcao.mensagem) {
+            mudaStatus(opcao);
+            return;
+        }
+
+        alerta({ 
+            title: 'Atenção!',
+            message: opcao.mensagem,
+            onYes: () => { 
+                mudaStatus(opcao);
+            }
         });
+
+
     }
 
     function AtualizaStatusSuite() {
 
         const status = {
             'L': [
-                { 'id': 'Z', 'descricao': 'Limpeza' }, 
-                { 'id': 'M', 'descricao': 'Manutenção' }, 
-                { 'id': 'B', 'descricao': 'Bloqueada' }, 
-                { 'id': 'I', 'descricao': 'Interditada' }, 
+                { 'id': 'Z', 'descricao': 'Limpeza', mensagem: 'Confirma colocar o apartamento em limpeza?' }, 
+                { 'id': 'M', 'descricao': 'Manutenção', mensagem: 'Confirma colocar o apartamento em manutenção?' }, 
+                { 'id': 'B', 'descricao': 'Bloqueada', mensagem: 'Confirma bloquear o apartamento?' }, 
+                { 'id': 'I', 'descricao': 'Interditada', mensagem: 'Confirma interditar o apartamento?' }, 
             ],
-            'O': [ { 'id': 'L', 'descricao': 'Livre'  }, ],
-            'P': [ { 'id': 'L', 'descricao': 'Livre'  }, ],
-            'Z': [ { 'id': 'L', 'descricao': 'Livre'  }, ],
-            'B': [ { 'id': 'L', 'descricao': 'Livre'  }, ],
-            'M': [ { 'id': 'L', 'descricao': 'Livre'  }, ],
-            'V': [ { 'id': 'Z', 'descricao': 'Limpeza'}, ], 
-            'S': [ { 'id': 'L', 'descricao': 'Livre'  }, ],
-            'I': [ { 'id': 'L', 'descricao': 'Livre'  }, ],
-            'D': [ { 'id': 'O', 'descricao': 'Ocupado'  }, ],
-            'C': [ { 'id': 'O', 'descricao': 'Ocupado'  }, ],
+            'O': [ { 'id': 'L', 'descricao': 'Livre', mensagem: null  }, ],
+            'P': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma liberar o apartamento da limpeza?'  }, ],
+            'Z': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma liberar o apartamento da limpeza?'  }, ],
+            'B': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma liberar o bloqueio do apartamento?'  }, ],
+            'M': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma tirar o apartamento da manutenção?'  }, ],
+            'V': [ { 'id': 'Z', 'descricao': 'Limpeza', mensagem: 'Confirma encerrar a vistoria do apartamento?' }, ], 
+            'S': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma encerrar a supervisão do apartamento?' }, ],
+            'I': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma liberar a interdição do apartamento?'  }, ],
+            'D': [ { 'id': 'O', 'descricao': 'Ocupado', mensagem: 'Confirma encerrar a arrumação simples do apartamento?' }, ],
+            'C': [ { 'id': 'O', 'descricao': 'Ocupado', mensagem: 'Confirma encerrar a arrumação completa do apartamento?' }, ],
         };
 
         const opcoes = status[apartamento.SitAtual];
@@ -107,7 +126,7 @@ export default function Servicos() {
                             <CardContainer key={opcao.id}>
                                 <a href="#" 
                                     onClick={
-                                       () => { onMudaStatusClick(opcao.id) }
+                                       () => { onMudaStatusClick(opcao) }
                                     } className="requests">
                                     {opcao.descricao}
                                 </a>
@@ -123,8 +142,7 @@ export default function Servicos() {
     function Apartamentos() {
 
         function getCorSituacao(ap) {
-
-            /*
+/*
             if (ap.id === '101') ap.SitAtual = 'L';
             if (ap.id === '103') ap.SitAtual = 'O';
             if (ap.id === '104') ap.SitAtual = 'P';
@@ -136,8 +154,7 @@ export default function Servicos() {
             if (ap.id === '110') ap.SitAtual = 'I';
             if (ap.id === '111') ap.SitAtual = 'D';
             if (ap.id === '112') ap.SitAtual = 'C';
-            */
-
+*/
             switch (ap.SitAtual) {
                 case 'L':
                     return "botao-apartamento-livre";
