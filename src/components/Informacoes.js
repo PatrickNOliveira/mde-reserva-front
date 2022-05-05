@@ -20,7 +20,7 @@ export default function Informacoes() {
 
     var TIMER;
 
-    useEffect(() => {
+    useEffect(() => { 
         if (login == null) history.push({ pathname: `/entrar/${id}` });
         
         let mounted = true;
