@@ -1,0 +1,14 @@
+Boa tarde Carlos, tudo bem?
+
+Venho com mais mudanças da comanda eletrônica, rs. Imagino que o Donizete e/ou o George tenham falado com você a respeito dessas mudanças, aqui vão os detalhes de como vai funcionar.
+Para as mudanças de situação do apartamento, eu crie uma tabela para isso com os dados necessários para as que já tinha lhe passado e a possibilidade de incluir novas, além de permitir personalizar os textos das perguntas e do botão.
+Para você consultar essa informação basta chamar a procedure 'SituacaoUH', passando a Situação Atual e Futura do apartamento e o NrSerie do cliente. Ex.: exec SituacaoUH 'L','Z','00005'
+As situações vêm na listagem das UHs.
+É só colocar o texto do campo DescBotao no botão, e quando ele for tocado mostrar a pergunta de acordo com o campo Pergunta. No mais continua da forma que está.
+Como foi pedido o cálculo do tempo de limpeza, então existem situações que o status não vai mudar mais sim só iniciar a contagem do tempo, exemplo Início da Limpeza, o apartamento continua em limpeza, mas registra a hora de início do mesmo e depois que Liberar a Limpeza, ele fica Livre como já ocorre hoje.
+Na procedure ListaDeApartamentos agora tem um campo Notificacao para informar quando você deve alertar o usuário de alguma mudança importante. Se estiver 'S' você faz a notificação, qualquer outro valor, nenhum alerta é necessário.
+Sobre a possibilidade do hóspede e/ou funcionário poder excluir um produto já lançado, funciona assim, nas procedures DadosDoFuncionario e DadosDoHospede, retorna um campo PodeExcluir, quando ele estiver como 'S', aí você mostrar o botão que permitir fazer a exclusão do produto. Se vir qualquer outro valor, aí você não mostra nada.
+Acho que é isso por enquanto. Qualquer dúvida e/ou problema, só me passar que tentamos resolver.
+
+Atenciosamente,
+Beraldino
