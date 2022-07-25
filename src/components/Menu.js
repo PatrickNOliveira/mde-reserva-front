@@ -13,8 +13,6 @@ const MenuWINLETOM = () => {
   const [conta] = useState(getConta());
   const [login] = useState(getLogin());
 
-  console.log(login);
-
   const host = getHost();
 
   const onCardapioClick = () => {
@@ -33,6 +31,10 @@ const MenuWINLETOM = () => {
     history.push({ pathname: `/servicos/${id}` });
   }
 
+  // const onNotificacoesClick = () => {
+  //   history.push({ pathname: `/notificacoes/${id}`, origin: 'menu' });
+  // }
+
   const onApartamentosClick = () => {
     history.push({ pathname: `/apartamentos/${id}` });
   }
@@ -40,7 +42,6 @@ const MenuWINLETOM = () => {
   const onSairClick = () => {
     localStorage.setItem('login', null);
     history.push({ pathname: `/${id}` });
-    //history.push({ pathname: `/home/${id}` });
   }
   
   // https://api-sistema-mde.herokuapp.com
@@ -66,6 +67,14 @@ const MenuWINLETOM = () => {
               <a href="#" onClick={onServicoClick} className="requests">Serviço</a>
             </CardContainer>
             ) : ''
+        }
+
+        {
+          // login.perfil == 'camareira' ? (
+          //   <CardContainer>
+          //     <a href="#" onClick={onNotificacoesClick} className="requests">Notificações</a>
+          //   </CardContainer>
+          //   ) : ''
         }
 
         <CardContainer>

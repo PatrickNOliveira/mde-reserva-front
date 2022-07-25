@@ -114,3 +114,37 @@ export function getHost() {
    //return 'https://api.mde.com.br:8080'; // produção
    //return 'http://api2.mde.com.br:9091'; 
 }
+
+export function dateFormat1(data) {
+    
+    function formatDate(date) {
+        function padTo2Digits(num) {
+            return num.toString().padStart(2, '0');
+        }
+        return [
+            padTo2Digits(date.getDate()),
+            padTo2Digits(date.getMonth() + 1),
+            date.getFullYear(),
+        ].join('/');
+    }
+
+    const weekDays = { 
+        'Sun': 'DOMINGO', 
+        'Mon': 'SEGUNDA-FEIRA', 
+        'Tue': 'TERÇA-FEIRA', 
+        'Wed': 'QUARTA-FEIRA', 
+        'Thu': 'QUINTA-FEIRA', 
+        'Fri': 'SEXTA-FEIRA', 
+        'Sat': 'SÁBADO' 
+    };
+
+    const dt = new Date(data);
+    const wd = (dt).toString().substr(0, 3);
+    const days = Date.now() - Date.parse(data);
+
+    if (days === 0) return 'HOJE';
+    if (days === 1) return 'ONTEM';
+    if (days < 7) return weekDays[wd];
+
+    return formatDate(dt);
+}

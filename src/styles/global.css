@@ -172,6 +172,12 @@ body, input, button, textarea {
   margin-right: 20px;
 }
 
+.sino {
+  font-size: 40px;
+  color:#ff9000;
+  margin-right: 20px;
+}
+
 .root .header h1 {
   font-size: 30px;
 }
@@ -249,6 +255,14 @@ body, input, button, textarea {
 .products {
   border-bottom: solid 1px #666360;
   padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notifications {
+  border-bottom: solid 1px #666360;
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;

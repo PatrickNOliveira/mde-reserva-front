@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { BsArrowLeftShort } from "react-icons/bs";
+import { FaBell } from "react-icons/fa";
 import api from '../services/api';
 import styled from 'styled-components';
 import { shade } from 'polished';
 import alerta from '../utils/alertas';
 
+import Alarme from './Alarme';
+
 import { 
     getLogin,
+    getConta,
     //setApartamentoAtual,
 } from '../utils/utils-context';
 
@@ -15,6 +19,8 @@ export default function Servicos() {
 
     const { id }  = useParams();
     const [login] = useState(getLogin());
+    const [conta] = useState(getConta());
+
     const history = useHistory();
     const [ apartamentos, setApartamentos] = useState([]);
     const [ apartamento, setApartamento] = useState(null);
@@ -29,7 +35,7 @@ export default function Servicos() {
 
         let mounted = true;
 
-        TIMER = setInterval(function(){
+        TIMER = setInterval(function() {
             if (!mounted) return;
             onTimer();
         }, 10000);
@@ -48,10 +54,13 @@ export default function Servicos() {
     },[]);
 
     const onTimer = () => {
-        console.log("ATUALIZANDO!");
         api.get(`/api/rooms/${login.uuid}`).then(response => {
             setApartamentos(response.data);
         });
+    }
+
+    const onNotificacoesClick = () => {
+        history.push({ pathname: `/notificacoes/${id}`, origin: 'servico' });
     }
 
     const onVoltarClick = () => {
@@ -96,28 +105,8 @@ export default function Servicos() {
     }
 
     function AtualizaStatusSuite() {
-
-        const status = {
-            'L': [
-                { 'id': 'Z', 'descricao': 'Limpeza', mensagem: 'Confirma colocar o apartamento em limpeza?' }, 
-                { 'id': 'M', 'descricao': 'Manutenção', mensagem: 'Confirma colocar o apartamento em manutenção?' }, 
-                { 'id': 'B', 'descricao': 'Bloqueada', mensagem: 'Confirma bloquear o apartamento?' }, 
-                { 'id': 'I', 'descricao': 'Interditada', mensagem: 'Confirma interditar o apartamento?' }, 
-            ],
-            'O': [ { 'id': 'L', 'descricao': 'Livre', mensagem: null  }, ],
-            'P': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma liberar o apartamento da limpeza?'  }, ],
-            'Z': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma liberar o apartamento da limpeza?'  }, ],
-            'B': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma liberar o bloqueio do apartamento?'  }, ],
-            'M': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma tirar o apartamento da manutenção?'  }, ],
-            'V': [ { 'id': 'Z', 'descricao': 'Limpeza', mensagem: 'Confirma encerrar a vistoria do apartamento?' }, ], 
-            'S': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma encerrar a supervisão do apartamento?' }, ],
-            'I': [ { 'id': 'L', 'descricao': 'Livre', mensagem: 'Confirma liberar a interdição do apartamento?'  }, ],
-            'D': [ { 'id': 'O', 'descricao': 'Ocupado', mensagem: 'Confirma encerrar a arrumação simples do apartamento?' }, ],
-            'C': [ { 'id': 'O', 'descricao': 'Ocupado', mensagem: 'Confirma encerrar a arrumação completa do apartamento?' }, ],
-        };
-
+        const status = conta.status_suites;
         const opcoes = status[apartamento.SitAtual];
-
         return (
             <Container>
                 {
@@ -207,7 +196,8 @@ export default function Servicos() {
                 <div  className="header-content">
                     <Link to="#" onClick={onVoltarClick}>
                         <BsArrowLeftShort type="button" className="seta" />
-                    </Link>               
+                    </Link>
+                    <FaBell onClick={onNotificacoesClick} className="sino" type="button"  />               
                 </div>
                 <h1 style={{ fontSize: 22  }}>
                     {
@@ -217,7 +207,8 @@ export default function Servicos() {
             </div>
             {
               ( apartamento && apartamento.SitAtual !== 'O' ) ? <AtualizaStatusSuite /> : <Apartamentos />
-            }            
+            }
+            <Alarme />
         </div>
     );
     
@@ -231,24 +222,22 @@ const Apartamento = styled.div`
 
 
 const Container = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
   align-items: center;
   justify-content: space-around;
   height: 80vh;
-  margin-top: 20px;
+  margin-top: 50px;
 `;
 
 const CardContainer = styled.div`
     background: #232129;
+    box-sizing: content-box;
     border-radius: 5px;
     width: 80%;
     padding: 18px;
     display: flex;
     align-items: center;
     justify-content: center; 
-    margin: 16px 30px;
+    margin: 16px 20px;
 
     :hover {
         background: ${shade(0.2, '#232129')}
@@ -261,6 +250,6 @@ const CardContainer = styled.div`
 
       text-decoration: none;
       color: #fff; 
-      font-size: 26px;
+      font-size: 20px;
     }
 `;

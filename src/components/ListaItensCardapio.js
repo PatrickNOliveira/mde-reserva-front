@@ -11,6 +11,7 @@ export default function ListaItensCardapio({pesquisa, items, onItemClick, grupo}
     if (!items || items.length === 0) return renderSemItens();
 
     const busca = items.filter((i) => {
+        
         function naPesquisa(i) {
             function contain(a, b) { return a.toUpperCase().includes(b.toUpperCase())}
             if (pesquisa.trim().lenght === 0) return true;

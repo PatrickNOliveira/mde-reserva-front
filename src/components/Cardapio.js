@@ -239,7 +239,8 @@ export default function Cardapio() {
                                 </form>                                    
                             </SearchBox>
 
-                            <ListaItensCardapio pesquisa={pesquisa} 
+                            <ListaItensCardapio 
+                                pesquisa={pesquisa} 
                                 items={produtos} 
                                 onItemClick={onItemClick} 
                                 grupo={grupo}
