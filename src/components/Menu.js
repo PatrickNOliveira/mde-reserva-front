@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import styled from 'styled-components';
 import { shade } from 'polished';
-
 import { getLogin, getConta, getHost } from '../utils/utils-context';
+
+import Alarme from './Alarme';
 
 const MenuWINLETOM = () => {
 
@@ -222,18 +223,27 @@ export default function Menu() {
   const history = useHistory();
   const [login] = useState(getLogin());
   const [conta] = useState(getConta());
-
+  
   useEffect(() => {
     if (login == null) history.push({ pathname: `/entrar/${id}/${Date.now()}` });
     console.log(login);
   },[]);
 
-  return <MenuWINLETOM />;
+  return (
+    <div>
+      <MenuWINLETOM />
+      <Alarme  />
+    </div>
+  );
 
   return (
-    conta.sistema === 'WINLETOM' ? ( <MenuWINLETOM /> ) : (
-      conta.sistema === 'WINRESTA' ? ( <MenuWINRESTA /> ) : ( <MenuWINLETOH /> )
-    )
+    <div>
+      {
+        conta.sistema === 'WINLETOM' ? ( <MenuWINLETOM /> ) : (
+          conta.sistema === 'WINRESTA' ? ( <MenuWINRESTA /> ) : ( <MenuWINLETOH /> )
+        )
+      }
+    </div>
   );
   
 }

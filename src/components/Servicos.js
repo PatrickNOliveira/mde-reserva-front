@@ -7,12 +7,9 @@ import styled from 'styled-components';
 import { shade } from 'polished';
 import alerta from '../utils/alertas';
 
-import Alarme from './Alarme';
-
 import { 
     getLogin,
     getConta,
-    //setApartamentoAtual,
 } from '../utils/utils-context';
 
 export default function Servicos() {
@@ -57,10 +54,6 @@ export default function Servicos() {
         api.get(`/api/rooms/${login.uuid}`).then(response => {
             setApartamentos(response.data);
         });
-    }
-
-    const onNotificacoesClick = () => {
-        history.push({ pathname: `/notificacoes/${id}`, origin: 'servico' });
     }
 
     const onVoltarClick = () => {
@@ -190,6 +183,8 @@ export default function Servicos() {
         );
     }
 
+    // <FaBell onClick={onNotificacoesClick} className="sino" type="button"  />               
+
     return (
         <div className="rooms">
             <div className="header">
@@ -197,7 +192,6 @@ export default function Servicos() {
                     <Link to="#" onClick={onVoltarClick}>
                         <BsArrowLeftShort type="button" className="seta" />
                     </Link>
-                    <FaBell onClick={onNotificacoesClick} className="sino" type="button"  />               
                 </div>
                 <h1 style={{ fontSize: 22  }}>
                     {
@@ -208,7 +202,6 @@ export default function Servicos() {
             {
               ( apartamento && apartamento.SitAtual !== 'O' ) ? <AtualizaStatusSuite /> : <Apartamentos />
             }
-            <Alarme />
         </div>
     );
     

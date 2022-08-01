@@ -24,38 +24,8 @@ export default function Notificacoes() {
     const history = useHistory();
 
     useEffect(() => {
-
-        var TIMER;
-
         if (login == null) history.push({ pathname: `/${id}` });
-
-        //onTimer();
-
-        let mounted = true;
-
-        TIMER = setInterval(function(){
-            if (!mounted) return;
-            onTimer();
-        }, 10000);
-
-        return function cleanup() {
-            
-            mounted = false;
-
-            setTimeout(() => {
-                clearInterval(TIMER);
-                TIMER = null;
-            }, 1000);
-
-        }
-
     },[]);
-
-    const onTimer = () => {
-        api.get(`/api/notify/${login.uuid}`).then(response => {
-            setNotificacoes(response.data);
-        });
-    }
 
     const onVoltarClick = () => {
         switch (origin) {

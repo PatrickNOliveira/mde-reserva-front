@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getHost } from '../utils/utils-context';
+import { getHost, getLogin } from '../utils/utils-context';
+import api from '../services/api';
+import alerta from '../utils/alertas';
 
 const url = `${getHost()}/api/som/ding`;
-
-var TIMER;
 
 const useAudio = () => {
   const [audio] = useState(new Audio(url));
@@ -25,12 +25,18 @@ const useAudio = () => {
   }, []);
 
   return [playing, toggle];
+
 };
 
 export default function Alarme() {
 
   const [playing, toggle] = useAudio();
-  
+  const [login] = useState(getLogin());
+
+  var TIMER;
+
+  var showingDialog = false;
+
   useEffect(() => { 
     
     let mounted = true;
@@ -56,7 +62,25 @@ export default function Alarme() {
   },[]);
 
   const onTimer = () => {
-    toggle();
+
+    if (showingDialog) {
+      toggle();
+      return;
+    }
+
+    api.get(`/api/alarms/${login.uuid}`).then(response => {
+      const data = response.data;
+      if (data.length == 0) return;
+      toggle();
+      showingDialog = true;
+      alerta({ 
+        title: 'Atenção!',
+        message: data.mensagem,
+        onYes: () => {
+          showingDialog = false;
+        }
+      });
+    });    
   }
   
   return '';

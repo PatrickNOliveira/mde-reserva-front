@@ -18,41 +18,41 @@ export default function Informacoes() {
     const [titulo, setTitulo ] = useState('Informações');
     const [timer, setTimer] = useState(true);
 
-    var TIMER;
+    //var TIMER;
 
     useEffect(() => { 
         if (login == null) history.push({ pathname: `/entrar/${id}` });
         
-        let mounted = true;
+//        let mounted = true;
         
-        TIMER = setInterval(function(){
-            if (!mounted) return;
-            onTimer();
-        }, 5000);
+        // TIMER = setInterval(function(){
+        //     if (!mounted) return;
+        //     onTimer();
+        // }, 5000);
 
-        return function cleanup() {
+        // return function cleanup() {
             
-            mounted = false;
+        //     mounted = false;
 
-            setTimeout(() => {
-                clearInterval(TIMER);
-                TIMER = null;
-            }, 1000);
+        //     setTimeout(() => {
+        //         clearInterval(TIMER);
+        //         TIMER = null;
+        //     }, 1000);
 
-        }
+        // }
 
     },[]);
 
-    const onTimer = () => {
-        const data = { id: login.uuid, suite: login.suite, cpf: login.cpf };
-        api.post('/api/entrar', data).then(response => {
-            console.log('/api/entrar:', response.data);
-            setLogin(response.data);
-            setTimer(!timer);
-        }).catch((error) => {
-            if (error.response) console.log(error.response.status);
-        });
-    }
+    // const onTimer = () => {
+    //     const data = { id: login.uuid, suite: login.suite, cpf: login.cpf };
+    //     api.post('/api/entrar', data).then(response => {
+    //         console.log('/api/entrar:', response.data);
+    //         setLogin(response.data);
+    //         setTimer(!timer);
+    //     }).catch((error) => {
+    //         if (error.response) console.log(error.response.status);
+    //     });
+    // }
 
     const MenuPrincipal = () => {
         return (
