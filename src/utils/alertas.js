@@ -27,7 +27,7 @@ export default function alerta({title, message, onYes, onNo, onOk}) {
         message: message,
         buttons: [
           {
-            label: 'Sim',
+            label: 'ok',
             onClick: () => {
                  if (typeof onYes === "function") onYes();
             }
