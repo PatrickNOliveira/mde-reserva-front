@@ -61,6 +61,28 @@ export default function Alarme() {
 
   },[]);
 
+  const notifyAlarmReceived = (alarm) => {
+    api.post(`/api/alarms/${login.uuid}/${alarm.suite}/${alarm.funcionario}`).then(response => {
+    });
+  }
+  
+  const showAlarmDialog = (alarm) => {
+    showingDialog = true;
+    toggle();
+    alerta({ 
+      title: alarm.suite > 0 ? `Suíte ${alarm.suite}` : 'Atenção!',
+      message: alarm.mensagem,
+      onOk: () => {
+        showingDialog = false;
+        notifyAlarmReceived(alarm);
+      }
+    });    
+  }
+
+  const isAlarmForMe = (alarm) => {
+    return (alarm.funcionario == login.funcionario_id) || (alarm.funcionario == 0);
+  }
+
   const onTimer = () => {
 
     if (showingDialog) {
@@ -69,18 +91,16 @@ export default function Alarme() {
     }
 
     api.get(`/api/alarms/${login.uuid}`).then(response => {
-      const data = response.data;
-      if (data.length == 0) return;
-      toggle();
-      showingDialog = true;
-      alerta({ 
-        title: 'Atenção!',
-        message: data.mensagem,
-        onYes: () => {
-          showingDialog = false;
+      const alarms = response.data;
+      for (var i = alarms.length; i--;) {
+        var alarm = alarms[i];
+        if (isAlarmForMe(alarm)) {
+          showAlarmDialog(alarm);
+          return;
         }
-      });
+      }
     });    
+
   }
   
   return '';

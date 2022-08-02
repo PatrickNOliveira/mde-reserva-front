@@ -1,7 +1,7 @@
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 
-export default function alerta({title, message, onYes, onNo}) {
+export default function alerta({title, message, onYes, onNo, onOk}) {
 
     if (!onYes && !onNo) {
 
@@ -11,7 +11,9 @@ export default function alerta({title, message, onYes, onNo}) {
         buttons: [
           {
             label: 'OK',
-            onClick: () => {}
+            onClick: () => {
+              if (typeof onOk === "function") onOk();
+            }
           }
         ]
       });
@@ -27,12 +29,12 @@ export default function alerta({title, message, onYes, onNo}) {
           {
             label: 'Sim',
             onClick: () => {
-                 if (onYes) onYes();
+                 if (typeof onYes === "function") onYes();
             }
           },{
             label: 'Não',
             onClick: () =>{
-                if (onNo) onNo();
+                if (typeof onNo === "function") onNo();
             }
           }
         ]
