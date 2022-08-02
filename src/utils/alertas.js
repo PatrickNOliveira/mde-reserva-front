@@ -25,16 +25,16 @@ export default function alerta({title, message, onYes, onNo}) {
         message: message,
         buttons: [
           {
-            label: 'Sim',
+            label: 'ok',
             onClick: () => {
                  if (onYes) onYes();
             }
-          },{
-            label: 'Não',
-            onClick: () =>{
-                if (onNo) onNo();
-            }
-          }
+          },//{
+            //label: 'Não',
+            //onClick: () =>{
+               // if (onNo) onNo();
+            //}
+          //}
         ]
     });
 
