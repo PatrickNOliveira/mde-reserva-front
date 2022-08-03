@@ -8,6 +8,7 @@ import api from '../services/api';
 import ListaItensCardapio from './ListaItensCardapio';
 import ListaItensCarrinho from './ListaItensCarrinho';
 import MostraCardapios from './MostraCardapios';
+import Alarme from './Alarme';
 
 //import '../styles/product.css';
 
@@ -161,6 +162,7 @@ export default function Cardapio() {
     const MostraGrupos = () => {
         return (
             <Grupo>
+                <Alarme />
                 {
                     grupos.map((g, i) => 
                         <div>
@@ -193,6 +195,7 @@ export default function Cardapio() {
         return (
 
             <div className="body">
+                <Alarme />
                 {
                     grupo ? <BtnGrupo />
                     : ''

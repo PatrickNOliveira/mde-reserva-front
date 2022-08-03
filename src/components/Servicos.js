@@ -6,6 +6,7 @@ import api from '../services/api';
 import styled from 'styled-components';
 import { shade } from 'polished';
 import alerta from '../utils/alertas';
+import Alarme from './Alarme';
 
 import { 
     getLogin,
@@ -202,6 +203,7 @@ export default function Servicos() {
             {
               ( apartamento && apartamento.SitAtual !== 'O' ) ? <AtualizaStatusSuite /> : <Apartamentos />
             }
+            <Alarme />
         </div>
     );
     

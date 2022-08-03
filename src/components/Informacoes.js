@@ -6,10 +6,11 @@ import { getLogin } from '../utils/utils-context';
 import { shade } from 'polished';
 import getPreco from '../utils/getPreco';
 import api from '../services/api';
+import Alarme from './Alarme';
 
 export default function Informacoes() {
 
-    const build   = '1.0.53';
+    const build   = '1.0.60';
     
     const { id }  = useParams();
     const history = useHistory();
@@ -69,7 +70,7 @@ export default function Informacoes() {
                     </CardContainer>
                   ) : ""
               }
-      
+              <Alarme />  
             </Container>
         );
     }
@@ -98,17 +99,17 @@ export default function Informacoes() {
     const InfoConta = () => {
         return (
             <InfoUsers>
-            <p>Diárias (+)</p>
-            <strong>{getPreco(login.diarias)}</strong>
-            <p>Extras (+)</p>
-            <strong>{getPreco(login.extras)}</strong>   
-            <p>Taxas (+)</p>
-            <strong>{getPreco(login.taxas)}</strong>   
-            <p style={{color: '#d0fa5b'}}>Antecipado (-)</p>
-            <strong>{getPreco(login.antecipado)}</strong>   
-            <p style={{color: '#ff9000'}}>Saldo (=)</p>
-            <strong>{getPreco(login.saldo)}</strong>   
-        </InfoUsers>
+                <p>Diárias (+)</p>
+                <strong>{getPreco(login.diarias)}</strong>
+                <p>Extras (+)</p>
+                <strong>{getPreco(login.extras)}</strong>   
+                <p>Taxas (+)</p>
+                <strong>{getPreco(login.taxas)}</strong>   
+                <p style={{color: '#d0fa5b'}}>Antecipado (-)</p>
+                <strong>{getPreco(login.antecipado)}</strong>   
+                <p style={{color: '#ff9000'}}>Saldo (=)</p>
+                <strong>{getPreco(login.saldo)}</strong>
+            </InfoUsers>
         )
 }
 
@@ -119,6 +120,7 @@ export default function Informacoes() {
                 <strong>{funcionario}</strong>
                 <p>Build</p>
                 <strong>{build}</strong>   
+                <Alarme />
             </InfoUsers>
         )
     }

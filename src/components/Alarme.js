@@ -62,16 +62,26 @@ export default function Alarme() {
   },[]);
 
   const notifyAlarmReceived = (alarm) => {
-    api.post(`/api/alarms/${login.uuid}/${alarm.suite}/${alarm.funcionario}`).then(response => {
+    api.post(`/api/alarm/${login.uuid}/${alarm.suite}/${alarm.funcionario}`).then(response => {
     });
   }
   
+  const getEmployee = (alarm) => {
+    if (alarm.funcionario == 0) return '';
+    return alarm.nome.trim().toUpperCase() + ', ';
+  };
+
+  const getMessage = (alarm) => {
+    return  alarm.mensagem.toLowerCase();
+  };
+
   const showAlarmDialog = (alarm) => {
     showingDialog = true;
+    const message = getEmployee(alarm) + getMessage(alarm);
     toggle();
     alerta({ 
       title: alarm.suite > 0 ? `Suíte ${alarm.suite}` : 'Atenção!',
-      message: alarm.mensagem,
+      message: message,
       onOk: () => {
         showingDialog = false;
         notifyAlarmReceived(alarm);
