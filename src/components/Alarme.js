@@ -29,6 +29,9 @@ const useAudio = () => {
 };
 
 export default function Alarme() {
+  return '';
+}
+function Alarme2() {
 
   const [playing, toggle] = useAudio();
   const [login] = useState(getLogin());
