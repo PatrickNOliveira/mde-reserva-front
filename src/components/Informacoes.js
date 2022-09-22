@@ -10,7 +10,7 @@ import Alarme from './Alarme';
 
 export default function Informacoes() {
 
-    const build   = '1.0.62';
+    const build   = '1.0.63';
     
     const { id }  = useParams();
     const history = useHistory();
