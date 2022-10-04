@@ -10,7 +10,7 @@ import Alarme from './Alarme';
 
 export default function Informacoes() {
 
-    const build   = '1.0.63';
+    const build   = '1.0.64';
     
     const { id }  = useParams();
     const history = useHistory();
@@ -23,7 +23,15 @@ export default function Informacoes() {
 
     useEffect(() => { 
         if (login == null) history.push({ pathname: `/entrar/${id}` });
-        
+
+        const data = { id: login.uuid, suite: login.suite, cpf: login.cpf };
+        api.post('/api/entrar', data).then(response => {
+            console.log('/api/entrar:', response.data);
+            setLogin(response.data);
+        }).catch((error) => {
+            if (error.response) console.log(error.response.status);
+        });
+
 //        let mounted = true;
         
         // TIMER = setInterval(function(){
@@ -42,7 +50,7 @@ export default function Informacoes() {
 
         // }
 
-    },[]);
+    },[opcao]);
 
     // const onTimer = () => {
     //     const data = { id: login.uuid, suite: login.suite, cpf: login.cpf };
@@ -84,7 +92,7 @@ export default function Informacoes() {
     }
 
     const onVoltarClick = () => {
-        if (opcao == "MENU") {
+        if (opcao === "MENU") {
             history.push({ pathname: `/menu/${id}` });
             return;
         }
