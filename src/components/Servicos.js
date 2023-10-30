@@ -12,6 +12,8 @@ import {
     getLogin,
     getConta,
 } from '../utils/utils-context';
+import { ExigirObsEPeriodo } from './ExigirObsEPeriodo';
+import e from 'cors';
 
 export default function Servicos() {
 
@@ -22,7 +24,8 @@ export default function Servicos() {
     const history = useHistory();
     const [ apartamentos, setApartamentos] = useState([]);
     const [ apartamento, setApartamento] = useState(null);
-
+    const [ PedirObservacao, setPedirObservacao ] = useState('N');
+    const [ PedirPeriodo, setPedirPeriodo ] = useState('N')
     var TIMER;
 
     useEffect(() => {
@@ -70,33 +73,85 @@ export default function Servicos() {
         setApartamento(ap);
     }
 
-    const onMudaStatusClick = (opcao) => {
-        
-        function mudaStatus(opcao) {
-            api.post(`/api/suite/status/${login.uuid}/${apartamento.id}/${opcao.id}`).then(response => {
-                setApartamento(null);
-                console.log(response.data);
-                onTimer();
-            });
+    function mudaStatus(opcao, obs, dtInicio, dtFim) {
+        api.post(`/api/suite/status/${login.uuid}/${apartamento.id}/${opcao.id}`, {
+            "obs": obs,
+            "dtInicio": dtInicio,
+            "dtFim": dtFim
+        }).then(response => {
+            setApartamento(null);
+            console.log(response.data);
+            onTimer();
+        }).catch(() => {
+            setApartamento(null);
+            onTimer();
+        });
+    }
+
+
+    const onMudaStatusClick = async(opcao) => {
+        async function obterSituacaoUH(opcao, apartamento) {
+            const dados = await api.get(`/api/suite/situacao/${login.uuid}/${apartamento.SitAtual}/${opcao.id}`)
+            console.log('dados', dados.data[0])
+            return {
+                PedirObservacao: dados.data[0][0].PedirObservacao,
+                PedirPeriodo: dados.data[0][0].PedirPeriodo
+            }
         }
 
-        console.log(apartamento);
-
+        const res = await obterSituacaoUH(opcao, apartamento);
+        console.log('Res:', res)
+        let obs = '';
+        let dtInicio = '';
+        let dtFim = '';
         if (!opcao.mensagem) {
-            mudaStatus(opcao);
+            mudaStatus(opcao, '', '', '');
             return;
         }
 
-        alerta({ 
-            title: 'Atenção!',
-            message: opcao.mensagem,
-            onYes: () => { 
-                mudaStatus(opcao);
-            }
-        });
+        if (res.PedirObservacao === 'N' && res.PedirPeriodo == 'N') {
+            alerta({ 
+                title: 'Atenção!',
+                message: opcao.mensagem,
+                onYes: () => { 
+                    mudaStatus(opcao, '', '', '');
+                }
+            });
+        } else if (res.PedirObservacao === 'S' && res.PedirPeriodo == 'S') {
+            alerta({ 
+                title: 'Atenção!',
+                message: <ExigirObsEPeriodo onChangeObs={(value) => {obs = value}} onChangeDtInicio={(value) => {dtInicio = value}} onChangeDtFim={(value) => {dtFim = value}} />,
+                onYes: () => { 
+                    mudaStatus(opcao, obs, dtInicio, dtFim);
+                }
+            });
+        } else if (res.PedirObservacao === 'N' && res.PedirPeriodo == 'S') {
+            console.log('Terceiro IF')
+            alerta({ 
+                title: 'Atenção!',
+                message: <h1>N E S</h1>,
+                onYes: () => { 
+                    mudaStatus(opcao);
+                }
+            });
+        } else if (res.PedirObservacao === 'S' && res.PedirPeriodo == 'N') {
+            console.log('Quarto IF')
+            alerta({ 
+                title: 'Atenção!',
+                message: <h1>S E N</h1>,
+                onYes: () => { 
+                    mudaStatus(opcao);
+                }
+            });
+        }
 
 
     }
+
+    useEffect(() => {
+        console.log('Pedir OBS', PedirObservacao)
+        console.log('Pedir Periodo', PedirPeriodo)
+    }, [PedirObservacao, PedirPeriodo])
 
     function AtualizaStatusSuite() {
         const status = conta.status_suites;
@@ -109,7 +164,7 @@ export default function Servicos() {
                             <CardContainer key={opcao.id}>
                                 <a href="#" 
                                     onClick={
-                                       () => { onMudaStatusClick(opcao) }
+                                       async () => { await onMudaStatusClick(opcao) }
                                     } className="requests">
                                     {opcao.descricao}
                                 </a>
