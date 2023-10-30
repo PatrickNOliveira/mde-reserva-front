@@ -17,13 +17,6 @@ export const ExigirObsEPeriodo = (props) => {
 <br/>
         <h3>Campos obrigatórios</h3>
         <br/>
-        <label>
-            Observações
-        </label>
-        <TextArea 
-              onChange={(event) => {props.onChangeObs(event.target.value)}}            
-            />
-              <br /> <br/>
 
 
         <label>
@@ -41,7 +34,14 @@ export const ExigirObsEPeriodo = (props) => {
         <Input 
               type='date'
               onChange={(event) => {props.onChangeDtFim(event.target.value)}}            
-              placeholder="Data de término"/>
+              placeholder="Data de término"/> <br/> <br/>
+              <label>
+            Observações
+        </label>
+
+<TextArea 
+              onChange={(event) => {props.onChangeObs(event.target.value)}}            
+            />
 
     </>
 }
