@@ -173,6 +173,10 @@ export default function AdicionaItem() {
                 setMesaAtual(mesa);
                 setSuiteAtual(suite);
                 onVoltarClick();
+            }).catch(e => {
+                setMesaAtual(mesa);
+                setSuiteAtual(suite);
+                onVoltarClick();
             });
         }
     

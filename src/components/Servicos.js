@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { BsArrowLeftShort } from "react-icons/bs";
-import { FaBell } from "react-icons/fa";
 import api from '../services/api';
 import styled from 'styled-components';
 import { shade } from 'polished';
@@ -13,7 +12,6 @@ import {
     getConta,
 } from '../utils/utils-context';
 import { ExigirObsEPeriodo } from './ExigirObsEPeriodo';
-import e from 'cors';
 
 export default function Servicos() {
 
@@ -24,8 +22,6 @@ export default function Servicos() {
     const history = useHistory();
     const [ apartamentos, setApartamentos] = useState([]);
     const [ apartamento, setApartamento] = useState(null);
-    const [ PedirObservacao, setPedirObservacao ] = useState('N');
-    const [ PedirPeriodo, setPedirPeriodo ] = useState('N')
     var TIMER;
 
     useEffect(() => {
@@ -147,11 +143,6 @@ export default function Servicos() {
 
 
     }
-
-    useEffect(() => {
-        console.log('Pedir OBS', PedirObservacao)
-        console.log('Pedir Periodo', PedirPeriodo)
-    }, [PedirObservacao, PedirPeriodo])
 
     function AtualizaStatusSuite() {
         const status = conta.status_suites;
