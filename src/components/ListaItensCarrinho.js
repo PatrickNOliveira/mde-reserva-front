@@ -165,7 +165,13 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio, onFinaliz
                         onCarrinhoVazio();
                         onFinalizaPedido();
                     }
-                );
+                ).catch(() => {
+                    setApartamentoAtual(null);
+                    //setCarrinho(response.data);
+                    setMesaAtual(null);
+                    onCarrinhoVazio();
+                    onFinalizaPedido();
+                });
             }
         });        
 
