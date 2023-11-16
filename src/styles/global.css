@@ -290,6 +290,20 @@ body, input, button, textarea {
   width: 300px;
 }
 
+.consultar-historico {
+  margin-top: 0;
+  margin: 20px;
+  padding: 10px;
+  color: #000000 !important;
+  cursor: pointer;
+  background: #4ef7b1;
+  border-radius: 5px;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  width: 300px;
+}
+
 .continuar-item {
   padding: 10px;
   background: #e73f3f;

@@ -6,12 +6,14 @@ import getPreco from '../utils/getPreco'
 import api from '../services/api';
 import Counter from './Counter';
 import styled from 'styled-components';
+import {ListaHistoricoApartamento} from './ListaHistoricoApartamento'
 
 import { getLogin, getConta, setLogin, getHost, 
          getMesaAtual, setMesaAtual, 
          getSuiteAtual, setSuiteAtual, contaEncerrada,
          getCardapioAtual, setApartamentoAtual, getApartamentoAtual
 } from '../utils/utils-context';
+import alerta from '../utils/alertas';
 
 export default function AdicionaItem() {
 
@@ -53,11 +55,12 @@ export default function AdicionaItem() {
     const [ mesa, setMesa ] = useState(getMesaAtual());
     const [ suite, setSuite ] = useState(getSuiteAtual());
     const [ adicionado, setAdicionado ] = useState(false);
+    const [historico, setHistorico] = useState([])
 
     const [ apartamento , setApartamento ] = useState(getApartamentoAtual().id);
 
     const [ detalheItem, setDetalheItem ] = useState(
-        (produto.nota || produto.imagem) && !login.login
+        (produto?.nota || produto?.imagem) && !login.login
     );
     
     const [ apartamentos, setApartamentos ] = useState([]);
@@ -76,6 +79,7 @@ export default function AdicionaItem() {
     }
 
     const onApartamentoClick = (ap) => {
+        setSuite(ap.id);
         setApartamentoAtual(ap);
         setApartamento(ap.id);
         setBuscaApartamentos(false);
@@ -90,7 +94,7 @@ export default function AdicionaItem() {
                             <a className="botao-apartamento" 
                                 key={i}
                                 href="#" 
-                                onClick={ () => onApartamentoClick(ap) } 
+                                onClick={ () => {onApartamentoClick(ap)} } 
                                 style={{color:'black'}}>{ap.id}
                             </a> 
                     )
@@ -111,14 +115,14 @@ export default function AdicionaItem() {
         return (
             <Container>
                 <ImgContainer>
-                    <img src={produto.imagem} alt="foto" />
+                    <img src={produto?.imagem} alt="foto" />
                 </ImgContainer>
                 <div className="container-product-detail">
                     <h2 style={{ fontSize: 20, marginTop: 30, textAlign: 'center' }}>
                         {produto.descricao}
                     </h2>
                     <h2 style={{fontSize: 15, marginTop: 20, marginBottom: 20}}> 
-                        {produto.nota}
+                        {produto?.nota}
                     </h2>
                 </div>
                 <a  className="continuar-item" 
@@ -179,6 +183,16 @@ export default function AdicionaItem() {
                 onVoltarClick();
             });
         }
+        
+        const onConsultaHistorico = () => {
+            alerta({ 
+                title: 'Histórico',
+                message: <><ListaHistoricoApartamento id={id} apartamento={suite} /></>,
+                onOk: () => { 
+                    console.log('Confirmar')
+                }
+            })
+        }
     
         return (
             <div className="body">
@@ -233,11 +247,17 @@ export default function AdicionaItem() {
                         */
                     }
 
+                    <a  className="consultar-historico" 
+                        href="#" 
+                        onClick={onConsultaHistorico} 
+                        style={{color:'white'}}>Consultar histórico
+                    </a> 
+
                     <a  className="adicionar-item" 
                         href="#" 
                         onClick={onAdicionaItem} 
                         style={{color:'white'}}>Adicionar
-                    </a>   
+                    </a>  
 
                 </div>
             </div>
@@ -246,6 +266,7 @@ export default function AdicionaItem() {
     }
 
     const descricao = apartamento == 0 ? 'Selecione apartamento' : 'Apartamento ' + apartamento;
+
 
     return (
         <div className="rooms">

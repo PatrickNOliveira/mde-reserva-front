@@ -19,7 +19,6 @@ export default function alerta({title, message, onYes, onNo, onOk}) {
       });
   
       return;
-
     }
 
     confirmAlert({
