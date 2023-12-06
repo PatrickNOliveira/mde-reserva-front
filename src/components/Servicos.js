@@ -12,6 +12,9 @@ import {
     getConta,
 } from '../utils/utils-context';
 import { ExigirObsEPeriodo } from './ExigirObsEPeriodo';
+import { ExigirObs } from './ExigirObs';
+import moment from 'moment';
+import { ExigirPeriodo } from './ExigirPeriodo';
 
 export default function Servicos() {
 
@@ -72,8 +75,8 @@ export default function Servicos() {
     function mudaStatus(opcao, obs, dtInicio, dtFim) {
         api.post(`/api/suite/status/${login.uuid}/${apartamento.id}/${opcao.id}`, {
             "obs": obs,
-            "dtInicio": dtInicio,
-            "dtFim": dtFim
+            "dtInicio": dtInicio && dtInicio?.length > 0 ? dtInicio : moment().format('YYYY-MM-DD'),
+            "dtFim": dtFim && dtFim?.length > 0 ? dtFim : moment().format('YYYY-MM-DD'),
         }).then(response => {
             setApartamento(null);
             console.log(response.data);
@@ -88,15 +91,13 @@ export default function Servicos() {
     const onMudaStatusClick = async(opcao) => {
         async function obterSituacaoUH(opcao, apartamento) {
             const dados = await api.get(`/api/suite/situacao/${login.uuid}/${apartamento.SitAtual}/${opcao.id}`)
-            console.log('dados', dados.data[0])
             return {
-                PedirObservacao: dados.data[0][0].PedirObservacao,
-                PedirPeriodo: dados.data[0][0].PedirPeriodo
+                PedirObservacao: dados?.data?.length > 0 && dados?.data[0]?.length > 0 ? dados?.data[0][0]?.PedirObservacao : 'N',
+                PedirPeriodo: dados?.data?.length > 0 && dados?.data[0]?.length > 0 ? dados?.data[0][0]?.PedirPeriodo : 'N'
             }
         }
 
         const res = await obterSituacaoUH(opcao, apartamento);
-        console.log('Res:', res)
         let obs = '';
         let dtInicio = '';
         let dtFim = '';
@@ -105,7 +106,9 @@ export default function Servicos() {
             return;
         }
 
-        if (res.PedirObservacao === 'N' && res.PedirPeriodo == 'N') {
+        if ((res?.PedirObservacao === 'N') && res?.PedirPeriodo == 'N') {
+            console.log('Entrou aqui')
+            console.log('Opção', opcao.mensagem)
             alerta({ 
                 title: 'Atenção!',
                 message: opcao.mensagem,
@@ -122,21 +125,19 @@ export default function Servicos() {
                 }
             });
         } else if (res.PedirObservacao === 'N' && res.PedirPeriodo == 'S') {
-            console.log('Terceiro IF')
             alerta({ 
                 title: 'Atenção!',
-                message: <h1>N E S</h1>,
+                message: <ExigirPeriodo onChangeDtInicio={(value) => {dtInicio = value}} onChangeDtFim={(value) => {dtFim = value}} />,
                 onYes: () => { 
                     mudaStatus(opcao);
                 }
             });
         } else if (res.PedirObservacao === 'S' && res.PedirPeriodo == 'N') {
-            console.log('Quarto IF')
             alerta({ 
                 title: 'Atenção!',
-                message: <h1>S E N</h1>,
+                message: <ExigirObs onChangeObs={(value) => {obs = value}} />,
                 onYes: () => { 
-                    mudaStatus(opcao);
+                    mudaStatus(opcao, obs);
                 }
             });
         }
