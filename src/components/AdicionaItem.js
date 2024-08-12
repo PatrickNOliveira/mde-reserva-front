@@ -136,13 +136,18 @@ export default function AdicionaItem() {
     }
 
     const AdicionaItem = () => {
-
+        const [listaObs, setListaObs] = useState([])
         const [ quant, setQuant ] = useState(1);
         const [ nota, setNota ] = useState('');
     
         const atualizaQuantidade = (value) => {
             var q = quant + value;
             setQuant(q > 0 ? q : 1);
+        }
+        const obterListaObs = async () => {
+            console.log('Executei !!')
+            const response = await api.get(`/api/lista-obs/${login.uuid}`)
+            setListaObs(response.data)
         }
     
         const onAdicionaItem = () => {
@@ -172,6 +177,8 @@ export default function AdicionaItem() {
                 quantidade: quant, 
                 nota: nota,
                 hospede: login.NrHospede ?? apartamento.NrHospede,
+                paraDescricao: nota,
+                paraValor: 0,
                 cardapio: cardapio.id
             }).then(response => {
                 setMesaAtual(mesa);
@@ -193,38 +200,43 @@ export default function AdicionaItem() {
                 }
             })
         }
-    
+        useEffect(() => {
+            obterListaObs()
+        }, [])
         return (
             <div className="body">
 
                 <div className="container-product-info">
-    
+
                     <h2 style={{ fontSize: 20, marginTop: '60px', textAlign: 'center' }}>
                         {produto.descricao}
                     </h2>
 
                     <h2 style={{
-                        fontSize:25, 
-                        color: 'lightgreen', 
-                        marginTop: '30px', 
+                        fontSize:25,
+                        color: 'lightgreen',
+                        marginTop: '30px',
                         textAlign: 'center'}}>
                         {getPreco(produto.preco * quant)}
                     </h2>
 
                     <Counter value={quant} onUpdate={atualizaQuantidade} />
-                    
-                    <textarea className="nota"
-                        type="text" 
-                        value={nota} 
-                        placeholder="Observações"
-                        onChange={(event) => { setNota(event.target.value) }} />
+
+                    <select className="nota" value={nota} onChange={(event) => { setNota(event.target.value) }}>
+                        <option value={""}>Observações</option>
+                        {
+                            listaObs.map(l => (
+                                <option key={l.id}>{l.ObsPrato}</option>
+                            ))
+                        }
+                    </select>
 
                     {
                         conta.sistema === 'WINRESTA' ? (
                             <div>
-                                <input 
+                                <input
                                     className="mesa"
-                                    type="text" 
+                                    type="text"
                                     value={mesa}
                                     onChange={(event) => {setMesa(event.target.value)}}
                                     placeholder="Mesa" />
@@ -247,17 +259,17 @@ export default function AdicionaItem() {
                         */
                     }
 
-                    <a  className="consultar-historico" 
-                        href="#" 
-                        onClick={onConsultaHistorico} 
+                    <a  className="consultar-historico"
+                        href="#"
+                        onClick={onConsultaHistorico}
                         style={{color:'white'}}>Consultar histórico
-                    </a> 
+                    </a>
 
-                    <a  className="adicionar-item" 
-                        href="#" 
-                        onClick={onAdicionaItem} 
+                    <a  className="adicionar-item"
+                        href="#"
+                        onClick={onAdicionaItem}
                         style={{color:'white'}}>Adicionar
-                    </a>  
+                    </a>
 
                 </div>
             </div>
@@ -266,7 +278,7 @@ export default function AdicionaItem() {
     }
 
     const descricao = apartamento == 0 ? 'Selecione apartamento' : 'Apartamento ' + apartamento;
-
+    const dadosAp = getApartamentoAtual();
 
     return (
         <div className="rooms">
@@ -286,6 +298,7 @@ export default function AdicionaItem() {
                             <span className="tipo_cardapio">{descricao}</span>
                         : ''
                     }
+                    <span className="nome_hospede">{dadosAp.NomeHospede}</span>
                 </div>                    
             </div>
             {

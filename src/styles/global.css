@@ -612,3 +612,9 @@ body, input, button, textarea {
   padding: 20px 60px 10px 60px;
 }
 
+.nome_hospede {
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  color: #fd3e29;
+}

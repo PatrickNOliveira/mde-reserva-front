@@ -34,20 +34,20 @@ const EntrarWINLETOM = () => {
   return(
     <Container>
         <Content>
-        <img src={`${host}/api/logo/${conta.codigo}`}  alt="logo" />
+        <img src={`${host}/api/logo/${conta?.codigo}`}  alt="logo" />
         <form>
             <h1>Entrar</h1>
             {
-              conta.ativo === 'N' ? <p style={{ color: 'orange' }}>Serviço temporariamente for do ar!</p> : ''
+              conta?.ativo === 'N' ? <p style={{ color: 'orange' }}>Serviço temporariamente for do ar!</p> : ''
             }
             <input 
               value={suite} 
-              disabled={conta.ativo === 'N'}
+              disabled={conta?.ativo === 'N'}
               onChange={(event) => {setSuite(event.target.value)}}            
               placeholder="Suíte nº"/>
             <input 
               value={cpf} 
-              disabled={conta.ativo === 'N'}
+              disabled={conta?.ativo === 'N'}
               onChange={(event) => {setCPF(event.target.value)}}            
               placeholder="Documento (somente dígitos)"/>
 
@@ -55,7 +55,7 @@ const EntrarWINLETOM = () => {
 
                 event.preventDefault();
               
-                if (conta.ativo === 'N') {
+                if (conta?.ativo === 'N') {
                   history.push({ pathname: `/${id}/${Date.now()}` });
                   return;
                 }
@@ -87,7 +87,7 @@ const EntrarWINLETOM = () => {
                 
             }}>
               {
-                conta.ativo === 'S' ? 'Entrar' : 'Voltar' 
+                conta?.ativo === 'S' ? 'Entrar' : 'Voltar'
               }
               </button>
 
@@ -117,7 +117,7 @@ const EntrarWINRESTA = () => {
     return(
     <Container>
         <Content>
-        <img src={`${host}/api/logo/${conta.codigo}`}  alt="logo" />
+        <img src={`${host}/api/logo/${conta?.codigo}`}  alt="logo" />
         <form>
             <h1>Entrar</h1>
             <input 
@@ -127,9 +127,9 @@ const EntrarWINRESTA = () => {
               placeholder="Senha"/>
             <button onClick={(event) => {
                 event.preventDefault();
-                api.post('/api/entrar', { 
+                api.post('/api/entrar', {
                   id: id,
-                  login: usuario, 
+                  login: usuario,
                   senha: senha,
                 }).then(response => {
                   console.log('Login:', response.data);
@@ -154,7 +154,7 @@ const EntrarWINLETOH = () => {
   return (
     <Container>
         <Content>
-          <img src={`${host}/api/logo/${conta.codigo}`}  alt="logo" />
+          <img src={`${host}/api/logo/${conta?.codigo}`}  alt="logo" />
         </Content>
     </Container>
   )
@@ -174,19 +174,19 @@ export default function Entrar() {
   useEffect(() => {
     setCardapioAtual(null);
     setSuiteAtual(null);
-    document.title = conta.hotel;
+    document.title = conta?.hotel;
   },[]);
 
   return <EntrarWINLETOM />;
   
   return (
-    (conta.sistema == 'WINRESTA' || colab) ? ( <EntrarWINRESTA /> ) : (<EntrarWINLETOM />)
+    (conta?.sistema == 'WINRESTA' || colab) ? ( <EntrarWINRESTA /> ) : (<EntrarWINLETOM />)
   )
 
 }
 
-//    conta.sistema === 'WINLETOM' ? ( <EntrarWINLETOM /> ) : (
-//  conta.sistema === 'WINRESTA' ? ( <EntrarWINRESTA /> ) : ( <EntrarWINLETOM /> )
+//    conta?.sistema === 'WINLETOM' ? ( <EntrarWINLETOM /> ) : (
+//  conta?.sistema === 'WINRESTA' ? ( <EntrarWINRESTA /> ) : ( <EntrarWINLETOM /> )
 //  )
 
 
