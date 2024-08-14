@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useHistory, useParams } from 'react-router-dom';
-import { BsArrowLeftShort } from "react-icons/bs";
-import { FaBed } from "react-icons/fa";
+import React, {useEffect, useState} from 'react';
+import {Link, useLocation, useHistory, useParams} from 'react-router-dom';
+import {BsArrowLeftShort} from "react-icons/bs";
+import {FaBed} from "react-icons/fa";
 import getPreco from '../utils/getPreco'
 import api from '../services/api';
 import Counter from './Counter';
 import styled from 'styled-components';
 import {ListaHistoricoApartamento} from './ListaHistoricoApartamento'
 
-import { getLogin, getConta, setLogin, getHost, 
-         getMesaAtual, setMesaAtual, 
-         getSuiteAtual, setSuiteAtual, contaEncerrada,
-         getCardapioAtual, setApartamentoAtual, getApartamentoAtual
+import {
+    getLogin, getConta, setLogin, getHost,
+    getMesaAtual, setMesaAtual,
+    getSuiteAtual, setSuiteAtual, contaEncerrada,
+    getCardapioAtual, setApartamentoAtual, getApartamentoAtual
 } from '../utils/utils-context';
 import alerta from '../utils/alertas';
 
@@ -20,58 +21,58 @@ export default function AdicionaItem() {
     const isCheckout = () => {
         if (contaEncerrada(login)) {
             setLogin(null);
-            history.push({ pathname: `/${id}` });
+            history.push({pathname: `/${id}`});
             return true;
         }
     }
 
     useEffect(() => {
         //if (login == null) history.push({ pathname: `/entrar/${id}` });
-        if (login == null) history.push({ pathname: `/${id}` });
+        if (login == null) history.push({pathname: `/${id}`});
         if (isCheckout()) return;
         if (!login.login) return;
         api.get(`/api/rooms/${login.uuid}`).then(response => {
             const data = response.data.filter(i => {
-                   return i.SitAtual == 'O';
+                return i.SitAtual == 'O';
             });
             setApartamentos(
-                data.sort((a,b) => {
+                data.sort((a, b) => {
                     return (a.id < b.id) ? -1 : 1;
                 })
             );
         });
 
-    },[]);
+    }, []);
 
-    const { id }  = useParams();
+    const {id} = useParams();
     const [login] = useState(getLogin());
     const [conta] = useState(getConta());
 
-    const { item } = useLocation();
+    const {item} = useLocation();
 
     const history = useHistory();
-    
-    const [ produto ] = useState(item);
-    const [ mesa, setMesa ] = useState(getMesaAtual());
-    const [ suite, setSuite ] = useState(getSuiteAtual());
-    const [ adicionado, setAdicionado ] = useState(false);
+
+    const [produto] = useState(item);
+    const [mesa, setMesa] = useState(getMesaAtual());
+    const [suite, setSuite] = useState(getSuiteAtual());
+    const [adicionado, setAdicionado] = useState(false);
     const [historico, setHistorico] = useState([])
 
-    const [ apartamento , setApartamento ] = useState(getApartamentoAtual().id);
+    const [apartamento, setApartamento] = useState(getApartamentoAtual().id);
 
-    const [ detalheItem, setDetalheItem ] = useState(
+    const [detalheItem, setDetalheItem] = useState(
         (produto?.nota || produto?.imagem) && !login.login
     );
-    
-    const [ apartamentos, setApartamentos ] = useState([]);
-    const [ buscaApartamentos, setBuscaApartamentos ] = useState(
+
+    const [apartamentos, setApartamentos] = useState([]);
+    const [buscaApartamentos, setBuscaApartamentos] = useState(
         login.login ? getApartamentoAtual().id === 0 : false
     );
 
     const host = getHost();
 
     const onVoltarClick = () => {
-        history.push({ pathname: `/cardapio/${id}`, busca: false });     
+        history.push({pathname: `/cardapio/${id}`, busca: false});
     }
 
     const onBuscaApartamentoClick = () => {
@@ -90,13 +91,15 @@ export default function AdicionaItem() {
         return (
             <Apartamento>
                 {
-                    apartamentos.map((ap, i) => 
-                            <a className="botao-apartamento" 
-                                key={i}
-                                href="#" 
-                                onClick={ () => {onApartamentoClick(ap)} } 
-                                style={{color:'black'}}>{ap.id}
-                            </a> 
+                    apartamentos.map((ap, i) =>
+                        <a className="botao-apartamento"
+                           key={i}
+                           href="#"
+                           onClick={() => {
+                               onApartamentoClick(ap)
+                           }}
+                           style={{color: 'black'}}>{ap.id}
+                        </a>
                     )
                 }
             </Apartamento>
@@ -115,53 +118,54 @@ export default function AdicionaItem() {
         return (
             <Container>
                 <ImgContainer>
-                    <img src={produto?.imagem} alt="foto" />
+                    <img src={produto?.imagem} alt="foto"/>
                 </ImgContainer>
                 <div className="container-product-detail">
-                    <h2 style={{ fontSize: 20, marginTop: 30, textAlign: 'center' }}>
+                    <h2 style={{fontSize: 20, marginTop: 30, textAlign: 'center'}}>
                         {produto.descricao}
                     </h2>
-                    <h2 style={{fontSize: 15, marginTop: 20, marginBottom: 20}}> 
+                    <h2 style={{fontSize: 15, marginTop: 20, marginBottom: 20}}>
                         {produto?.nota}
                     </h2>
                 </div>
-                <a  className="continuar-item" 
-                    href="#" 
-                    onClick={onContinuarClick} 
-                    style={{color:'white'}}>Continuar
+                <a className="continuar-item"
+                   href="#"
+                   onClick={onContinuarClick}
+                   style={{color: 'white'}}>Continuar
                 </a>
-                <br />
+                <br/>
             </Container>
         )
     }
 
     const AdicionaItem = () => {
         const [listaObs, setListaObs] = useState([])
-        const [ quant, setQuant ] = useState(1);
-        const [ nota, setNota ] = useState('');
-    
+        const [quant, setQuant] = useState(1);
+        const [nota, setNota] = useState('');
+        const [mostrarTextArea, setMostrarTextArea] = useState(false);
+        const [obs, setObs] = useState('');
+
         const atualizaQuantidade = (value) => {
             var q = quant + value;
             setQuant(q > 0 ? q : 1);
         }
         const obterListaObs = async () => {
-            console.log('Executei !!')
             const response = await api.get(`/api/lista-obs/${login.uuid}`)
             setListaObs(response.data)
         }
-    
+
         const onAdicionaItem = () => {
-        
+
             if (isCheckout()) return;
-    
+
             if (adicionado) return;
-            
+
             setAdicionado(true);
-            
+
             const cardapio = getCardapioAtual();
             const apartamento = getApartamentoAtual();
 
-            api.post('/api/order', { 
+            api.post('/api/order', {
                 uuid: id,
                 mesa: mesa ?? null,
                 funcionario: login.login,
@@ -171,11 +175,11 @@ export default function AdicionaItem() {
                 codigo: produto.codigo,
                 descricao: produto.descricao,
                 foto: produto.foto,
-                produto_id: produto.id, 
-                preco: produto.preco, 
-                tipo:produto.tipo,
-                quantidade: quant, 
-                nota: nota,
+                produto_id: produto.id,
+                preco: produto.preco,
+                tipo: produto.tipo,
+                quantidade: quant,
+                nota: obs,
                 hospede: login.NrHospede ?? apartamento.NrHospede,
                 paraDescricao: nota,
                 paraValor: 0,
@@ -190,12 +194,12 @@ export default function AdicionaItem() {
                 onVoltarClick();
             });
         }
-        
+
         const onConsultaHistorico = () => {
-            alerta({ 
+            alerta({
                 title: 'Histórico',
-                message: <><ListaHistoricoApartamento id={id} apartamento={suite} /></>,
-                onOk: () => { 
+                message: <><ListaHistoricoApartamento id={id} apartamento={suite}/></>,
+                onOk: () => {
                     console.log('Confirmar')
                 }
             })
@@ -208,21 +212,25 @@ export default function AdicionaItem() {
 
                 <div className="container-product-info">
 
-                    <h2 style={{ fontSize: 20, marginTop: '60px', textAlign: 'center' }}>
+                    <h2 style={{fontSize: 20, marginTop: '60px', textAlign: 'center'}}>
                         {produto.descricao}
                     </h2>
 
                     <h2 style={{
-                        fontSize:25,
+                        fontSize: 25,
                         color: 'lightgreen',
                         marginTop: '30px',
-                        textAlign: 'center'}}>
+                        textAlign: 'center'
+                    }}>
                         {getPreco(produto.preco * quant)}
                     </h2>
 
-                    <Counter value={quant} onUpdate={atualizaQuantidade} />
+                    <Counter value={quant} onUpdate={atualizaQuantidade}/>
 
-                    <select className="nota" value={nota} onChange={(event) => { setNota(event.target.value) }}>
+                    <select className="nota" value={nota} onChange={(event) => {
+                        setNota(event.target.value)
+                        setMostrarTextArea(event.target.value.toLowerCase() === 'Outros'.toLowerCase())
+                    }}>
                         <option value={""}>Observações</option>
                         {
                             listaObs.map(l => (
@@ -230,6 +238,12 @@ export default function AdicionaItem() {
                             ))
                         }
                     </select>
+                    {mostrarTextArea && <>
+                        <label>Descreva</label>
+                        <textarea className="nota" onChange={(e) => setObs(e.target.value)} value={obs}>
+                        </textarea>
+                    </>
+                    }
 
                     {
                         conta.sistema === 'WINRESTA' ? (
@@ -238,8 +252,10 @@ export default function AdicionaItem() {
                                     className="mesa"
                                     type="text"
                                     value={mesa}
-                                    onChange={(event) => {setMesa(event.target.value)}}
-                                    placeholder="Mesa" />
+                                    onChange={(event) => {
+                                        setMesa(event.target.value)
+                                    }}
+                                    placeholder="Mesa"/>
                             </div>
                         ) : ('')
                     }
@@ -259,16 +275,16 @@ export default function AdicionaItem() {
                         */
                     }
 
-                    <a  className="consultar-historico"
-                        href="#"
-                        onClick={onConsultaHistorico}
-                        style={{color:'white'}}>Consultar histórico
+                    <a className="consultar-historico"
+                       href="#"
+                       onClick={onConsultaHistorico}
+                       style={{color: 'white'}}>Consultar histórico
                     </a>
 
-                    <a  className="adicionar-item"
-                        href="#"
-                        onClick={onAdicionaItem}
-                        style={{color:'white'}}>Adicionar
+                    <a className="adicionar-item"
+                       href="#"
+                       onClick={onAdicionaItem}
+                       style={{color: 'white'}}>Adicionar
                     </a>
 
                 </div>
@@ -283,27 +299,27 @@ export default function AdicionaItem() {
     return (
         <div className="rooms">
             <div className="header">
-                <div  className="header-content">
-                    <BsArrowLeftShort onClick={onVoltarClick} className="seta" type="button"  /> 
+                <div className="header-content">
+                    <BsArrowLeftShort onClick={onVoltarClick} className="seta" type="button"/>
                     {
                         login.login ?
-                            <FaBed onClick={onBuscaApartamentoClick} className="cama" type="button"  /> 
+                            <FaBed onClick={onBuscaApartamentoClick} className="cama" type="button"/>
                             : ''
                     }
                 </div>
                 <div>
                     <span className="nome_cardapio">Adicionar Item</span>
                     {
-                        login.login ? 
+                        login.login ?
                             <span className="tipo_cardapio">{descricao}</span>
-                        : ''
+                            : ''
                     }
                     <span className="nome_hospede">{dadosAp.NomeHospede}</span>
-                </div>                    
+                </div>
             </div>
             {
-                buscaApartamentos ? <MostraApartamentos /> :
-                (detalheItem ? <DetalheItem /> : <AdicionaItem />)
+                buscaApartamentos ? <MostraApartamentos/> :
+                    (detalheItem ? <DetalheItem/> : <AdicionaItem/>)
             }
         </div>
     );
@@ -311,10 +327,10 @@ export default function AdicionaItem() {
 }
 
 const Container = styled.div`
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  height: 80vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 80vh;
 `;
 
 const ImgContainer = styled.div`
@@ -324,7 +340,7 @@ const Apartamento = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     margin-top: 40px;
-  `;
+`;
 
 /*
                     {
