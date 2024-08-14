@@ -144,6 +144,8 @@ export default function AdicionaItem() {
         const [nota, setNota] = useState('');
         const [mostrarTextArea, setMostrarTextArea] = useState(false);
         const [obs, setObs] = useState('');
+        const [paraDescricaoProd, setParaDescricaoProd] = useState('')
+        const [paraValorProd, setParaValorProd] = useState(0)
 
         const atualizaQuantidade = (value) => {
             var q = quant + value;
@@ -153,6 +155,11 @@ export default function AdicionaItem() {
             const response = await api.get(`/api/lista-obs/${login.uuid}`)
             setListaObs(response.data)
         }
+
+        useEffect(() => {
+            setParaDescricaoProd(produto.descricao)
+            setParaValorProd(produto.preco * quant)
+        }, [produto])
 
         const onAdicionaItem = () => {
 
@@ -179,10 +186,10 @@ export default function AdicionaItem() {
                 preco: produto.preco,
                 tipo: produto.tipo,
                 quantidade: quant,
-                nota: obs,
+                nota: !!obs && obs?.length > 0 ? obs : nota,
                 hospede: login.NrHospede ?? apartamento.NrHospede,
-                paraDescricao: nota,
-                paraValor: 0,
+                paraDescricao: paraDescricaoProd,
+                paraValor: paraValorProd,
                 cardapio: cardapio.id
             }).then(response => {
                 setMesaAtual(mesa);
@@ -207,23 +214,62 @@ export default function AdicionaItem() {
         useEffect(() => {
             obterListaObs()
         }, [])
+        useEffect(() => {
+            if (mostrarTextArea === false) {
+                setObs('')
+            }
+        }, [mostrarTextArea])
         return (
             <div className="body">
 
                 <div className="container-product-info">
 
-                    <h2 style={{fontSize: 20, marginTop: '60px', textAlign: 'center'}}>
-                        {produto.descricao}
-                    </h2>
+                    {
+                        !produto.paraDescricao &&
+                        <h2 style={{fontSize: 20, marginTop: '60px', textAlign: 'center'}}>
+                            {produto.descricao}
+                        </h2>
+                    }
 
-                    <h2 style={{
-                        fontSize: 25,
-                        color: 'lightgreen',
-                        marginTop: '30px',
-                        textAlign: 'center'
-                    }}>
-                        {getPreco(produto.preco * quant)}
-                    </h2>
+                    {
+                        !!produto.paraDescricao && <>
+                            <label style={{fontSize: 20, marginTop: '60px', textAlign: 'center'}}>
+                                Produto
+                            </label>
+                            <input className="nota" type="text" value={paraDescricaoProd} onChange={(e) => {
+                                setParaDescricaoProd(e.target.value)
+                            }}/>
+                        </>
+                    }
+
+                    {
+                        !produto.paraValor &&
+                        <h2 style={{
+                            fontSize: 25,
+                            color: 'lightgreen',
+                            marginTop: '30px',
+                            textAlign: 'center'
+                        }}>
+                            {getPreco(produto.preco * quant)}
+                        </h2>
+                    }
+
+                    {
+                        produto.paraValor &&
+                        <>
+                            <label style={{
+                                fontSize: 25,
+                                color: 'lightgreen',
+                                marginTop: '30px',
+                                textAlign: 'center'
+                            }}>
+                                Valor
+                            </label>
+                            <input className="nota" type="number" step={0.01} value={paraValorProd} onChange={(e) => {
+                                setParaValorProd(e.target.value)
+                            }}/>
+                        </>
+                    }
 
                     <Counter value={quant} onUpdate={atualizaQuantidade}/>
 
@@ -264,9 +310,9 @@ export default function AdicionaItem() {
                         /*
                         login.perfil === 'camareira' ? (
                             <div>
-                                <input 
+                                <input
                                     className="mesa"
-                                    type="text" 
+                                    type="text"
                                     value={suite}
                                     onChange={(event) => {setSuite(event.target.value)}}
                                     placeholder="Suite" />
