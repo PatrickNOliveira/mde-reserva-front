@@ -1,89 +1,108 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory, useParams, useLocation } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {useHistory, useParams, useLocation} from "react-router-dom";
 import styled from 'styled-components';
-import { shade } from 'polished';
-import { getLogin, getConta, getHost } from '../utils/utils-context';
+import {shade} from 'polished';
+import {getLogin, getConta, getHost, getApartamentoAtual} from '../utils/utils-context';
 
 import Alarme from './Alarme';
+import api from "../services/api";
 
 const MenuWINLETOM = () => {
 
-  const { id }  = useParams();
-  const history = useHistory();
-  
-  const [conta] = useState(getConta());
-  const [login] = useState(getLogin());
+    const {id} = useParams();
+    const history = useHistory();
 
-  const host = getHost();
+    const [conta] = useState(getConta());
+    const [login] = useState(getLogin());
 
-  const onCardapioClick = () => {
-    history.push({ pathname: `/cardapio/${id}`, busca: true });
-  }
+    const host = getHost();
 
-  const onPedidosClick = () => {
-    history.push({ pathname: `/pedidos/${id}` });
-  }
+    const onCardapioClick = () => {
+        history.push({pathname: `/cardapio/${id}`, busca: true});
+    }
 
-  const onInformacoesClick = () => {
-    history.push({ pathname: `/informacoes/${id}` });
-  }
+    const onPedidosClick = () => {
+        history.push({pathname: `/pedidos/${id}`});
+    }
 
-  const onServicoClick = () => {
-    history.push({ pathname: `/servicos/${id}` });
-  }
+    const onInformacoesClick = () => {
+        history.push({pathname: `/informacoes/${id}`});
+    }
 
-  // const onNotificacoesClick = () => {
-  //   history.push({ pathname: `/notificacoes/${id}`, origin: 'menu' });
-  // }
+    const onServicoClick = () => {
+        history.push({pathname: `/servicos/${id}`});
+    }
 
-  const onApartamentosClick = () => {
-    history.push({ pathname: `/apartamentos/${id}` });
-  }
+    const onAbrirMesa = async () => {
+        try {
+            await api.patch(`/api/abre-mesa/${id}/${getApartamentoAtual().id}`)
+        } catch (e) {
+            console.log(e)
+        } finally {
+            alert('Mesa aberta com sucesso!')
+        }
+    }
 
-  const onSairClick = () => {
-    localStorage.setItem('login', null);
-    history.push({ pathname: `/${id}` });
-  }
-  
-  // https://api-sistema-mde.herokuapp.com
+    // const onNotificacoesClick = () => {
+    //   history.push({ pathname: `/notificacoes/${id}`, origin: 'menu' });
+    // }
 
-  return (
-      <Container>
+    const onApartamentosClick = () => {
+        history.push({pathname: `/apartamentos/${id}`});
+    }
 
-        <ImgContainer>
-          <img src={`${host}/api/logo/${conta.codigo}`}  alt="logo" />
-        </ImgContainer>
+    const onSairClick = () => {
+        localStorage.setItem('login', null);
+        history.push({pathname: `/${id}`});
+    }
 
-        <CardContainer>
-              <a href="#" onClick={onInformacoesClick} className="requests">Informações</a>
-        </CardContainer>
+    // https://api-sistema-mde.herokuapp.com
 
-        <CardContainer>
-          <a href="#" onClick={onCardapioClick} className="requests">Cardápio</a>
-        </CardContainer>
+    return (
+        <Container>
 
-        {
-          login.perfil == 'camareira' ? (
+            <ImgContainer>
+                <img src={`${host}/api/logo/${conta.codigo}`} alt="logo"/>
+            </ImgContainer>
+
             <CardContainer>
-              <a href="#" onClick={onServicoClick} className="requests">Serviço</a>
+                <a href="#" onClick={onInformacoesClick} className="requests">Informações</a>
             </CardContainer>
-            ) : ''
-        }
 
-        {
-          // login.perfil == 'camareira' ? (
-          //   <CardContainer>
-          //     <a href="#" onClick={onNotificacoesClick} className="requests">Notificações</a>
-          //   </CardContainer>
-          //   ) : ''
-        }
+            <CardContainer>
+                <a href="#" onClick={onCardapioClick} className="requests">Cardápio</a>
+            </CardContainer>
 
-        <CardContainer>
-          <a href="#" onClick={onSairClick}>Sair</a>
-        </CardContainer>
+            {
+                login.perfil == 'garcom' ? (
+                    <CardContainer>
+                        <a href="#" onClick={onAbrirMesa} className="requests">Abrir mesa</a>
+                    </CardContainer>
+                ) : ''
+            }
 
-      </Container>
-  );
+            {
+                login.perfil == 'camareira' ? (
+                    <CardContainer>
+                        <a href="#" onClick={onServicoClick} className="requests">Serviço</a>
+                    </CardContainer>
+                ) : ''
+            }
+
+            {
+                // login.perfil == 'camareira' ? (
+                //   <CardContainer>
+                //     <a href="#" onClick={onNotificacoesClick} className="requests">Notificações</a>
+                //   </CardContainer>
+                //   ) : ''
+            }
+
+            <CardContainer>
+                <a href="#" onClick={onSairClick}>Sair</a>
+            </CardContainer>
+
+        </Container>
+    );
 
 }
 
@@ -99,172 +118,172 @@ const MenuWINLETOM = () => {
 
 const MenuWINRESTA = () => {
 
-  const { id }  = useParams();
-  const history = useHistory();
-  const [conta] = useState(getConta());
-  
-  const host = getHost();
+    const {id} = useParams();
+    const history = useHistory();
+    const [conta] = useState(getConta());
 
-  const onCardapioClick = () => {
-    history.push({ pathname: `/cardapio/${id}` });
-  }
+    const host = getHost();
 
-  const onPedidosClick = () => {
-    history.push({ pathname: `/pedidos/${id}` });
-  }
+    const onCardapioClick = () => {
+        history.push({pathname: `/cardapio/${id}`});
+    }
 
-  const onSairClick = () => {
-    localStorage.setItem('login', null);
-    history.push({ pathname: `/${id}` });
-  }
+    const onPedidosClick = () => {
+        history.push({pathname: `/pedidos/${id}`});
+    }
 
-  return (
+    const onSairClick = () => {
+        localStorage.setItem('login', null);
+        history.push({pathname: `/${id}`});
+    }
 
-    <Container>
+    return (
 
-      <ImgContainer>
-        <img src={`${host}/api/logo/${conta.codigo}`}  alt="logo" />
-      </ImgContainer>
+        <Container>
 
-      <CardContainer>
-        <a href="#" onClick={onCardapioClick} className="requests">Cardápio</a>
-      </CardContainer>
+            <ImgContainer>
+                <img src={`${host}/api/logo/${conta.codigo}`} alt="logo"/>
+            </ImgContainer>
 
-      <CardContainer>
-        <a href="#" onClick={onSairClick}>Sair</a>
-      </CardContainer>
+            <CardContainer>
+                <a href="#" onClick={onCardapioClick} className="requests">Cardápio</a>
+            </CardContainer>
 
-    </Container>
-);
+            <CardContainer>
+                <a href="#" onClick={onSairClick}>Sair</a>
+            </CardContainer>
 
-/*
-      <CardContainer>
-          <a href="#" onClick={onPedidosClick} className="consumme">Pedidos</a>
-      </CardContainer>
-*/
+        </Container>
+    );
+
+    /*
+          <CardContainer>
+              <a href="#" onClick={onPedidosClick} className="consumme">Pedidos</a>
+          </CardContainer>
+    */
 
 }
 
 const MenuWINLETOH = () => {
-  const { id }  = useParams();
-  const history = useHistory();
-  
-  const [conta] = useState(getConta());
-  const [login] = useState(getLogin());
+    const {id} = useParams();
+    const history = useHistory();
 
-  console.log(login);
+    const [conta] = useState(getConta());
+    const [login] = useState(getLogin());
 
-  const host = getHost();
+    console.log(login);
 
-  const onCardapioClick = () => {
-    history.push({ pathname: `/cardapio/${id}` });
-  }
+    const host = getHost();
 
-  const onPedidosClick = () => {
-    history.push({ pathname: `/pedidos/${id}` });
-  }
+    const onCardapioClick = () => {
+        history.push({pathname: `/cardapio/${id}`});
+    }
 
-  const onInformacoesClick = () => {
-    history.push({ pathname: `/informacoes/${id}` });
-  }
+    const onPedidosClick = () => {
+        history.push({pathname: `/pedidos/${id}`});
+    }
 
-  const onSairClick = () => {
-    localStorage.setItem('login', null);
-    history.push({ pathname: `/${id}` });
-  }
-  
-  // https://api-sistema-mde.herokuapp.com
+    const onInformacoesClick = () => {
+        history.push({pathname: `/informacoes/${id}`});
+    }
 
-  return (
-      <Container>
+    const onSairClick = () => {
+        localStorage.setItem('login', null);
+        history.push({pathname: `/${id}`});
+    }
 
-        <ImgContainer>
-          <img src={`${host}/api/logo/${conta.codigo}`}  alt="logo" />
-        </ImgContainer>
+    // https://api-sistema-mde.herokuapp.com
 
-        {
-          (login.login) ? '' : (
+    return (
+        <Container>
+
+            <ImgContainer>
+                <img src={`${host}/api/logo/${conta.codigo}`} alt="logo"/>
+            </ImgContainer>
+
+            {
+                (login.login) ? '' : (
+                    <CardContainer>
+                        <a href="#" onClick={onInformacoesClick} className="requests">Informações</a>
+                    </CardContainer>
+                )
+            }
+
+            {
+                (login.cardapios === -1) ? '' : (
+                    <CardContainer>
+                        <a href="#" onClick={onCardapioClick} className="requests">Cardápio</a>
+                    </CardContainer>
+                )
+            }
+
             <CardContainer>
-              <a href="#" onClick={onInformacoesClick} className="requests">Informações</a>
+                <a href="#" onClick={onSairClick}>Sair</a>
             </CardContainer>
-          )
-        }
 
-        {
-          (login.cardapios === -1) ? '' : (
-            <CardContainer>
-              <a href="#" onClick={onCardapioClick} className="requests">Cardápio</a>
-            </CardContainer>
-          )
-        }
+        </Container>
+    );
 
-        <CardContainer>
-          <a href="#" onClick={onSairClick}>Sair</a>
-        </CardContainer>
-
-      </Container>
-  );
-
-  /*
-        {
-          (login.login) ? '' : (
-            <CardContainer>
-              <a href="#" onClick={onPedidosClick} className="consumme">Pedidos</a>
-            </CardContainer>
-          )
-        }
- */
+    /*
+          {
+            (login.login) ? '' : (
+              <CardContainer>
+                <a href="#" onClick={onPedidosClick} className="consumme">Pedidos</a>
+              </CardContainer>
+            )
+          }
+   */
 
 }
 
 export default function Menu() {
 
-  const { id }  = useParams();
-  const history = useHistory();
-  const [login] = useState(getLogin());
-  const [conta] = useState(getConta());
-  
-  useEffect(() => {
-    if (login == null) history.push({ pathname: `/entrar/${id}/${Date.now()}` });
-    console.log(login);
-  },[]);
+    const {id} = useParams();
+    const history = useHistory();
+    const [login] = useState(getLogin());
+    const [conta] = useState(getConta());
 
-  return (
-    <div>
-      <MenuWINLETOM />
-      <Alarme  />
-    </div>
-  );
+    useEffect(() => {
+        if (login == null) history.push({pathname: `/entrar/${id}/${Date.now()}`});
+        console.log(login);
+    }, []);
 
-  return (
-    <div>
-      {
-        conta.sistema === 'WINLETOM' ? ( <MenuWINLETOM /> ) : (
-          conta.sistema === 'WINRESTA' ? ( <MenuWINRESTA /> ) : ( <MenuWINLETOH /> )
-        )
-      }
-    </div>
-  );
-  
+    return (
+        <div>
+            <MenuWINLETOM/>
+            <Alarme/>
+        </div>
+    );
+
+    return (
+        <div>
+            {
+                conta.sistema === 'WINLETOM' ? (<MenuWINLETOM/>) : (
+                    conta.sistema === 'WINRESTA' ? (<MenuWINRESTA/>) : (<MenuWINLETOH/>)
+                )
+            }
+        </div>
+    );
+
 }
 
 const Container = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  height: 80vh;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 80vh;
 `;
 
 const ImgContainer = styled.div`
-  background: #232129;
-  margin-top: 90px;
-  border-radius: 8px;
-
-  img {
+    background: #232129;
+    margin-top: 90px;
     border-radius: 8px;
-  }
+
+    img {
+        border-radius: 8px;
+    }
 `;
 
 const CardContainer = styled.div`
@@ -274,20 +293,20 @@ const CardContainer = styled.div`
     padding: 18px;
     display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
     margin-top: 16px;
 
     :hover {
         background: ${shade(0.2, '#232129')}
-      } 
+    }
 
-    a{
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-      text-decoration: none;
-      color: #fff; 
-      font-size: 26px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 26px;
     }
 `;
