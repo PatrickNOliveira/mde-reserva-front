@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import BarcodeReader from 'react-barcode-reader';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { shade } from 'polished';
 import api from "../../services/api";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { BrowserMultiFormatReader } from '@zxing/browser';
 
 const Button = styled.button`
     background: #ff9000;
@@ -32,70 +32,104 @@ const Input = styled.input`
     font-weight: 500;
 `;
 
+const mobile = () => window.innerWidth <= 768;
+
 export const QrCodeLeitor = (props) => {
-    let { id } = useParams();
-    const [temCamera, setTemCamera] = useState(null); // Mudei para null inicialmente
+    const { id } = useParams();
+    const [temCamera, setTemCamera] = useState(null);
     const [mensagem, setMensagem] = useState('');
     const [codigo, setCodigo] = useState('');
     const [isMobile, setIsMobile] = useState(false);
+    const videoRef = useRef(null);
 
     useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth <= 600);
+        const codeReader = new BrowserMultiFormatReader();
+
+        const startReader = async () => {
+            try {
+                const videoElement = videoRef.current;
+                if (videoElement) {
+                    await codeReader.decodeFromVideoDevice(undefined, videoElement, (result, err) => {
+                        if (result) {
+                            buscarQrCode(result.getText())
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao iniciar leitura de código de barras', error);
+            }
         };
 
-        checkMobile(); // executa ao montar
-        window.addEventListener('resize', checkMobile); // escuta resize
+        if (temCamera) {
+            startReader();
+        }
 
-        return () => window.removeEventListener('resize', checkMobile); // cleanup
-    }, []);
+        return () => {
+            if (videoRef.current) {
+                const stream = videoRef.current.srcObject;
+                if (stream) {
+                    const tracks = stream.getTracks();
+                    tracks.forEach(track => track.stop());
+                }
+            }
+        };
+    }, [temCamera]);
 
-    const handleScan = (codigoLido) => {
-        console.log('Código de barras lido:', codigoLido);
-        setCodigo(codigoLido);
-        buscarQrCode(codigoLido);
-    };
-
-    const handleError = (err) => {
-        console.error('Erro ao ler código de barras:', err);
-        setMensagem('Erro ao tentar ler o código de barras.');
-        setTemCamera(false); // Se houver erro, desativa a câmera
-    };
-
-    // Função para garantir que o navegador tenha permissão de usar a câmera
     const verificarPermissoes = async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            // Se a permissão for concedida, continuamos
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const temCameraDisponivel = devices.some(device => device.kind === 'videoinput');
+            if (!temCameraDisponivel) {
+                setTemCamera(false);
+                setMensagem('Nenhuma câmera foi encontrada neste dispositivo.');
+                return;
+            }
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: { ideal: 'environment' } }
+            });
             setTemCamera(true);
-            stream.getTracks().forEach(track => track.stop()); // Para o stream após a verificação
+            stream.getTracks().forEach(track => track.stop());
         } catch (error) {
-            console.error('Permissão de câmera não concedida', error);
+            console.error('Erro ao tentar acessar a câmera:', error);
             setTemCamera(false);
-            setMensagem('Não foi possível acessar a câmera. Verifique permissões.');
+            setMensagem('Não foi possível acessar a câmera. Verifique as permissões no navegador.');
         }
     };
-
-    useEffect(() => {
-        // Verifica permissões ao montar o componente
-        verificarPermissoes();
-    }, []);
 
     const buscarQrCode = async (qrCode) => {
         if (qrCode?.length > 0) {
             const res = await api.get(`/api/code-bar/${id}/${qrCode}`);
-            const data = res.data[0][0]
-            props.onLeitura({
-                "id": data.NumApto,
-                "NrReserva": data.NrReserva,
-                "NrHospede": data.NrHospede,
-                "SitAtual": "O",
-                "SitFutura": "O",
-                "Notificacao": null,
-                "NomeHospede": data.NomeHospede
-            })
+            if (res.data?.[0]?.[0]) {
+                const data = res.data?.[0]?.[0]
+                props.onLeitura({
+                    "id": data.NumApto,
+                    "NrReserva": data.NrReserva,
+                    "NrHospede": data.NrHospede,
+                    "SitAtual": "O",
+                    "SitFutura": "O",
+                    "Notificacao": null,
+                    "NomeHospede": data.NomeHospede
+                })
+            } else {
+                alert("Código não encontrado")
+            }
         }
     }
+
+    useEffect(() => {
+        verificarPermissoes();
+    }, []);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(mobile());
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
 
     return (
         <div
@@ -113,13 +147,8 @@ export const QrCodeLeitor = (props) => {
             {temCamera === null && <p>Verificando câmeras...</p>}
             {temCamera === false && <p style={{ color: 'red' }}>{mensagem}</p>}
             {temCamera && (
-                <div style={{ width: '300px', height: '300px', marginBottom: '10px' }}>
-                    {/* Ajuste do BarcodeReader */}
-                    <BarcodeReader
-                        onScan={handleScan}
-                        onError={handleError}
-                        style={{ width: '100%', height: '100%' }}
-                    />
+                <div style={{ width: '300px', height: '300px', marginBottom: isMobile ? '100px' : '10px' }}>
+                    <video ref={videoRef} style={{ width: '100%' }} />
                 </div>
             )}
             <p>Ou digite o código manualmente:</p>
