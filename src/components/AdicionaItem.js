@@ -15,6 +15,7 @@ import {
     getCardapioAtual, setApartamentoAtual, getApartamentoAtual
 } from '../utils/utils-context';
 import alerta from '../utils/alertas';
+import {QrCodeLeitor} from "../pages/QrCodeLeitor/QrCodeLeitor";
 
 export default function AdicionaItem() {
 
@@ -89,20 +90,23 @@ export default function AdicionaItem() {
     const MostraApartamentos = () => {
 
         return (
-            <Apartamento>
-                {
-                    apartamentos.map((ap, i) =>
-                        <a className="botao-apartamento"
-                           key={i}
-                           href="#"
-                           onClick={() => {
-                               onApartamentoClick(ap)
-                           }}
-                           style={{color: 'black'}}>{ap.id}
-                        </a>
-                    )
-                }
-            </Apartamento>
+            <>
+                Ou selecione um apartamento:
+                <Apartamento>
+                    {
+                        apartamentos.map((ap, i) =>
+                            <a className="botao-apartamento"
+                               key={i}
+                               href="#"
+                               onClick={() => {
+                                   onApartamentoClick(ap)
+                               }}
+                               style={{color: 'black'}}>{ap.id}
+                            </a>
+                        )
+                    }
+                </Apartamento>
+            </>
         );
     }
 
@@ -122,7 +126,7 @@ export default function AdicionaItem() {
                 </ImgContainer>
                 <div className="container-product-detail">
                     <h2 style={{fontSize: 20, marginTop: 30, textAlign: 'center'}}>
-                        {produto.descricao}
+                        {produto?.descricao}
                     </h2>
                     <h2 style={{fontSize: 15, marginTop: 20, marginBottom: 20}}>
                         {produto?.nota}
@@ -157,8 +161,8 @@ export default function AdicionaItem() {
         }
 
         useEffect(() => {
-            setParaDescricaoProd(produto.descricao)
-            setParaValorProd(produto.preco * quant)
+            setParaDescricaoProd(produto?.descricao)
+            setParaValorProd(produto?.preco * quant)
         }, [produto])
 
         const onAdicionaItem = () => {
@@ -180,10 +184,10 @@ export default function AdicionaItem() {
                 suite_id: login.suite_id ?? 0,
                 suite: login.suite ?? apartamento.id, //, mesa, 
                 codigo: produto.codigo,
-                descricao: produto.descricao,
+                descricao: produto?.descricao,
                 foto: produto.foto,
                 produto_id: produto.id,
-                preco: produto.preco,
+                preco: produto?.preco,
                 tipo: produto.tipo,
                 quantidade: quant,
                 nota: !!obs && obs?.length > 0 ? obs : nota,
@@ -225,14 +229,14 @@ export default function AdicionaItem() {
                 <div className="container-product-info">
 
                     {
-                        !produto.paraDescricao &&
+                        !produto?.paraDescricao &&
                         <h2 style={{fontSize: 20, marginTop: '60px', textAlign: 'center'}}>
-                            {produto.descricao}
+                            {produto?.descricao}
                         </h2>
                     }
 
                     {
-                        !!produto.paraDescricao && <>
+                        !!produto?.paraDescricao && <>
                             <label style={{fontSize: 20, marginTop: '60px', textAlign: 'center'}}>
                                 Produto
                             </label>
@@ -243,19 +247,19 @@ export default function AdicionaItem() {
                     }
 
                     {
-                        !produto.paraValor &&
+                        !produto?.paraValor &&
                         <h2 style={{
                             fontSize: 25,
                             color: 'lightgreen',
                             marginTop: '30px',
                             textAlign: 'center'
                         }}>
-                            {getPreco(produto.preco * quant)}
+                            {getPreco(produto?.preco * quant)}
                         </h2>
                     }
 
                     {
-                        produto.paraValor &&
+                        produto?.paraValor &&
                         <>
                             <label style={{
                                 fontSize: 25,
@@ -364,7 +368,14 @@ export default function AdicionaItem() {
                 </div>
             </div>
             {
-                buscaApartamentos ? <MostraApartamentos/> :
+                buscaApartamentos ?
+                    <>
+                        <QrCodeLeitor
+                        onLeitura={onApartamentoClick}
+                        />
+                        <MostraApartamentos/>
+                    </>
+                    :
                     (detalheItem ? <DetalheItem/> : <AdicionaItem/>)
             }
         </div>

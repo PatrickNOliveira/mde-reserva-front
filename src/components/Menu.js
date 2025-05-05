@@ -80,7 +80,6 @@ const MenuWINLETOM = () => {
                     </CardContainer>
                 ) : ''
             }
-
             {
                 login.perfil == 'camareira' ? (
                     <CardContainer>

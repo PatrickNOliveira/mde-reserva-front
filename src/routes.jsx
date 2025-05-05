@@ -19,6 +19,7 @@ import Servicos from './components/Servicos';
 import Notificacoes from './components/Notificacoes';
 import Menu from './components/Menu';
 import Entrar from './components/Entrar';
+import {QrCodeLeitor} from "./pages/QrCodeLeitor/QrCodeLeitor";
 
 function Routes() {
 
