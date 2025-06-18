@@ -62,7 +62,7 @@ const MenuWINLETOM = () => {
         <Container>
 
             <ImgContainer>
-                <img src={`${host}/api/logo/${conta.codigo}`} alt="logo"/>
+                <img src={`${host}/api/logo/${conta?.codigo}`} alt="logo"/>
             </ImgContainer>
 
             <CardContainer>
@@ -141,7 +141,7 @@ const MenuWINRESTA = () => {
         <Container>
 
             <ImgContainer>
-                <img src={`${host}/api/logo/${conta.codigo}`} alt="logo"/>
+                <img src={`${host}/api/logo/${conta?.codigo}`} alt="logo"/>
             </ImgContainer>
 
             <CardContainer>
@@ -197,7 +197,7 @@ const MenuWINLETOH = () => {
         <Container>
 
             <ImgContainer>
-                <img src={`${host}/api/logo/${conta.codigo}`} alt="logo"/>
+                <img src={`${host}/api/logo/${conta?.codigo}`} alt="logo"/>
             </ImgContainer>
 
             {
@@ -257,8 +257,8 @@ export default function Menu() {
     return (
         <div>
             {
-                conta.sistema === 'WINLETOM' ? (<MenuWINLETOM/>) : (
-                    conta.sistema === 'WINRESTA' ? (<MenuWINRESTA/>) : (<MenuWINLETOH/>)
+                conta?.sistema === 'WINLETOM' ? (<MenuWINLETOM/>) : (
+                    conta?.sistema === 'WINRESTA' ? (<MenuWINRESTA/>) : (<MenuWINLETOH/>)
                 )
             }
         </div>

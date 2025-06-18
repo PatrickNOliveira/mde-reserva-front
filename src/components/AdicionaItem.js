@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useLocation, useHistory, useParams} from 'react-router-dom';
+import {useLocation, useHistory, useParams} from 'react-router-dom';
 import {BsArrowLeftShort} from "react-icons/bs";
 import {FaBed} from "react-icons/fa";
 import getPreco from '../utils/getPreco'
@@ -59,7 +59,7 @@ export default function AdicionaItem() {
     const [adicionado, setAdicionado] = useState(false);
     const [historico, setHistorico] = useState([])
 
-    const [apartamento, setApartamento] = useState(getApartamentoAtual().id);
+    const [apartamento, setApartamento] = useState(getApartamentoAtual()?.id);
 
     const [detalheItem, setDetalheItem] = useState(
         (produto?.nota || produto?.imagem) && !login.login
@@ -67,7 +67,7 @@ export default function AdicionaItem() {
 
     const [apartamentos, setApartamentos] = useState([]);
     const [buscaApartamentos, setBuscaApartamentos] = useState(
-        login.login ? getApartamentoAtual().id === 0 : false
+        login.login ? getApartamentoAtual()?.id === 0 : false
     );
 
     const host = getHost();
@@ -296,7 +296,7 @@ export default function AdicionaItem() {
                     }
 
                     {
-                        conta.sistema === 'WINRESTA' ? (
+                        conta?.sistema === 'WINRESTA' ? (
                             <div>
                                 <input
                                     className="mesa"
@@ -343,8 +343,23 @@ export default function AdicionaItem() {
 
     }
 
-    const descricao = apartamento == 0 ? 'Selecione apartamento' : 'Apartamento ' + apartamento;
+    const descricao = apartamento == 0 || !apartamento ? 'Selecione apartamento' : 'Apartamento ' + apartamento;
     const dadosAp = getApartamentoAtual();
+
+    useEffect(() => {
+        if (!apartamento) {
+            setBuscaApartamentos(true);
+        }
+    }, [apartamento])
+
+    const confirmado = localStorage.getItem('Confirmado');
+    useEffect(() => {
+        if (confirmado) {
+            localStorage.removeItem('Confirmado');
+            setBuscaApartamentos(true);
+            setDetalheItem(true);
+        }
+    }, [confirmado]);
 
     return (
         <div className="rooms">
@@ -364,7 +379,7 @@ export default function AdicionaItem() {
                             <span className="tipo_cardapio">{descricao}</span>
                             : ''
                     }
-                    <span className="nome_hospede">{dadosAp.NomeHospede}</span>
+                    <span className="nome_hospede">{dadosAp?.NomeHospede}</span>
                 </div>
             </div>
             {

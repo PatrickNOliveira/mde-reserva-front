@@ -151,6 +151,9 @@ export const QrCodeLeitor = (props) => {
                     <video ref={videoRef} style={{ width: '100%' }} />
                 </div>
             )}
+            <div style={{
+                marginTop: '100px',
+            }}>
             <p>Ou digite o código manualmente:</p>
             <Input
                 style={{ marginTop: '10px', padding: '5px' }}
@@ -159,6 +162,7 @@ export const QrCodeLeitor = (props) => {
                 placeholder="Código de barras"
             />
             <Button onClick={() => buscarQrCode(codigo)}>Enviar código</Button>
+            </div>
         </div>
     );
 };

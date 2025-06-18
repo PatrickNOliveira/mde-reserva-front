@@ -74,12 +74,12 @@ const ListaItensPedido = ({items}) => {
 
     if (items.length === 0) return '';
 
-    return items.map(item => {
+    return items?.map(item => {
         return (
             <div key={item.id} style={{marginTop: '20px'}}>
                 <div style={{overflow: 'hidden'}}>
                     <div className='esquerda'>{item.descricao}</div>
-                    <div className='direita'><span className='detalhe'>Nº {item.codigo}</span></div>
+                    <div className='direita'><span className='detalhe'>Nº {item?.codigo}</span></div>
                 </div>
                 <div style={{overflow: 'hidden'}}>
                     <div className='detalhe'>{item.quantidade} x {getPreco(item.preco)}</div>

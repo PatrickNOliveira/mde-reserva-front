@@ -146,7 +146,7 @@ export default function Servicos() {
     }
 
     function AtualizaStatusSuite() {
-        const status = conta.status_suites;
+        const status = conta?.status_suites;
         const opcoes = status[apartamento.SitAtual];
         return (
             <Container>

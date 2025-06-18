@@ -26,16 +26,16 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio, onFinaliz
 
     const [suite, setSuite] = useState(getSuiteAtual());
 
-    const [locais] = useState(getConta()['locais_entrega']);
+    const [locais] = useState(getConta()?.['locais_entrega']);
     const [cardapio] = useState(getCardapioAtual());
 
     const [localizacao, setLocalizacao] = useState(
-        getConta()['locais_entrega'] ? getConta()['locais_entrega'][0] : ''
+        getConta()?.['locais_entrega'] ? getConta()?.['locais_entrega']?.[0] : ''
     );
 
     const [conta] = useState(getConta());
 
-    const [mensagemLocalizacao, setMensagemLocalizacao] = useState(conta.obsLocal);
+    const [mensagemLocalizacao, setMensagemLocalizacao] = useState(conta?.obsLocal);
 
     const [observacao, setObservacao] = useState('');
 
@@ -167,13 +167,16 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio, onFinaliz
                 }).then(
                     response => {
                         setApartamentoAtual(null);
+                        localStorage.setItem('Apartamento', null);
                         setCarrinho(response.data);
                         setMesaAtual(null);
                         onCarrinhoVazio();
                         onFinalizaPedido();
+                        localStorage.setItem('Confirmado', true)
                     }
                 ).catch(() => {
                     setApartamentoAtual(null);
+                    localStorage.setItem('Apartamento', null);
                     //setCarrinho(response.data);
                     setMesaAtual(null);
                     onCarrinhoVazio();
@@ -192,7 +195,7 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio, onFinaliz
 
         setLocalizacao(localizacaoAtual);
 
-        const texto = localizacaoAtual.texto ? localizacaoAtual.texto : conta.obsLocal ? conta.obsLocal : '';
+        const texto = localizacaoAtual.texto ? localizacaoAtual.texto : conta?.obsLocal ? conta?.obsLocal : '';
 
         setMensagemLocalizacao(texto);
 
@@ -298,7 +301,7 @@ export default function ListaItensCarrinho({suite_id, onCarrinhoVazio, onFinaliz
         }
 
         return (
-            items.map(item =>
+            items?.map(item =>
                 <div type="button"
                      onClick={() => onItemClick(item)}
                      key={item.id}

@@ -19,7 +19,7 @@ export function getColab() {
 export function getConta() {
     var conta = JSON.parse(localStorage.getItem('conta'));
     if (conta == null) return null;
-    return conta.sistema ? conta : null;
+    return conta?.sistema ? conta : null;
 }
 
 export function setConta(conta) {
@@ -33,7 +33,7 @@ export function setApartamentoAtual(ap) {
 
 export function getApartamentoAtual() {
     const ap = localStorage.getItem('Apartamento');
-    return ap == null ? {id: 0} : JSON.parse(ap);
+    return ap === null ? {id: 0} : JSON.parse(ap);
 }
 
 export function gravaCardapios(cardapios) {
@@ -71,8 +71,8 @@ export function setMesaAtual(mesa) {
 }
 
 export function getSuiteAtual() {
-    const suite = getApartamentoAtual().id > 0 ? 
-        getApartamentoAtual().id 
+    const suite = getApartamentoAtual()?.id > 0 ?
+        getApartamentoAtual()?.id
         : localStorage.getItem('suite');
     return  suite === null ? '' : suite;
 }
@@ -101,7 +101,7 @@ export function contaEncerrada(login) {
     console.log('contaEncerrada.login.checkout:', login.checkout);
     if (!login.checkout) return false;
     const conta = getConta();
-    if (conta.ativo === 'N') return true;
+    if (conta?.ativo === 'N') return true;
     const data = login.checkout.substr(0, 10);
     const hora = login.checkout.substr(11);
     const parts = data.split('/');

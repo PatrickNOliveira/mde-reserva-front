@@ -48,7 +48,7 @@ function QrCodeAuth() {
 
 		console.log('QrCodeAuth.login:', login, id, conta);
 		
-		document.title = conta ? conta.hotel : 'MDE Pedidos';
+		document.title = conta ? conta?.hotel : 'MDE Pedidos';
 
 		if (login == null || login.uuid !== id) {
 

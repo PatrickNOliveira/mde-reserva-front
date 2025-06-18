@@ -92,7 +92,7 @@ const AdicionaItem = () => {
                     onChange={(event) => { setNota(event.target.value) }} />
 
                 {
-                    conta.sistema === 'WINRESTA' ? (
+                    conta?.sistema === 'WINRESTA' ? (
                         <div>
                             <input 
                                 className="mesa"

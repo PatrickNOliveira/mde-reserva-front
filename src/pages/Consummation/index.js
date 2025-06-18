@@ -72,14 +72,14 @@ function Consummation() {
       <div className="body-list">
         <ul>
           {consummations ? (
-            consummations.pedidos.map(order =>
+            consummations.pedidos?.map(order =>
               <li key={order.id}>
                 <div className="container-pedidos ">
                   <div className="pedidos">
                     <p>Pedido: {order.id}  <BsFillTrashFill type="button" onClick={() => handleRemoveRequests(order.id)} style={{ fontSize: 14, marginLeft: 10 }}/></p>
                     <p>Total: R${order.total}</p>
                   </div>
-                  {order.produtos.map(item =>
+                  {order?.produtos?.map(item =>
                     <div key={item.id} className="items" style={{ transition: '0.2s', height: infoOpen === order.id ? "" : "0px", padding: infoOpen === order.id ? 12 : 0 }}>
                       <div className="pcontainer">
                         <div className="first-column">

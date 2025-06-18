@@ -10,7 +10,7 @@ export default function LocalEntrega({cardapio, locais, obsMensagemLocal, onLoca
             <span>Sua Localização</span>
             <select onChange={(event) => {onLocalizacao(event.target.value)}}> 
                 {
-                    locais.map(local =>
+                    locais?.map(local =>
                         <option  
                             key={local.codigo} 
                             value={local.codigo}>{local.descricao}
