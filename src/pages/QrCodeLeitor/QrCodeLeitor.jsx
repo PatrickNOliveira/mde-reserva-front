@@ -4,6 +4,7 @@ import { shade } from 'polished';
 import api from "../../services/api";
 import { useParams } from "react-router-dom";
 import { BrowserMultiFormatReader } from '@zxing/browser';
+import {getApartamentoAtual} from "../../utils/utils-context";
 
 const Button = styled.button`
     background: #ff9000;
@@ -37,23 +38,30 @@ const mobile = () => window.innerWidth <= 768;
 export const QrCodeLeitor = (props) => {
     const { id } = useParams();
     const [temCamera, setTemCamera] = useState(null);
-    const [mensagem, setMensagem] = useState('');
     const [codigo, setCodigo] = useState('');
     const [isMobile, setIsMobile] = useState(false);
     const videoRef = useRef(null);
+    const confirmadoRef = useRef(localStorage.getItem('Confirmado'));
+    const [mensagem, setMensagem] = useState('');
 
     useEffect(() => {
         const codeReader = new BrowserMultiFormatReader();
+        let controls;
 
         const startReader = async () => {
             try {
                 const videoElement = videoRef.current;
                 if (videoElement) {
-                    await codeReader.decodeFromVideoDevice(undefined, videoElement, (result, err) => {
-                        if (result) {
-                            buscarQrCode(result.getText())
+                    controls = await codeReader.decodeFromVideoDevice(
+                        undefined,
+                        videoElement,
+                        (result, err) => {
+                            if (result && !confirmadoRef.current) {
+                                buscarQrCode(result.getText());
+                                console.log('Executou !!!!');
+                            }
                         }
-                    });
+                    );
                 }
             } catch (error) {
                 console.error('Erro ao iniciar leitura de código de barras', error);
@@ -65,6 +73,10 @@ export const QrCodeLeitor = (props) => {
         }
 
         return () => {
+            if (controls) {
+                controls.stop();
+            }
+
             if (videoRef.current) {
                 const stream = videoRef.current.srcObject;
                 if (stream) {
